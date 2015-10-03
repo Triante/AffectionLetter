@@ -65,14 +65,14 @@ public class Shop extends AppCompatActivity implements View.OnClickListener{
             {
                 Intent theToken = new Intent(this, Skins.class);
                 startActivity(theToken);
-                finish();
+                //finish();
                 break;
             }
             case R.id.token:
             {
                 Intent theToken = new Intent(this, Token.class);
                 startActivity(theToken);
-                finish();
+               // finish();
                 break;
             }
         }

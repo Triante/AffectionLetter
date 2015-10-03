@@ -1,5 +1,6 @@
 package jorgeandcompany.loveletter;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -66,8 +67,11 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 else if (multiPlayerState) {
 
                 }
+                //shop
                 else {
-
+                    Intent toShop = new Intent(this, Shop.class);
+                    startActivity(toShop);
+                    finish();
                 }
                 break;
             case R.id.bMainMenu4:
@@ -85,6 +89,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                     bMainMenu4.setText("Options");
                     multiPlayerState = false;
                 }
+                //options
                 else {
 
                 }
