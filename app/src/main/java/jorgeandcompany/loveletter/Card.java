@@ -5,11 +5,11 @@ package jorgeandcompany.loveletter;
  */
 public interface Card {
 
-    public void drawAffect();
+    public void drawAffect(Player player);
 
-    public void cardEffect();
+    public void cardEffect(Player player);
 
-    public void discardAffect();
+    public void discardAffect(Player player);
 
     public int getValue();
 

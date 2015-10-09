@@ -9,17 +9,17 @@ public class CardSix implements Card {
     private final int value = 6;
 
     @Override
-    public void drawAffect() {
+    public void drawAffect(Player player) {
         return;
     }
 
     @Override
-    public void cardEffect() {
+    public void cardEffect(Player player) {
         return;
     }
 
     @Override
-    public void discardAffect() {
+    public void discardAffect(Player player) {
         return;
     }
 
