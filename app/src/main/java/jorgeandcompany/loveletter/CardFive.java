@@ -25,7 +25,7 @@ public class CardFive implements Card {
 
     @Override
     public int getValue() {
-        return 5;
+        return value;
     }
 
     @Override
