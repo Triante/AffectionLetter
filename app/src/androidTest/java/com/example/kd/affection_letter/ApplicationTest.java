@@ -1,4 +1,4 @@
-package jorgeandcompany.loveletter;
+package com.example.kd.affection_letter;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
