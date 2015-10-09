@@ -5,13 +5,13 @@ package jorgeandcompany.loveletter;
  */
 public interface Card {
 
-    public void drawAffect(Player player);
+    void drawAffect(Player player);
 
-    public void cardEffect(Player player);
+    void cardEffect(Player player);
 
-    public void discardAffect(Player player);
+    void discardAffect(Player player);
 
-    public int getValue();
+    int getValue();
 
-    public String getDescription();
+    String getDescription();
 }
