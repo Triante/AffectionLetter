@@ -39,32 +39,6 @@ public class Game extends ActionBarActivity {
         fourthPlayerRight = (ImageButton) findViewById(R.id.player4right);
         final ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
 
-        firstPlayerRight.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translate.setDuration(1000);
-                v.startAnimation(translate);
-
-                new CountDownTimer(1000, 1000) {
-
-                    public void onTick(long millisUntilFinished) {
-                    }
-
-                    public void onFinish() {
-                        firstPlayerRight.setVisibility(firstPlayerRight.INVISIBLE);
-                        discard.setVisibility(View.VISIBLE);
-                        firstPlayerRight.setClickable(false);
-                        discard.setClickable(true);
-                    }
-                }.start();
-            }
-
-        });
-
         discard.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(Game.this, Game.class));
@@ -72,111 +46,68 @@ public class Game extends ActionBarActivity {
             }
         });
 
-        thirdPlayerLeft.setOnClickListener(new View.OnClickListener() {
+        firstPlayerRight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translate.setDuration(1000);
-                v.startAnimation(translate);
-                v.setVisibility(v.INVISIBLE);
+                firstRightToDeck();
+                new CountDownTimer(1000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+
+                        discard.setVisibility(View.VISIBLE);
+
+                        discard.setClickable(true);
+                    }
+                }.start();
             }
+
         });
 
-        thirdPlayerRight.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translate.setDuration(1000);
-                v.startAnimation(translate);
-                v.setVisibility(v.INVISIBLE);
-            }
-        });
         firstPlayerLeft.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translate.setDuration(1000);
-                v.startAnimation(translate);
-                v.setVisibility(v.INVISIBLE);
-            }
-        });
-
-        fourthPlayerLeft.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation rotate = new RotateAnimation(0, 90, v.getPivotX(), v.getPivotY());
-                rotate.setDuration(1000);
-                Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translateleftrigt.setDuration(1000);
-                AnimationSet rotateandmove = new AnimationSet(false);
-                rotateandmove.addAnimation(rotate);
-                rotateandmove.addAnimation(translateleftrigt);
-                v.startAnimation(rotateandmove);
-            }
-        });
-
-        fourthPlayerRight.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation rotate = new RotateAnimation(0, 90, v.getPivotX(), v.getPivotY());
-                rotate.setDuration(1000);
-                Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translateleftrigt.setDuration(1000);
-                AnimationSet rotateandmove = new AnimationSet(false);
-                rotateandmove.addAnimation(rotate);
-                rotateandmove.addAnimation(translateleftrigt);
-                v.startAnimation(rotateandmove);
+                firstLeftToDeck();
             }
         });
 
         secondPlayerRight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation rotate = new RotateAnimation(0, -90, v.getPivotX(), v.getPivotY());
-                rotate.setDuration(1000);
-                Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translateleftrigt.setDuration(1000);
-                AnimationSet rotateandmove = new AnimationSet(false);
-                rotateandmove.addAnimation(rotate);
-                rotateandmove.addAnimation(translateleftrigt);
-                v.startAnimation(rotateandmove);
+                secondRightToDeck();
             }
         });
 
         secondPlayerLeft.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int[] cardcoordinates = new int[2];
-                int[] deckcoordinates = new int[2];
-                deck.getLocationOnScreen(deckcoordinates);
-                v.getLocationOnScreen(cardcoordinates);
-                Animation rotate = new RotateAnimation(0, -90, v.getPivotX(), v.getPivotY());
-                rotate.setDuration(1000);
-                Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-                translateleftrigt.setDuration(1000);
-                AnimationSet rotateandmove = new AnimationSet(false);
-                rotateandmove.addAnimation(rotate);
-                rotateandmove.addAnimation(translateleftrigt);
-                v.startAnimation(rotateandmove);
+                secondLeftToDeck();
             }
         });
+
+        thirdPlayerLeft.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                thirdLeftToDeck();
+            }
+        });
+
+        thirdPlayerRight.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                thirdRightToDeck();
+            }
+        });
+
+        fourthPlayerLeft.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                fourthLeftToDeck();
+            }
+        });
+
+        fourthPlayerRight.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                fourthRightToDeck();
+            }
+        });
+
+
 
         new CountDownTimer(12000, 1000) {
             int a = 0;
@@ -213,7 +144,7 @@ public class Game extends ActionBarActivity {
                     a++;
                     deckToFourthRight();
                 }
-                else {
+                else if (a == 0) {
                     a = 1;
                 }
 
@@ -236,6 +167,15 @@ public class Game extends ActionBarActivity {
         set = new AnimationSet (true);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                firstPlayerRight.setVisibility(firstPlayerRight.VISIBLE);
+                firstPlayerRight.setClickable(true);
+            }
+        }.start();
+
     }
     private void deckToSecondRight() {
         int[] cardcoordinates = new int[2];
@@ -253,6 +193,15 @@ public class Game extends ActionBarActivity {
         set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                secondPlayerRight.setVisibility(secondPlayerRight.VISIBLE);
+                secondPlayerRight.setClickable(true);
+            }
+        }.start();
+
 
     }
     private void deckToThirdRight() {
@@ -271,6 +220,15 @@ public class Game extends ActionBarActivity {
         set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                thirdPlayerRight.setVisibility(thirdPlayerRight.VISIBLE);
+                thirdPlayerRight.setClickable(true);
+            }
+        }.start();
+
 
     }
     private void deckToFourthRight() {
@@ -289,6 +247,15 @@ public class Game extends ActionBarActivity {
         set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                fourthPlayerRight.setVisibility(fourthPlayerRight.VISIBLE);
+                fourthPlayerRight.setClickable(true);
+            }
+        }.start();
+
     }
 
     private void deckToFirstLeft() {
@@ -303,6 +270,15 @@ public class Game extends ActionBarActivity {
         set = new AnimationSet (true);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                firstPlayerLeft.setVisibility(firstPlayerLeft.VISIBLE);
+                firstPlayerLeft.setClickable(true);
+            }
+        }.start();
+
     }
     private void deckToSecondLeft() {
         int[] cardcoordinates = new int[2];
@@ -320,6 +296,15 @@ public class Game extends ActionBarActivity {
         set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                secondPlayerLeft.setVisibility(secondPlayerLeft.VISIBLE);
+                secondPlayerLeft.setClickable(true);
+            }
+        }.start();
+
 
     }
     private void deckToThirdLeft() {
@@ -338,6 +323,15 @@ public class Game extends ActionBarActivity {
         set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                thirdPlayerLeft.setVisibility(thirdPlayerLeft.VISIBLE);
+                thirdPlayerLeft.setClickable(true);
+            }
+        }.start();
+
 
     }
     private void deckToFourthLeft() {
@@ -356,6 +350,124 @@ public class Game extends ActionBarActivity {
         set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                fourthPlayerLeft.setVisibility(fourthPlayerLeft.VISIBLE);
+                firstPlayerRight.setClickable(true);
+            }
+        }.start();
+
     }
 
+    private void firstRightToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        firstPlayerRight.getLocationOnScreen(cardcoordinates);
+        Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translate.setDuration(1000);
+        firstPlayerRight.startAnimation(translate);
+        firstPlayerRight.setVisibility(firstPlayerRight.INVISIBLE);
+        firstPlayerRight.setClickable(false);
+    };
+    private void secondRightToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        secondPlayerRight.getLocationOnScreen(cardcoordinates);
+        Animation rotate = new RotateAnimation(0, -90, secondPlayerRight.getPivotX(), secondPlayerRight.getPivotY());
+        rotate.setDuration(1000);
+        Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translateleftrigt.setDuration(1000);
+        AnimationSet rotateandmove = new AnimationSet(false);
+        rotateandmove.addAnimation(rotate);
+        rotateandmove.addAnimation(translateleftrigt);
+        secondPlayerRight.startAnimation(rotateandmove);
+        secondPlayerRight.setVisibility(secondPlayerRight.INVISIBLE);
+        secondPlayerRight.setClickable(false);
+    };
+    private void thirdRightToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        thirdPlayerRight.getLocationOnScreen(cardcoordinates);
+        Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translate.setDuration(1000);
+        thirdPlayerRight.startAnimation(translate);
+        thirdPlayerRight.setVisibility(thirdPlayerRight.INVISIBLE);
+        thirdPlayerRight.setClickable(false);
+    };
+    private void fourthRightToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        fourthPlayerRight.getLocationOnScreen(cardcoordinates);
+        Animation rotate = new RotateAnimation(0, 90, fourthPlayerRight.getPivotX(), fourthPlayerRight.getPivotY());
+        rotate.setDuration(1000);
+        Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translateleftrigt.setDuration(1000);
+        AnimationSet rotateandmove = new AnimationSet(false);
+        rotateandmove.addAnimation(rotate);
+        rotateandmove.addAnimation(translateleftrigt);
+        fourthPlayerRight.startAnimation(rotateandmove);
+        fourthPlayerRight.setVisibility(fourthPlayerRight.INVISIBLE);
+        fourthPlayerRight.setClickable(false);
+    };
+
+    private void firstLeftToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        firstPlayerLeft.getLocationOnScreen(cardcoordinates);
+        Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translate.setDuration(1000);
+        firstPlayerLeft.startAnimation(translate);
+        firstPlayerLeft.setVisibility(firstPlayerLeft.INVISIBLE);
+        firstPlayerLeft.setClickable(false);
+    };
+    private void secondLeftToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        secondPlayerLeft.getLocationOnScreen(cardcoordinates);
+        Animation rotate = new RotateAnimation(0, -90, secondPlayerLeft.getPivotX(), secondPlayerLeft.getPivotY());
+        rotate.setDuration(1000);
+        Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translateleftrigt.setDuration(1000);
+        AnimationSet rotateandmove = new AnimationSet(false);
+        rotateandmove.addAnimation(rotate);
+        rotateandmove.addAnimation(translateleftrigt);
+        secondPlayerLeft.startAnimation(rotateandmove);
+        secondPlayerLeft.setVisibility(secondPlayerLeft.INVISIBLE);
+        secondPlayerLeft.setClickable(false);
+    };
+    private void thirdLeftToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        thirdPlayerLeft.getLocationOnScreen(cardcoordinates);
+        Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translate.setDuration(1000);
+        thirdPlayerLeft.startAnimation(translate);
+        thirdPlayerLeft.setVisibility(thirdPlayerLeft.INVISIBLE);
+        thirdPlayerLeft.setClickable(false);
+    };
+    private void fourthLeftToDeck() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        deck.getLocationOnScreen(deckcoordinates);
+        fourthPlayerLeft.getLocationOnScreen(cardcoordinates);
+        Animation rotate = new RotateAnimation(0, 90, fourthPlayerLeft.getPivotX(), fourthPlayerLeft.getPivotY());
+        rotate.setDuration(1000);
+        Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        translateleftrigt.setDuration(1000);
+        AnimationSet rotateandmove = new AnimationSet(false);
+        rotateandmove.addAnimation(rotate);
+        rotateandmove.addAnimation(translateleftrigt);
+        fourthPlayerLeft.startAnimation(rotateandmove);
+        fourthPlayerLeft.setVisibility(fourthPlayerLeft.INVISIBLE);
+        firstPlayerRight.setClickable(false);
+    };
 }
