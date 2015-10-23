@@ -1,11 +1,13 @@
 package jorgeandcompany.loveletter;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 
@@ -19,6 +21,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         bMainMenu1 = (Button) findViewById(R.id.bMainMenu1);
         bMainMenu2 = (Button) findViewById(R.id.bMainMenu2);

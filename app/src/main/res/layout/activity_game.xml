@@ -126,6 +126,15 @@
         android:layout_toRightOf="@+id/deck"
         android:layout_toEndOf="@+id/deck" />
 
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="75dp"
+        android:id="@+id/outCard"
+        android:layout_alignTop="@+id/deck"
+        android:layout_toStartOf="@+id/deck"
+        android:layout_toLeftOf="@+id/deck"
+        android:visibility="invisible"/>
+
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
