@@ -2,11 +2,8 @@ package jorgeandcompany.loveletter;
 
 import android.content.Intent;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -15,13 +12,18 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class Game extends ActionBarActivity {
-    public static int deckcount = 16;
+    public int deckcount = 16;
     private ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft;
+    private Button bPlay, bCancel;
+    private ImageView expandedCardImage, backgroundOnPaused;
+    private TextView cardDescriptionText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,19 @@ public class Game extends ActionBarActivity {
         firstPlayerLeft = (ImageButton) findViewById(R.id.player1left);
         fourthPlayerLeft = (ImageButton) findViewById(R.id.player4left);
         fourthPlayerRight = (ImageButton) findViewById(R.id.player4right);
+        bPlay = (Button) findViewById(R.id.bPlay);
+        bCancel = (Button) findViewById(R.id.bCancel);
+        cardDescriptionText = (TextView) findViewById(R.id.card_description_text);
+        handOutCards();
+
+        expandedCardImage = (ImageView) findViewById(R.id.expanded_image);
+        bCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageZoomToClose();
+            }
+        });
+        backgroundOnPaused = (ImageView) findViewById(R.id.backGround);
         final ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
 
         discard.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +82,8 @@ public class Game extends ActionBarActivity {
 
         firstPlayerLeft.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                firstLeftToDeck();
+                //firstLeftToDeck();
+                imageZoomToOpen(firstPlayerLeft);
             }
         });
 
@@ -109,49 +125,7 @@ public class Game extends ActionBarActivity {
 
 
 
-        new CountDownTimer(12000, 1000) {
-            int a = 0;
-            public void onTick(long millisUntilFinished) {
-                if (a == 1) {
-                    a++;
-                    deckToFirstLeft();
-                }
-                else if (a == 2) {
-                    a++;
-                    deckToFirstRight();
-                }
-                else if (a == 3) {
-                    a++;
-                    deckToSecondLeft();
-                }
-                else if (a == 4) {
-                    a++;
-                    deckToSecondRight();
-                }
-                else if (a == 5) {
-                    a++;
-                    deckToThirdLeft();
-                }
-                else if (a == 6) {
-                    a++;
-                    deckToThirdRight();
-                }
-                else if (a == 7) {
-                    a++;
-                    deckToFourthLeft();
-                }
-                else if (a == 8) {
-                    a++;
-                    deckToFourthRight();
-                }
-                else if (a == 0) {
-                    a = 1;
-                }
 
-            }
-
-            public void onFinish() {}
-        }.start();
     }
 
 
@@ -468,6 +442,74 @@ public class Game extends ActionBarActivity {
         rotateandmove.addAnimation(translateleftrigt);
         fourthPlayerLeft.startAnimation(rotateandmove);
         fourthPlayerLeft.setVisibility(fourthPlayerLeft.INVISIBLE);
-        firstPlayerRight.setClickable(false);
+        fourthPlayerLeft.setClickable(false);
     };
+
+    private void imageZoomToOpen(View view) {
+        Animation zoomOutImage = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
+        Animation zoomOutImage1 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
+        Animation zoomOutImage2 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
+        Animation zoomOutImage3 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
+        backgroundOnPaused.setVisibility(View.VISIBLE);
+        expandedCardImage.startAnimation(zoomOutImage);
+        expandedCardImage.setImageResource(R.drawable.background_trans);
+        bPlay.startAnimation(zoomOutImage1);
+        bCancel.startAnimation(zoomOutImage2);
+        cardDescriptionText.startAnimation(zoomOutImage3);
+        expandedCardImage.setVisibility(View.VISIBLE);
+        bPlay.setVisibility(View.VISIBLE);
+        bPlay.setClickable(true);
+        bCancel.setVisibility(View.VISIBLE);
+        bCancel.setClickable(true);
+        cardDescriptionText.setVisibility(View.VISIBLE);
+    }
+    private void imageZoomToClose() {
+        bPlay.setClickable(false);
+        bCancel.setClickable(false);
+        Animation zoomOut = AnimationUtils.loadAnimation(this, R.anim.anim_scale_down);
+        Animation zoomOut1 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_down);
+        Animation zoomOut2 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_down);
+        Animation zoomOut3 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_down);
+        backgroundOnPaused.setVisibility(View.INVISIBLE);
+        expandedCardImage.startAnimation(zoomOut);
+        bPlay.startAnimation(zoomOut1);
+        bCancel.startAnimation(zoomOut2);
+        cardDescriptionText.startAnimation(zoomOut3);
+        expandedCardImage.setVisibility(View.INVISIBLE);
+        bPlay.setVisibility(View.INVISIBLE);
+        bCancel.setVisibility(View.INVISIBLE);
+        cardDescriptionText.setVisibility(View.INVISIBLE);
+    }
+
+    private void handOutCards() {
+        new CountDownTimer(10000, 1000) {
+            int a = 0;
+            public void onTick(long millisUntilFinished) {
+                if (a == 1) {
+                    a++;
+                    deckToFirstLeft();
+                }
+                else if (a == 2) {
+                    a++;
+                    deckToSecondLeft();
+                }
+                else if (a == 3) {
+                    a++;
+                    deckToThirdLeft();
+                }
+                else if (a == 4) {
+                    a++;
+                    deckToFourthLeft();
+                }
+                else if (a == 0) {
+                    a = 1;
+                }
+
+            }
+
+            public void onFinish() {}
+        }.start();
+    }
+
+
 }

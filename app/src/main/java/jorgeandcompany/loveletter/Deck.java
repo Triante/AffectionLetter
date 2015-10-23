@@ -1,6 +1,8 @@
 package jorgeandcompany.loveletter;
 
 
+import java.util.Random;
+
 public class Deck {
 
 	private Stack deck;
@@ -15,30 +17,31 @@ public class Deck {
 
 	private void shuffle() {
 		deck = new Stack();
-		deck.push(new CardOne());
-		deck.push(new CardOne());
-		deck.push(new CardOne());
-		deck.push(new CardOne());
-		deck.push(new CardOne());
+		int[] preDeck = {1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8};
+		shuffleArray(preDeck);
+		shuffleArray(preDeck);
+		shuffleArray(preDeck);
+		for (int loc = 0; loc < preDeck.length; loc++) {
+			Card toAdd =  CardFactory.createCard(preDeck[loc]);
+			deck.push(toAdd);
+		}
 
-		deck.push(new CardTwo());
-		deck.push(new CardTwo());
-
-		deck.push(new CardThree());
-		deck.push(new CardThree());
-
-		deck.push(new CardFour());
-		deck.push(new CardFour());
-
-		deck.push(new CardFive());
-		deck.push(new CardFive());
-
-		deck.push(new CardSix());
-
-		deck.push(new CardSeven());
-
-		deck.push(new CardEight());
 	}
+
+	private void shuffleArray(int[] ar)
+	{
+		long tsLong = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
+		tsLong = tsLong/2;
+		Random rnd = new Random(tsLong);
+		for (int i = ar.length - 1; i > 0; i--)
+		{
+			int index = rnd.nextInt(i + 1);
+			int a = ar[index];
+			ar[index] = ar[i];
+			ar[i] = a;
+		}
+	}
+
 
 	class Stack {
 		Node top;

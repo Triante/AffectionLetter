@@ -5,8 +5,8 @@ package jorgeandcompany.loveletter;
  */
 public class Player
 {
-    protected Card c1; //left
-    protected Card c2; //right
+    private Card leftCard; //left
+    private Card rightCard; //right
     private final int playerNumber;
 
     public Player (int playerNumber) {
@@ -15,30 +15,30 @@ public class Player
 
     public void drawCard(Deck deck)
     {
-        if (c1.equals(null)) {
-            c1 = deck.draw();
-            c1.drawAffect(this);
+        if (leftCard.equals(null)) {
+            leftCard = deck.draw();
+            leftCard.drawAffect(this);
         }
         else {
-            c2 = deck.draw();
-            c2.drawAffect(this);
+            rightCard = deck.draw();
+            rightCard.drawAffect(this);
         }
     }
 
     public void discardCard(int hand)
     {
         if (hand == 0) {
-            c1.cardEffect(this);
-            c1 = c2;
-            c2 = null;
+            leftCard.cardEffect(this);
+            leftCard = rightCard;
+            rightCard = null;
         }
         else if (hand == 1) {
-            c2.cardEffect(this);
-            c2 = null;
+            rightCard.cardEffect(this);
+            rightCard = null;
         }
         else {
-            c1.discardAffect(this);
-            c1 = null;
+            leftCard.discardAffect(this);
+            leftCard = null;
         }
     }
 
