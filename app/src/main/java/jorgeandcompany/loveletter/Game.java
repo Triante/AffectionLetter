@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 
 public class Game extends ActionBarActivity {
-    public int deckcount = 16;
     private ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
     private Button bPlay, bCancel;
