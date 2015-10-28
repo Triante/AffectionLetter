@@ -8,20 +8,25 @@ public class Player
     private Card leftCard; //left
     private Card rightCard; //right
     private final int playerNumber;
+    private boolean isOut = false;
 
     public Player (int playerNumber) {
         this.playerNumber = playerNumber;
     }
 
-    public void drawCard(Deck deck)
+    public void drawFirstCard() {
+        leftCard = GameData.deck.draw();
+    }
+
+    public void drawCard()
     {
         if (leftCard.equals(null)) {
-            leftCard = deck.draw();
-            leftCard.drawAffect(this);
+            leftCard = GameData.deck.draw();
+            //leftCard.drawAffect(this);
         }
         else {
-            rightCard = deck.draw();
-            rightCard.drawAffect(this);
+            rightCard = GameData.deck.draw();
+            //rightCard.drawAffect(this);
         }
     }
 
@@ -44,5 +49,26 @@ public class Player
 
     public int getPlayerNumber() {
         return playerNumber;
+    }
+    public boolean isOut() {
+        return isOut;
+    }
+    public void out() {
+        isOut = true;
+    }
+
+    public boolean hasLeftCard() {
+        if (leftCard.equals(null)) {
+            return false;
+        }
+        return true;
+    }
+
+    public Card getLeft() {
+        return leftCard;
+    }
+
+    public Card getRight() {
+        return rightCard;
     }
 }

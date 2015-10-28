@@ -13,8 +13,8 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/deck"
         android:visibility="invisible"
-        android:clickable="false"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_up"/>
 
     <ImageButton
         android:layout_width="50dp"
@@ -23,8 +23,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/discard"
         android:visibility="invisible"
-        android:clickable="false"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/background_up"
         />
 
     <ImageButton
@@ -35,7 +35,8 @@
         android:layout_toLeftOf="@+id/deck"
         android:layout_toStartOf="@+id/deck"
         android:visibility="invisible"
-        android:clickable="false"
+        android:background="@drawable/background_up"
+
         />
 
     <ImageButton
@@ -46,8 +47,8 @@
         android:layout_toRightOf="@+id/deck"
         android:layout_toEndOf="@+id/deck"
         android:visibility="invisible"
-        android:clickable="false"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_up" />
 
     <ImageButton
         android:layout_width="70dp"
@@ -57,8 +58,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:visibility="invisible"
-        android:clickable="false"
-        android:layout_marginLeft="16dp"/>
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/background_side"/>
 
     <ImageButton
         android:layout_width="70dp"
@@ -68,8 +69,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:visibility="invisible"
-        android:clickable="false"
-        android:layout_marginLeft="16dp"/>
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/background_side"/>
 
     <ImageButton
         android:layout_width="70dp"
@@ -78,8 +79,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/dummy"
         android:visibility="invisible"
-        android:clickable="false"
         android:layout_marginRight="16dp"
+        android:background="@drawable/background_side"
         />
 
     <ImageButton
@@ -89,8 +90,8 @@
         android:layout_alignParentRight="true"
         android:layout_above="@+id/dummy"
         android:visibility="invisible"
-        android:clickable="false"
         android:layout_marginRight="16dp"
+        android:background="@drawable/background_side"
         />
 
     <ImageButton
@@ -99,6 +100,7 @@
         android:id="@+id/deck"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/background_up"
         />
 
     <ImageButton
@@ -116,6 +118,7 @@
         android:id="@+id/deckDummy"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/background_up"
         />
 
     <ImageButton
@@ -124,7 +127,11 @@
         android:id="@+id/discard"
         android:layout_alignTop="@+id/deck"
         android:layout_toRightOf="@+id/deck"
-        android:layout_toEndOf="@+id/deck" />
+        android:layout_toEndOf="@+id/deck"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:visibility="invisible"
+        android:background="@drawable/background_up"/>
 
     <ImageButton
         android:layout_width="50dp"
@@ -133,7 +140,10 @@
         android:layout_alignTop="@+id/deck"
         android:layout_toStartOf="@+id/deck"
         android:layout_toLeftOf="@+id/deck"
-        android:visibility="invisible"/>
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="invisible"
+        android:background="@drawable/background_up"/>
 
     <ImageView
         android:layout_width="fill_parent"
