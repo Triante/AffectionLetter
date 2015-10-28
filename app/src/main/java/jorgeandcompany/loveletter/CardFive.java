@@ -1,5 +1,6 @@
 package jorgeandcompany.loveletter;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 /**
@@ -29,8 +30,8 @@ public class CardFive implements Card {
     }
 
     @Override
-    public String getDescription() {
-        Resources res = Resources.getSystem();
+    public String getDescription(Context c) {
+        Resources res = c.getResources();
         String string = res.getString(R.string.Card_Five_Description);
         return string;
     }

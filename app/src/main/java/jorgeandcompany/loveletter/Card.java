@@ -1,5 +1,7 @@
 package jorgeandcompany.loveletter;
 
+import android.content.Context;
+
 /**
  * Created by Firemon123 on 9/25/2015.
  */
@@ -13,5 +15,5 @@ public interface Card {
 
     int getValue();
 
-    String getDescription();
+    String getDescription(Context c);
 }

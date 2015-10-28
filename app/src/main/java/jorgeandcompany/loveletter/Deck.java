@@ -2,6 +2,7 @@ package jorgeandcompany.loveletter;
 
 
 import java.util.Random;
+import java.util.Stack;
 
 public class Deck {
 
@@ -12,7 +13,7 @@ public class Deck {
 	}
 
 	public Card draw() {
-		return deck.pop();
+		return (Card) deck.pop();
 	}
 
 	private void shuffle() {
@@ -40,33 +41,5 @@ public class Deck {
 			ar[index] = ar[i];
 			ar[i] = a;
 		}
-	}
-
-
-	class Stack {
-		Node top;
-		public void push(Card c) {
-			if (top.equals(null)) {
-				Node n = new Node();
-				n.card = c;
-				top = n;
-			}
-			else {
-				Node n = new Node();
-				n.card = c;
-				n.next = top;
-				top = n;
-			}
-		}
-		public Card pop(){
-			Card c = top.card;
-			top = top.next;
-			return c;
-		}
-	}
-
-	class Node {
-		Card card;
-		Node next;
 	}
 }
