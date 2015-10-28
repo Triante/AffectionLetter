@@ -70,6 +70,7 @@ public class Game extends ActionBarActivity {
         while (!GameData.FINISH_GAME) {
             turn = GameData.TURN;
             on = GameData.PlayerList[turn];
+            //
             if (on.isOut()) {
                 GameData.nextTurn();
                 continue;
@@ -454,22 +455,23 @@ public class Game extends ActionBarActivity {
 
     private void flipCard(final Card card, final View toFlip) {
 
-        new CountDownTimer(2000, 1000) {
+        new CountDownTimer(200, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
-                final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                        R.animator.flight_left_in);
-                setLeftIn.setTarget(toFlip);
-                setLeftIn.start();
+                //toFlip.setBackgroundResource(R.drawable.background_trans);
+                final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                        R.animator.flip_right_out);
+                setRightOut.setTarget(toFlip);
+                setRightOut.start();
             }
 
             @Override
             public void onFinish() {
                 toFlip.setBackgroundResource(R.drawable.background_trans);
-                final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                        R.animator.flip_right_out);
-                setRightOut.setTarget(toFlip);
-                setRightOut.start();
+                final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                        R.animator.flight_left_in);
+                setLeftIn.setTarget(toFlip);
+                setLeftIn.start();
             }
         }.start();
 
@@ -572,15 +574,15 @@ public class Game extends ActionBarActivity {
             }
 
             public void onFinish() {
-                Player on = GameData.PlayerList[1];
-                singlePlayerMove(on);
-                on.drawCard();
-                if (on.hasLeftCard()) {
-                    deckToRight(1);
-                }
-                else {
-                    deckToLeft(1);
-                }
+//                Player on = GameData.PlayerList[1];
+//                singlePlayerMove(on);
+//                on.drawCard();
+//                if (on.hasLeftCard()) {
+//                    deckToRight(1);
+//                }
+//                else {
+//                    deckToLeft(1);
+//                }
             }
         }.start();
     }
