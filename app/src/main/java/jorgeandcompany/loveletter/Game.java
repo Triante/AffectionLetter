@@ -2,6 +2,8 @@ package jorgeandcompany.loveletter;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,7 +22,7 @@ import android.widget.TextView;
 
 public class Game extends ActionBarActivity {
     public int deckcount = 16;
-    private ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
+    public ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
     private Button bPlay, bCancel;
     private ImageView expandedCardImage, backgroundOnPaused;
@@ -35,12 +37,12 @@ public class Game extends ActionBarActivity {
 
         discard = (ImageButton) findViewById(R.id.discard);
         deck = (ImageButton) findViewById(R.id.deck);
-        thirdPlayerLeft = (ImageButton) findViewById(R.id.player3left);
-        thirdPlayerRight = (ImageButton) findViewById(R.id.player3right);
+        firstPlayerLeft = (ImageButton) findViewById(R.id.player1left);
         firstPlayerRight = (ImageButton) findViewById(R.id.player1right);
         secondPlayerRight = (ImageButton) findViewById(R.id.player2left);
         secondPlayerLeft = (ImageButton) findViewById(R.id.player2right);
-        firstPlayerLeft = (ImageButton) findViewById(R.id.player1left);
+        thirdPlayerLeft = (ImageButton) findViewById(R.id.player3left);
+        thirdPlayerRight = (ImageButton) findViewById(R.id.player3right);
         fourthPlayerLeft = (ImageButton) findViewById(R.id.player4right);
         fourthPlayerRight = (ImageButton) findViewById(R.id.player4left);
         outCard = (ImageButton) findViewById(R.id.outCard);
@@ -55,52 +57,133 @@ public class Game extends ActionBarActivity {
             }
         });
         backgroundOnPaused = (ImageView) findViewById(R.id.backGround);
-        final ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
 
+        GameData.setContextMenu(this);
         GameData.newGame();
         handOutCards(GameData.TURN);
-
-
-
     }
 
-    public void singlePlayerGame() {
-        int turn;
-        Player on;
-        while (!GameData.FINISH_GAME) {
-            turn = GameData.TURN;
-            on = GameData.PlayerList[turn];
-            //
-            if (on.isOut()) {
+    public void multiPlayerGame() {
+        int turn = GameData.TURN;;
+        final Player on = GameData.PlayerList[turn];
+        CountDownTimer toMove = new CountDownTimer(3000, 2000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (on.hasLeftCard()) {
+                    deckToRight(1);
+                }
+                else {
+                    deckToLeft(1);
+                }
+                on.drawCard();
+            }
+
+            @Override
+            public void onFinish() {
+                playerMove(on);
+            }
+        };
+        toMove.start();
+
+
+        //player or ai does turn
+//        if (turn == 1) {  // player
+//            playerMove(on);
+//        }
+//        else { //ai
+//            playerMove(on);
+//        }
+    }
+    private void playerMove(final Player on) {
+        final ImageButton left = firstPlayerLeft;
+        flipCard(left);
+        final ImageButton right = firstPlayerRight;
+        left.setClickable(true);
+        flipCard(right);
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageZoomToOpen(on, 0, left);
+            }
+        });
+        right.setClickable(true);
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageZoomToOpen(on, 1, right);
+            }
+        });
+    }
+    public void endOfTurn(final Player on) {
+        CountDownTimer toEnd = new CountDownTimer(2000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                firstPlayerLeft.setClickable(false);
+                firstPlayerLeft.setOnClickListener(null);
+                firstPlayerRight.setClickable(false);
+                firstPlayerRight.setOnClickListener(null);
+                secondPlayerLeft.setClickable(false);
+                secondPlayerLeft.setOnClickListener(null);
+                secondPlayerRight.setClickable(false);
+                secondPlayerRight.setOnClickListener(null);
+                thirdPlayerLeft.setClickable(false);
+                thirdPlayerLeft.setOnClickListener(null);
+                thirdPlayerRight.setClickable(false);
+                thirdPlayerRight.setOnClickListener(null);
+                fourthPlayerLeft.setClickable(false);
+                fourthPlayerLeft.setOnClickListener(null);
+                fourthPlayerRight.setClickable(false);
+                fourthPlayerRight.setOnClickListener(null);
+
                 GameData.nextTurn();
-                continue;
+                if (GameData.getDeckCount() == 1) {
+                    ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
+                    deckDummy.setVisibility(View.INVISIBLE);
+                    deck.setVisibility(View.INVISIBLE);
+                }
             }
-            on.drawCard();
-            if (on.hasLeftCard()) {
-                deckToRight(turn);
-            }
-            else {
-                deckToLeft(turn);
-            }
-            //player or ai does turn
-        }
-    }
-
-
-    private void singlePlayerMove(final Player on) {
-        firstPlayerLeft.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                imageZoomToOpen(on.getLeft(), firstPlayerLeft);
+            public void onFinish() {
+               if (GameData.FINISH_GAME) {
+                   while (GameData.PlayerList[GameData.TURN].isOut()) {
+                       GameData.nextTurn();
+                   }
+                   AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
+                   nextPlayerReady.setTitle("END");
+                   nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!");
+                   DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+                           GameData.newRound();
+                           handOutCards(GameData.TURN);
+                       }
+                   };
+                   nextPlayerReady.setPositiveButton("YAY", ok);
+                   nextPlayerReady.setCancelable(false);
+                   nextPlayerReady.show();
+               }
+                else {
+                   while (GameData.PlayerList[GameData.TURN].isOut()) {
+                       GameData.nextTurn();
+                   }
+                   AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
+                   nextPlayerReady.setTitle("Next Player");
+                   nextPlayerReady.setMessage("Player " + GameData.TURN + " is up.\nPlease pass to player and select OK when ready.");
+                   DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+                           repaint();
+                           multiPlayerGame();
+                       }
+                   };
+                   nextPlayerReady.setPositiveButton("OK", ok);
+                   nextPlayerReady.setCancelable(false);
+                   nextPlayerReady.show();
+               }
             }
-        });
-        firstPlayerRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageZoomToOpen(on.getRight(), firstPlayerRight);
-            }
-        });
-    }
+        };
+        toEnd.start();
+     }
 
 
 
@@ -117,6 +200,9 @@ public class Game extends ActionBarActivity {
 
 
 
+
+
+    //animations
 
     public void deckToRight(int playerID) {
         switch (playerID){
@@ -134,7 +220,6 @@ public class Game extends ActionBarActivity {
                 break;
         }
     }
-
     public void deckToLeft(int playerID) {
         switch (playerID){
             case 1:
@@ -151,7 +236,6 @@ public class Game extends ActionBarActivity {
                 break;
         }
     }
-
 
     private void deckToFirstRight() {
         int[] cardcoordinates = new int[2];
@@ -453,36 +537,105 @@ public class Game extends ActionBarActivity {
         fourthPlayerLeft.setVisibility(fourthPlayerLeft.INVISIBLE);
     };
 
-    private void flipCard(final Card card, final View toFlip) {
+    //currently just does animation, from back to front.
+    private void flipCard(final View toFlip) {
 
-        new CountDownTimer(200, 100) {
+        new CountDownTimer(300, 100) {
+            int a = 0;
             @Override
             public void onTick(long millisUntilFinished) {
-                //toFlip.setBackgroundResource(R.drawable.background_trans);
-                final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                        R.animator.flip_right_out);
-                setRightOut.setTarget(toFlip);
-                setRightOut.start();
+                if (a == 0) {
+                    final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                            R.animator.flip_right_out);
+                    setRightOut.setTarget(toFlip);
+                    setRightOut.start();
+                    a++;
+                }
+                else if (a ==1) {
+                    toFlip.setBackgroundResource(R.drawable.background_trans);
+                    final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                            R.animator.flight_left_in);
+                    setLeftIn.setTarget(toFlip);
+                    setLeftIn.start();
+                }
             }
 
             @Override
             public void onFinish() {
-                toFlip.setBackgroundResource(R.drawable.background_trans);
-                final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                        R.animator.flight_left_in);
-                setLeftIn.setTarget(toFlip);
-                setLeftIn.start();
+
             }
         }.start();
+    }
+    //front to back
+    private void flipCardToBack(final View toFlip) {
+        new CountDownTimer(300, 100) {
+            int a = 0;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (a == 0) {
+                    final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                            R.animator.flip_right_out);
+                    setRightOut.setTarget(toFlip);
+                    setRightOut.start();
+                    a++;
+                }
+                else if (a ==1) {
+                    toFlip.setBackgroundResource(R.drawable.background_up);
+                    final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                            R.animator.flight_left_in);
+                    setLeftIn.setTarget(toFlip);
+                    setLeftIn.start();
+                }
+            }
 
+            @Override
+            public void onFinish() {
 
-
-
-
-
+            }
+        }.start();
     }
 
-    private void imageZoomToOpen(final Card toView, final View toFlip) {
+    private void cardToCenterSinglePlayer(Player on, int hand) {
+        //left
+        int playerNum = on.getPlayerNumber();
+        if (hand == 0) {
+            if (playerNum == 1) {
+                firstLeftToDeck();
+            }
+            else if (playerNum == 2) {
+                secondLeftToDeck();
+            }
+            else if (playerNum == 3) {
+                thirdLeftToDeck();
+            }
+            else {
+                fourthLeftToDeck();
+            }
+        }
+        //right
+        else {
+            if (playerNum == 1) {
+                firstRightToDeck();
+            }
+            else if (playerNum == 2) {
+                secondRightToDeck();
+            }
+            else if (playerNum == 3) {
+                thirdRightToDeck();
+            }
+            else {
+                fourthRightToDeck();
+            }
+        }
+    }
+    private void cardToCenterMultiPlayer(final int hand) {
+        if (hand == 0) firstLeftToDeck();
+        else firstRightToDeck();
+    }
+
+
+    //also ends turn
+    private void imageZoomToOpen(final Player on, final int hand, final View toFlip) {
         Animation zoomOutImage = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         Animation zoomOutImage1 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         Animation zoomOutImage2 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
@@ -500,12 +653,44 @@ public class Game extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 imageZoomToClose();
-                flipCard(toView, toFlip);
+                CountDownTimer t = new CountDownTimer(2000, 500) {
+                    boolean done = false;
+                    boolean otherDone = false;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (!done) {
+                            //flipBack method here
+                            if (hand == 0) {
+                                flipCardToBack(firstPlayerRight);
+                            }
+                            else {
+                                flipCardToBack(firstPlayerLeft);
+                            }
+                            done = true;
+                        }
+                        else if (!otherDone) {
+                            cardToCenterMultiPlayer(hand);
+                            otherDone = true;
+                        }
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        on.playCard(hand);
+                        firstPlayerLeft.setBackgroundResource(R.drawable.background_up);
+                        firstPlayerRight.setBackgroundResource(R.drawable.background_up);
+                    }
+                };
+                t.start();
+
+
+
             }
         });
         bCancel.setVisibility(View.VISIBLE);
         bCancel.setClickable(true);
-        cardDescriptionText.setText(toView.getDescription(this));
+        cardDescriptionText.setText(on.getCard(hand).getDescription(this));
         cardDescriptionText.setVisibility(View.VISIBLE);
 
     }
@@ -574,18 +759,122 @@ public class Game extends ActionBarActivity {
             }
 
             public void onFinish() {
-//                Player on = GameData.PlayerList[1];
-//                singlePlayerMove(on);
-//                on.drawCard();
-//                if (on.hasLeftCard()) {
-//                    deckToRight(1);
-//                }
-//                else {
-//                    deckToLeft(1);
-//                }
+                AlertDialog.Builder preGame = new AlertDialog.Builder(Game.this);
+                preGame.setMessage("Player " + GameData.TURN + " is up.\nPlease pass to player and select OK when ready.");
+                DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        multiPlayerGame();
+                    }
+                };
+                preGame.setPositiveButton("OK", ok);
+                preGame.setCancelable(false);
+                preGame.show();
             }
         }.start();
     }
 
 
+
+    //other methods
+    private void repaint() {
+        int turn = GameData.TURN;
+        //person who turn is now is set to main view. Scenario: turn = 1 therefore redraw player 1 to center.
+        if (GameData.PlayerList[turn].hasLeft) {
+            firstPlayerLeft.setVisibility(View.VISIBLE);
+            firstPlayerRight.setVisibility(View.INVISIBLE);
+        }
+        else if (GameData.PlayerList[turn].hasRight){
+            firstPlayerLeft.setVisibility(View.INVISIBLE);
+            firstPlayerRight.setVisibility(View.VISIBLE);
+        }
+        else {
+            firstPlayerLeft.setVisibility(View.INVISIBLE);
+            firstPlayerRight.setVisibility(View.INVISIBLE);
+        }
+        turn++;
+        if (turn == 5) {
+            turn = 1;
+        }
+        //set next players location, scn: turn 1 therefore redraw player 2 to left side.
+        if (GameData.PlayerList[turn].hasLeft) {
+            secondPlayerLeft.setVisibility(View.VISIBLE);
+            secondPlayerRight.setVisibility(View.INVISIBLE);
+        }
+        else if (GameData.PlayerList[turn].hasRight){
+            secondPlayerLeft.setVisibility(View.INVISIBLE);
+            secondPlayerRight.setVisibility(View.VISIBLE);
+        }
+        else {
+            secondPlayerLeft.setVisibility(View.INVISIBLE);
+            secondPlayerRight.setVisibility(View.INVISIBLE);
+        }
+        turn++;
+        if (turn == 5) {
+            turn = 1;
+        }
+        //set next players location, scn: turn 1 therefore redraw player 3 to top side.
+        if (GameData.PlayerList[turn].hasLeft) {
+            thirdPlayerLeft.setVisibility(View.VISIBLE);
+            thirdPlayerRight.setVisibility(View.INVISIBLE);
+        }
+        else if (GameData.PlayerList[turn].hasRight){
+            thirdPlayerLeft.setVisibility(View.INVISIBLE);
+            thirdPlayerRight.setVisibility(View.VISIBLE);
+        }
+        else {
+            thirdPlayerLeft.setVisibility(View.INVISIBLE);
+            thirdPlayerRight.setVisibility(View.INVISIBLE);
+        }
+        turn++;
+        if (turn == 5) {
+            turn = 1;
+        }
+        //set next players location, scn: turn 1 therefore redraw player 4 to right side.
+        if (GameData.PlayerList[turn].hasLeft) {
+            fourthPlayerLeft.setVisibility(View.VISIBLE);
+            fourthPlayerRight.setVisibility(View.INVISIBLE);
+        }
+        else if (GameData.PlayerList[turn].hasRight){
+            fourthPlayerLeft.setVisibility(View.INVISIBLE);
+            fourthPlayerRight.setVisibility(View.VISIBLE);
+        }
+        else {
+            fourthPlayerLeft.setVisibility(View.INVISIBLE);
+            fourthPlayerRight.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void clearTable() {
+        firstPlayerLeft.setClickable(false);
+        firstPlayerLeft.setOnClickListener(null);
+        firstPlayerLeft.setVisibility(View.INVISIBLE);
+        firstPlayerRight.setClickable(false);
+        firstPlayerRight.setOnClickListener(null);
+        firstPlayerRight.setVisibility(View.INVISIBLE);
+        secondPlayerLeft.setClickable(false);
+        secondPlayerLeft.setOnClickListener(null);
+        secondPlayerLeft.setVisibility(View.INVISIBLE);
+        secondPlayerRight.setClickable(false);
+        secondPlayerRight.setOnClickListener(null);
+        secondPlayerRight.setVisibility(View.INVISIBLE);
+        thirdPlayerLeft.setClickable(false);
+        thirdPlayerLeft.setOnClickListener(null);
+        thirdPlayerLeft.setVisibility(View.INVISIBLE);
+        thirdPlayerRight.setClickable(false);
+        thirdPlayerRight.setOnClickListener(null);
+        thirdPlayerRight.setVisibility(View.INVISIBLE);
+        fourthPlayerLeft.setClickable(false);
+        fourthPlayerLeft.setOnClickListener(null);
+        fourthPlayerLeft.setVisibility(View.INVISIBLE);
+        fourthPlayerRight.setClickable(false);
+        fourthPlayerRight.setOnClickListener(null);
+        fourthPlayerRight.setVisibility(View.INVISIBLE);
+        outCard.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

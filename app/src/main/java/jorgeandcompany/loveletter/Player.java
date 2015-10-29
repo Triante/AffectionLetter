@@ -1,5 +1,7 @@
 package jorgeandcompany.loveletter;
 
+import android.content.Context;
+
 /**
  * Created by kd on 10/2/15.
  */
@@ -9,6 +11,8 @@ public class Player
     private Card rightCard; //right
     private final int playerNumber;
     private boolean isOut = false;
+    boolean hasLeft = false;
+    boolean hasRight = false;
 
     public Player (int playerNumber) {
         this.playerNumber = playerNumber;
@@ -16,32 +20,50 @@ public class Player
 
     public void drawFirstCard() {
         leftCard = GameData.deck.draw();
+        hasLeft = true;
     }
 
     public void drawCard()
     {
-        if (leftCard.equals(null)) {
+        if (!hasLeft) {
+            hasLeft = true;
             leftCard = GameData.deck.draw();
-            //leftCard.drawAffect(this);
+            leftCard.drawAffect(this);
         }
         else {
+            hasRight = true;
             rightCard = GameData.deck.draw();
-            //rightCard.drawAffect(this);
+            rightCard.drawAffect(this);
+        }
+    }
+
+    public void playCard(int hand)
+    {
+        //right
+        if (hand == 1) {
+            hasRight = false;
+            rightCard.cardEffect(this);
+            rightCard = null;
+        }
+        //left
+        else {
+            hasLeft = false;
+            leftCard.cardEffect(this);
+            leftCard = null;
         }
     }
 
     public void discardCard(int hand)
     {
-        if (hand == 0) {
-            leftCard.cardEffect(this);
-            leftCard = rightCard;
+        //right
+        if (hand == 1) {
+            hasRight = false;
+            rightCard.discardAffect(this);
             rightCard = null;
         }
-        else if (hand == 1) {
-            rightCard.cardEffect(this);
-            rightCard = null;
-        }
+        //left
         else {
+            hasLeft = false;
             leftCard.discardAffect(this);
             leftCard = null;
         }
@@ -55,20 +77,34 @@ public class Player
     }
     public void out() {
         isOut = true;
+        leftCard = null;
+        rightCard = null;
+        hasLeft = false;
+        hasRight = false;
     }
 
     public boolean hasLeftCard() {
-        if (leftCard.equals(null)) {
-            return false;
-        }
-        return true;
+        return hasLeft;
+    }
+    public boolean hasRightCard() {
+        return hasRight;
     }
 
-    public Card getLeft() {
+
+    public Card getCard(int hand) {
+        if (hand == 0) return getLeft();
+        else return getRight();
+    }
+    private Card getLeft() {
         return leftCard;
     }
-
-    public Card getRight() {
+    private Card getRight() {
         return rightCard;
     }
+    public Card getCard() {
+        if (hasLeft) return leftCard;
+        else return rightCard;
+    }
+
+
 }

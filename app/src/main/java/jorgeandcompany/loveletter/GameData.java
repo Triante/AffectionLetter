@@ -1,5 +1,7 @@
 package jorgeandcompany.loveletter;
 
+import android.view.ContextMenu;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,10 +17,13 @@ public class GameData {
     public static ArrayList<Card> discard;
     public static Card OutCard;
     public static int[] Score = {0,0,0,0};
-    public static int game = 0;
+    public static int firstOut;;
+    public static int remain;
 
     public static int TURN;
     public static boolean FINISH_GAME = false;
+    public static boolean noOut = false;
+    public static Game game;
 
 
     public static void newGame() {
@@ -26,6 +31,7 @@ public class GameData {
         discard = new ArrayList<Card>();
         selectFirstTurnPlayer();
         OutCard = deck.draw();
+        remain = 4;
         PlayerList[TURN].drawFirstCard();
         nextTurn();
         PlayerList[TURN].drawFirstCard();
@@ -34,12 +40,24 @@ public class GameData {
         nextTurn();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
-
-
     }
 
     public static void newRound() {
-
+        TURN = firstOut;
+        game.clearTable();
+        FINISH_GAME = false;
+        deck = new Deck();
+        discard = new ArrayList<Card>();
+        remain = 4;
+        noOut = false;
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
     }
 
     private static void selectFirstTurnPlayer() {
@@ -68,4 +86,20 @@ public class GameData {
             TURN = 1;
         }
     }
+
+    public static int getDeckCount() {
+        return deck.getDeckCount();
+    }
+
+    public static void setContextMenu(Game aGame) {
+        game = aGame;
+    }
+
+    public static void out(int p) {
+        PlayerList[p].out();
+        if (!noOut) firstOut = p;
+        remain--;
+        if (remain == 1) FINISH_GAME = true;
+    }
+
 }
