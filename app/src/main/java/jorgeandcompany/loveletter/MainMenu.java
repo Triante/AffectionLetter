@@ -2,13 +2,16 @@ package jorgeandcompany.loveletter;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainMenu extends ActionBarActivity implements View.OnClickListener{
@@ -16,6 +19,10 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
     private Button bMainMenu1, bMainMenu2, bMainMenu3, bMainMenu4;
     private boolean singlePlayerState = false;
     private boolean multiPlayerState = false;
+    public static MediaPlayer mp;
+    public static boolean isMute = false;
+    public static int returnState;
+    public static int otherState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,17 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
         bMainMenu2.setOnClickListener(this);
         bMainMenu3.setOnClickListener(this);
         bMainMenu4.setOnClickListener(this);
+
+        if (!isMute) {
+            mp = MediaPlayer.create(getApplicationContext(), R.raw.pokemon_steven);
+            mp.start();
+            mp.setLooping(true);
+            isMute = false;
+        }
+        if (GameData.skin == 0) {
+            GameData.skin = 2;
+            GameData.addSkinSet(GameData.skin);
+        }
     }
 
     @Override
@@ -66,6 +84,8 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 if (singlePlayerState) {
                     Intent gameBeta = new Intent(this, Game.class);
                     startActivity(gameBeta);
+                    returnState = 0;
+                    mp.stop();
                 }
                 //Network play
                 else if (multiPlayerState) {
@@ -75,7 +95,8 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 else {
                     Intent toShop = new Intent(this, Shop.class);
                     startActivity(toShop);
-                    finish();
+                    otherState = returnState+1;
+                    //finish();
                 }
                 break;
             case R.id.bMainMenu4:
@@ -95,7 +116,8 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 }
                 //options
                 else {
-
+                    Intent option = new Intent(this, Option.class);
+                    startActivity(option);
                 }
                 break;
 
@@ -103,4 +125,20 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
 
     }
 
+    @Override
+    public void onBackPressed() {
+        returnState = mp.getCurrentPosition();
+        mp.pause();
+        moveTaskToBack(true);
+        otherState = returnState;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (returnState == otherState) {
+            mp.seekTo(returnState);
+            mp.start();
+        }
+    }
 }

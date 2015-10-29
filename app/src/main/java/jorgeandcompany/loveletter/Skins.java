@@ -86,4 +86,11 @@ public class Skins extends AppCompatActivity implements View.OnClickListener{
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent toShop = new Intent(this, Shop.class);
+        startActivity(toShop);
+        finish();
+    }
 }

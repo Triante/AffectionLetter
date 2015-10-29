@@ -16,4 +16,7 @@
 
     <string name="title_activity_token">Token</string>
     <string name="title_activity_skins">Skins</string>
+    <string name="title_activity_option">Option</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

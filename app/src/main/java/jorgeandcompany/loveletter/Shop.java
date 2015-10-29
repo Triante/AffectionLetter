@@ -56,8 +56,8 @@ public class Shop extends AppCompatActivity implements View.OnClickListener{
         {
             case R.id.b:
             {
-                Intent theToken = new Intent(this, MainMenu.class);
-                startActivity(theToken);
+                //Intent theToken = new Intent(this, MainMenu.class);
+                //startActivity(theToken);
                 finish();
                 break;
             }
@@ -65,17 +65,22 @@ public class Shop extends AppCompatActivity implements View.OnClickListener{
             {
                 Intent theToken = new Intent(this, Skins.class);
                 startActivity(theToken);
-                //finish();
+                finish();
                 break;
             }
             case R.id.token:
             {
                 Intent theToken = new Intent(this, Token.class);
                 startActivity(theToken);
-               // finish();
+                finish();
                 break;
             }
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }

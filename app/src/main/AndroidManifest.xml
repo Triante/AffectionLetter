@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jorgeandcompany.loveletter"
-    >
+    package="jorgeandcompany.loveletter" >
 
     <supports-screens
         android:anyDensity="true"
@@ -16,8 +15,7 @@
             android:name=".MainMenu"
             android:configChanges="orientation"
             android:label="@string/title_activity_main_menu"
-            android:screenOrientation="landscape">
-
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,18 +24,22 @@
         </activity>
         <activity
             android:name=".Token"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".Skins"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".Shop"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".Game"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".Option"
             android:screenOrientation="landscape">
         </activity>
     </application>

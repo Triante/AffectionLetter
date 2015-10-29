@@ -457,7 +457,7 @@ public class Game extends ActionBarActivity {
         new CountDownTimer(200, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
-                //toFlip.setBackgroundResource(R.drawable.background_trans);
+
                 final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
                         R.animator.flip_right_out);
                 setRightOut.setTarget(toFlip);
@@ -466,11 +466,51 @@ public class Game extends ActionBarActivity {
 
             @Override
             public void onFinish() {
-                toFlip.setBackgroundResource(R.drawable.background_trans);
-                final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                        R.animator.flight_left_in);
-                setLeftIn.setTarget(toFlip);
-                setLeftIn.start();
+                new CountDownTimer(2000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (card.getValue() == 1) {
+                            toFlip.setBackgroundResource(GameData.skinset[0]);
+                        }
+                        else if (card.getValue() == 2) {
+                            toFlip.setBackgroundResource(GameData.skinset[1]);
+                        }
+                        else if (card.getValue() == 3) {
+                            toFlip.setBackgroundResource(GameData.skinset[2]);
+                        }
+                        else if (card.getValue() == 4) {
+                            toFlip.setBackgroundResource(GameData.skinset[3]);
+                        }
+                        else if (card.getValue() == 5) {
+                            toFlip.setBackgroundResource(GameData.skinset[4]);
+                        }
+                        else if (card.getValue() == 6) {
+                            toFlip.setBackgroundResource(GameData.skinset[5]);
+                        }
+                        else if (card.getValue() == 7) {
+                            toFlip.setBackgroundResource(GameData.skinset[6]);
+                        }
+                        else {
+                            toFlip.setBackgroundResource(GameData.skinset[7]);
+                        }
+
+                        final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                                R.animator.flight_left_in);
+                        setLeftIn.setTarget(toFlip);
+                        setLeftIn.start();
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        toFlip.setBackgroundResource(R.drawable.background_up);
+                        final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                                R.animator.flight_left_in);
+                        setLeftIn.setTarget(toFlip);
+                        setLeftIn.start();
+                    }
+                }.start();
+
             }
         }.start();
 
@@ -488,7 +528,30 @@ public class Game extends ActionBarActivity {
         Animation zoomOutImage3 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         backgroundOnPaused.setVisibility(View.VISIBLE);
         expandedCardImage.startAnimation(zoomOutImage);
-        expandedCardImage.setImageResource(R.drawable.background_trans);
+        if (toView.getValue() == 1) {
+            expandedCardImage.setImageResource(GameData.skinset[0]);
+        }
+        else if (toView.getValue() == 2) {
+            expandedCardImage.setImageResource(GameData.skinset[1]);
+        }
+        else if (toView.getValue() == 3) {
+            expandedCardImage.setImageResource(GameData.skinset[2]);
+        }
+        else if (toView.getValue() == 4) {
+            expandedCardImage.setImageResource(GameData.skinset[3]);
+        }
+        else if (toView.getValue() == 5) {
+            expandedCardImage.setImageResource(GameData.skinset[4]);
+        }
+        else if (toView.getValue() == 6) {
+            expandedCardImage.setImageResource(GameData.skinset[5]);
+        }
+        else if (toView.getValue() == 7) {
+            expandedCardImage.setImageResource(GameData.skinset[6]);
+        }
+        else {
+            expandedCardImage.setImageResource(GameData.skinset[7]);
+        }
         bPlay.startAnimation(zoomOutImage1);
         bCancel.startAnimation(zoomOutImage2);
         cardDescriptionText.startAnimation(zoomOutImage3);
@@ -573,15 +636,15 @@ public class Game extends ActionBarActivity {
             }
 
             public void onFinish() {
-//                Player on = GameData.PlayerList[1];
-//                singlePlayerMove(on);
-//                on.drawCard();
-//                if (on.hasLeftCard()) {
-//                    deckToRight(1);
-//                }
-//                else {
-//                    deckToLeft(1);
-//                }
+                Player on = GameData.PlayerList[1];
+                singlePlayerMove(on);
+                on.drawCard();
+                if (on.hasLeftCard()) {
+                    deckToRight(1);
+                }
+                else {
+                   deckToLeft(1);
+                }
             }
         }.start();
     }
