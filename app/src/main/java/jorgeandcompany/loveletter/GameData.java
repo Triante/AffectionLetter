@@ -122,8 +122,6 @@ public class GameData {
         remain--;
         if (remain == 1) {
             FINISH_GAME = true;
-            int winner = TURN -1;
-            Score[winner]++;
         }
     }
 

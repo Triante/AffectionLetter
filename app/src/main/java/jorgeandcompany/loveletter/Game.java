@@ -130,6 +130,7 @@ public class Game extends ActionBarActivity {
         setBetaStuff();
         //end beta view
     }
+    //decides the end of games too
     public void endOfTurn(final Player on) {
         CountDownTimer toEnd = new CountDownTimer(2000, 1000) {
             @Override
@@ -162,12 +163,13 @@ public class Game extends ActionBarActivity {
                    while (GameData.PlayerList[GameData.TURN].isOut()) {
                        GameData.nextTurn();
                    }
+                   GameData.Score[GameData.TURN - 1]++;
                    AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
                    nextPlayerReady.setTitle("END");
                    nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!\n" +
                            "Current Score:\n" +
                            "Player 1: " + GameData.Score[0]+ "\n" +
-                           "Player 2:" + GameData.Score[1]+ "\n" +
+                           "Player 2: " + GameData.Score[1]+ "\n" +
                            "Player 3: " + GameData.Score[2]+ "\n" +
                            "Player 4: " + GameData.Score[3]+ "\n");
                    DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
