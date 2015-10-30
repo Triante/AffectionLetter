@@ -2,6 +2,7 @@ package jorgeandcompany.loveletter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.CountDownTimer;
 
 /**
  * Created by Firemon123 on 10/1/2015.
@@ -15,8 +16,20 @@ public class CardFour implements Card {
     }
 
     @Override
-    public void cardEffect(Player player) {
-        return;
+    public void cardEffect(final Player player) {
+        CountDownTimer c = new CountDownTimer(1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                GameData.out(player.getPlayerNumber());
+                GameData.game.endOfTurn(player);
+            }
+        };
+        c.start();
     }
 
     @Override

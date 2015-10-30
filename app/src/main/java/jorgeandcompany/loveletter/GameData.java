@@ -1,5 +1,7 @@
 package jorgeandcompany.loveletter;
 
+import android.view.ContextMenu;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,15 +12,18 @@ public class GameData {
 
     public static Player[] PlayerList = {null, new Player(1), new Player(2),
             new Player(3), new Player(4)};
-    public static int [] skinset = new int [8];
+
     public static Deck deck;
     public static ArrayList<Card> discard;
     public static Card OutCard;
     public static int[] Score = {0,0,0,0};
-    public static int game = 0;
-    public static int skin;
+    public static int firstOut;;
+    public static int remain;
+
     public static int TURN;
     public static boolean FINISH_GAME = false;
+    public static boolean noOut = false;
+    public static Game game;
 
 
     public static void newGame() {
@@ -26,6 +31,7 @@ public class GameData {
         discard = new ArrayList<Card>();
         selectFirstTurnPlayer();
         OutCard = deck.draw();
+        remain = 4;
         PlayerList[TURN].drawFirstCard();
         nextTurn();
         PlayerList[TURN].drawFirstCard();
@@ -34,12 +40,24 @@ public class GameData {
         nextTurn();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
-
-
     }
 
     public static void newRound() {
-
+        TURN = firstOut;
+        game.clearTable();
+        FINISH_GAME = false;
+        deck = new Deck();
+        discard = new ArrayList<Card>();
+        remain = 4;
+        noOut = false;
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
+        PlayerList[TURN].drawFirstCard();
+        nextTurn();
     }
 
     private static void selectFirstTurnPlayer() {
@@ -69,28 +87,19 @@ public class GameData {
         }
     }
 
-    public static void addSkinSet (int skinid) {
-        switch (skinid) {
-            case 1:
-                skinset [0] = R.drawable.aladdin;
-                skinset [1] = R.drawable.alibaba;
-                skinset [2] = R.drawable.scheherazade;
-                skinset [3] = R.drawable.morgiana;
-                skinset [4] = R.drawable.hakuryuu;
-                skinset [5] = R.drawable.sinbad;
-                skinset [6] = R.drawable.yunan;
-                skinset [7] = R.drawable.judar;
-                break;
-            case 2:
-                skinset [0] = R.drawable.batman;
-                skinset [1] = R.drawable.twoface;
-                skinset [2] = R.drawable.twoface;
-                skinset [3] = R.drawable.robin;
-                skinset [4] = R.drawable.harleyquinn;
-                skinset [5] = R.drawable.bane;
-                skinset [6] = R.drawable.poisonivy;
-                skinset [7] = R.drawable.joker;
-                break;
-        }
+    public static int getDeckCount() {
+        return deck.getDeckCount();
     }
+
+    public static void setContextMenu(Game aGame) {
+        game = aGame;
+    }
+
+    public static void out(int p) {
+        PlayerList[p].out();
+        if (!noOut) firstOut = p;
+        remain--;
+        if (remain == 1) FINISH_GAME = true;
+    }
+
 }

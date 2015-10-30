@@ -7,18 +7,22 @@ import java.util.Stack;
 public class Deck {
 
 	private Stack deck;
+	private int deckCount;
 
 	public Deck() {
+		deckCount = 16;
 		shuffle();
 	}
 
 	public Card draw() {
+		deckCount--;
 		return (Card) deck.pop();
 	}
 
 	private void shuffle() {
 		deck = new Stack();
-		int[] preDeck = {1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8};
+		//int[] preDeck = {1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8};
+		int[] preDeck = {1,1,1,1,1,8,8,8,8,8,8,8,8,8,8,8};
 		shuffleArray(preDeck);
 		shuffleArray(preDeck);
 		shuffleArray(preDeck);
@@ -42,4 +46,9 @@ public class Deck {
 			ar[i] = a;
 		}
 	}
+
+	public int getDeckCount() {
+		return deckCount;
+	}
+
 }
