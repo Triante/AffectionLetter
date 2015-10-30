@@ -184,7 +184,11 @@ public class CardFive implements Card {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     GameData.PlayerList[id].discardCard();
-                    GameData.PlayerList[id].drawFirstCard();
+                    if (GameData.getDeckCount() == 0) {
+                        GameData.PlayerList[id].drawOutCard();
+                    } else {
+                        GameData.PlayerList[id].drawFirstCard();
+                    }
                     GameData.game.endOfTurn(thePlayer);
                 }
             });

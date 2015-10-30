@@ -34,6 +34,7 @@ public class GameData {
         skinNames.add("Avengers Skin");
         skinID = 1;
     }
+
     public static void newGame() {
         deck = new Deck();
         discard = new ArrayList<Card>();
@@ -52,7 +53,6 @@ public class GameData {
         PlayerList[TURN].drawFirstCard();
         nextTurn();
     }
-
     public static void newRound() {
         game.clearTable();
 
@@ -79,7 +79,6 @@ public class GameData {
         PlayerList[TURN].drawFirstCard();
         nextTurn();
     }
-
     private static void selectFirstTurnPlayer() {
         int[] players = {1,2,3,4,4,3,2,1};
         shuffleArray(players);
@@ -100,22 +99,18 @@ public class GameData {
             ar[i] = a;
         }
     }
-
     public static void nextTurn() {
         TURN++;
         if (TURN > 4) {
             TURN = 1;
         }
     }
-
     public static int getDeckCount() {
         return deck.getDeckCount();
     }
-
     public static void setContextMenu(Game aGame) {
         game = aGame;
     }
-
     public static void out(int p) {
         PlayerList[p].out();
         if (!noOut) firstOut = p;
@@ -124,6 +119,10 @@ public class GameData {
             FINISH_GAME = true;
         }
     }
+    public static Card drawOutCard() {
+        return OutCard;
+    }
+
 
 
 }

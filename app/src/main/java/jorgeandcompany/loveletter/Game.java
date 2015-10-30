@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Game extends ActionBarActivity {
@@ -66,6 +68,21 @@ public class Game extends ActionBarActivity {
         GameData.setContextMenu(this);
         GameData.newGame();
         handOutCards(GameData.TURN);
+
+
+        Timer toChangeBeta = new Timer();
+        toChangeBeta.schedule(new TimerTask() {
+            Runnable beta = new Runnable() {
+                @Override
+                public void run() {
+                    setBetaStuff();
+                }
+            };
+            @Override
+            public void run() {
+                Game.this.runOnUiThread(beta);
+            }
+        }, 0, 200);
     }
 
     public void multiPlayerGame() {
