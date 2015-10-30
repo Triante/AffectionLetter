@@ -175,7 +175,6 @@ public class CardFive implements Card {
     private void toDiscardAction(final int id, final Player thePlayer) {
         if (GameData.PlayerList[id].getCard().getValue() == 8) {
             GameData.PlayerList[id].discardCard();
-            GameData.game.endOfTurn(thePlayer);
         }
         else {
             AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);

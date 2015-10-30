@@ -56,12 +56,14 @@ public class Player
 
     public void discardCard()
     {
-        if (!hasLeft) {
+        if (hasLeft) {
             hasLeft = false;
+            leftCard.discardAffect(this);
             leftCard = null;
         }
         else {
             hasRight = false;
+            rightCard.discardAffect(this);
             rightCard = null;
         }
     }

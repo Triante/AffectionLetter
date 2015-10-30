@@ -30,7 +30,7 @@ public class CardThree implements Card {
         };
         effect.setPositiveButton("OK", ok);
         effect.setCancelable(false);
-        effect.setTitle("Card 2 Effect");
+        effect.setTitle("Card 3 Effect");
         effect.setMessage("Select a player to compare cards with.");
         effect.show();
     }
@@ -160,7 +160,7 @@ public class CardThree implements Card {
 
     private void toCompare(final int id, final Player thePlayer) {
         AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
-        select.setTitle("Card 2 Effect\n");
+        select.setTitle("Card 3 Effect\n");
         select.setMessage("Compare cards player " + id + "?");
         select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -196,7 +196,7 @@ public class CardThree implements Card {
         }
 
         AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
-        select.setTitle("Card 2 Effect\n");
+        select.setTitle("Card 3 Effect\n");
         select.setMessage(winner);
         DialogInterface.OnClickListener winOrLose = new DialogInterface.OnClickListener() {
             @Override
