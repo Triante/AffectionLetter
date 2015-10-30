@@ -14,6 +14,7 @@ public class Player
     boolean hasLeft = false;
     boolean hasRight = false;
     private boolean isProtected = false;
+    private int total = 0;
 
     public Player (int playerNumber) {
         this.playerNumber = playerNumber;
@@ -44,12 +45,14 @@ public class Player
         if (hand == 1) {
             hasRight = false;
             rightCard.cardEffect(this);
+            total += rightCard.getValue();
             rightCard = null;
         }
         //left
         else {
             hasLeft = false;
             leftCard.cardEffect(this);
+            total += leftCard.getValue();
             leftCard = null;
         }
     }
@@ -59,11 +62,13 @@ public class Player
         if (hasLeft) {
             hasLeft = false;
             leftCard.discardAffect(this);
+            total += leftCard.getValue();
             leftCard = null;
         }
         else {
             hasRight = false;
             rightCard.discardAffect(this);
+            total += rightCard.getValue();
             rightCard = null;
         }
     }
@@ -99,6 +104,9 @@ public class Player
     public Card getCard(int hand) {
         if (hand == 0) return getLeft();
         else return getRight();
+    }
+    public int getTotal() {
+       return total;
     }
     private Card getLeft() {
         return leftCard;

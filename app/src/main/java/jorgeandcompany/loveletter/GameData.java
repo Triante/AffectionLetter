@@ -54,21 +54,21 @@ public class GameData {
         noOut = false;
         remain = 4;
 
-        PlayerList[TURN].drawFirstCard();
         PlayerList[TURN].in();
         PlayerList[TURN].clearHand();
+        PlayerList[TURN].drawFirstCard();
         nextTurn();
-        PlayerList[TURN].drawFirstCard();
         PlayerList[TURN].in();
         PlayerList[TURN].clearHand();
+        PlayerList[TURN].drawFirstCard();
         nextTurn();
-        PlayerList[TURN].drawFirstCard();
         PlayerList[TURN].in();
         PlayerList[TURN].clearHand();
+        PlayerList[TURN].drawFirstCard();
         nextTurn();
-        PlayerList[TURN].drawFirstCard();
         PlayerList[TURN].in();
         PlayerList[TURN].clearHand();
+        PlayerList[TURN].drawFirstCard();
         nextTurn();
     }
 

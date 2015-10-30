@@ -19,6 +19,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class Game extends ActionBarActivity {
     public ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
@@ -179,9 +181,44 @@ public class Game extends ActionBarActivity {
                    nextPlayerReady.show();
                }
                else if (GameData.getDeckCount() == 0) {
+                   ArrayList<Integer> index = new ArrayList<Integer>(4);
+                   int maxValue = 0;
+                   int maxTotal = 0;
+                   for(int i = 1; i < GameData.PlayerList.length; i++)
+                   {
+                       if(!(GameData.PlayerList[i].isOut()) && GameData.PlayerList[i].getCard().getValue() > maxValue) {
+                           index = new ArrayList<Integer>(4);
+                           index.add(GameData.PlayerList[i].getPlayerNumber());
+                           maxValue = GameData.PlayerList[i].getCard().getValue();
+                           maxTotal = GameData.PlayerList[i].getTotal();
+                       }
+                       else if(!(GameData.PlayerList[i].isOut()) && GameData.PlayerList[i].getCard().getValue() == maxValue && GameData.PlayerList[i].getTotal() > maxTotal) {
+                           index = new ArrayList<Integer>(4);
+                           index.add(GameData.PlayerList[i].getPlayerNumber());
+                           maxValue = GameData.PlayerList[i].getCard().getValue();
+                           maxTotal = GameData.PlayerList[i].getTotal();
+                       }
+                       else if(!(GameData.PlayerList[i].isOut()) && GameData.PlayerList[i].getCard().getValue() == maxValue && GameData.PlayerList[i].getTotal() == maxTotal) {
+                           index.add(GameData.PlayerList[i].getPlayerNumber());
+                           maxValue = GameData.PlayerList[i].getCard().getValue();
+                           maxTotal = GameData.PlayerList[i].getTotal();
+                       }
+
+                   }
+                   String winners = "";
+                   for(int x : index)
+                   {
+                       winners += " " + x + " and";
+                       GameData.Score[x-1]++;
+                   }
+                   winners = winners.substring(0, winners.length() - 4);
                    AlertDialog.Builder end = new AlertDialog.Builder(Game.this);
                    end.setTitle("Game");
-                   end.setMessage("Deck out of cards. Game is over. No one wins >:]");
+                   end.setMessage("Deck out of cards. Game is over. Player(s)" + winners + " win!\n" + "Current Score:\n" +
+                           "Player 1: " + GameData.Score[0]+ "\n" +
+                           "Player 2:" + GameData.Score[1]+ "\n" +
+                           "Player 3: " + GameData.Score[2]+ "\n" +
+                           "Player 4: " + GameData.Score[3]+ "\n");
                    end.setCancelable(false);
                    end.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                        @Override
