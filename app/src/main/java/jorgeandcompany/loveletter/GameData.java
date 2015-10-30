@@ -13,19 +13,20 @@ public class GameData {
 
     public static Deck deck;
     public static ArrayList<Card> discard;
+    public static int TURN;
     public static Card OutCard;
-    public static int[] Score = {0,0,0,0};
-    public static int firstOut;
     public static int remain;
-    public static boolean CARD_SEVEN_IN_PLAY = false;
+    public static int firstOut;
+    public static boolean CARD_SEVEN_IN_PLAY;
+    public static boolean FINISH_GAME;
+    public static boolean noOut;
+
+
+    public static Game game;
+    public static int[] Score = {0,0,0,0};
+    public static ArrayList <String> skinNames;
     public static int [] skinset = new int [8];
     public static int skinID;
-    public static ArrayList <String> skinNames;
-    public static int TURN;
-    public static boolean FINISH_GAME = false;
-    public static boolean noOut = false;
-    public static Game game;
-
     static {
         skinNames = new ArrayList<String>();
         skinNames.add("Magi Skin");
@@ -38,6 +39,9 @@ public class GameData {
         discard = new ArrayList<Card>();
         selectFirstTurnPlayer();
         OutCard = deck.draw();
+        CARD_SEVEN_IN_PLAY = false;
+        FINISH_GAME = false;
+        noOut = false;
         remain = 4;
         PlayerList[TURN].drawFirstCard();
         nextTurn();
@@ -50,30 +54,27 @@ public class GameData {
     }
 
     public static void newRound() {
-        TURN = firstOut;
         game.clearTable();
 
-
         deck = new Deck();
-        discard = new ArrayList<>();
-        OutCard = null;
+        discard = new ArrayList<Card>();
+        TURN = firstOut;
+        OutCard = deck.draw();
+        CARD_SEVEN_IN_PLAY = false;
         FINISH_GAME = false;
         noOut = false;
         remain = 4;
 
-        PlayerList[TURN].in();
+
         PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
-        PlayerList[TURN].in();
         PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
-        PlayerList[TURN].in();
         PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
-        PlayerList[TURN].in();
         PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();

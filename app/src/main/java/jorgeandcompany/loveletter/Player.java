@@ -7,8 +7,8 @@ import android.content.Context;
  */
 public class Player
 {
-    private Card leftCard; //left
-    private Card rightCard; //right
+    private Card leftCard = null; //left
+    private Card rightCard = null; //right
     private final int playerNumber;
     private boolean isOut = false;
     boolean hasLeft = false;
@@ -86,9 +86,6 @@ public class Player
         hasLeft = false;
         hasRight = false;
     }
-    public void in() {
-        isOut = false;
-    }
 
     public boolean hasLeftCard() {
         return hasLeft;
@@ -119,6 +116,10 @@ public class Player
         else return rightCard;
     }
     public void clearHand() {
+        isOut = false;
+        hasLeft = false;
+        hasRight = false;
+        isProtected = false;
         leftCard = null;
         rightCard = null;
     }

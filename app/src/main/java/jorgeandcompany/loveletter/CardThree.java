@@ -194,7 +194,7 @@ public class CardThree implements Card {
         String winner = "";
         if (mainPlayerCard < otherPlayerCard) {
             mainOut = -1;
-            winner = "Player " + thePlayer.getPlayerNumber() + " had card [" + mainPlayerCard +"] and had the lowest card." +
+            winner = "Player " + thePlayer.getPlayerNumber() + " had card [" + mainPlayerCard +"] and was the lowest card." +
                     " Player " + thePlayer.getPlayerNumber() + " is out";
         }
         else if (mainPlayerCard > otherPlayerCard) {
