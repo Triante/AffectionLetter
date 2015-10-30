@@ -9,7 +9,6 @@ import android.os.CountDownTimer;
  */
 public class CardSeven implements Card {
     private final int value = 7;
-
     @Override
     public void drawAffect(Player player) {
         return;
@@ -47,5 +46,19 @@ public class CardSeven implements Card {
         Resources res = c.getResources();
         String string = res.getString(R.string.Card_Seven_Description);
         return string;
+    }
+
+    @Override
+    public int getSkinRes(int skinId) {
+        switch (skinId) {
+            case 1:
+                return R.drawable.yunanver;
+            case 2:
+                return R.drawable.harleyquinnver;
+            case 3:
+                return R.drawable.captainamericaver;
+            default:
+                return R.drawable.yunanver;
+        }
     }
 }

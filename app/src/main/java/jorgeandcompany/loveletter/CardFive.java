@@ -48,4 +48,18 @@ public class CardFive implements Card {
         String string = res.getString(R.string.Card_Five_Description);
         return string;
     }
+
+    @Override
+    public int getSkinRes(int skinId) {
+        switch (skinId) {
+            case 1:
+                return R.drawable.hakuryuuver;
+            case 2:
+                return R.drawable.poisonivyver;
+            case 3:
+                return R.drawable.ironmanver;
+            default:
+                return R.drawable.hakuryuuver;
+        }
+    }
 }

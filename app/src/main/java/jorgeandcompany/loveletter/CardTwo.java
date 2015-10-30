@@ -49,4 +49,18 @@ public class CardTwo implements Card {
         String string = res.getString(R.string.Card_Two_Description);
         return string;
     }
+
+    @Override
+    public int getSkinRes(int skinId) {
+        switch (skinId) {
+            case 1:
+                return R.drawable.alibabaver;
+            case 2:
+                return R.drawable.twofacever;
+            case 3:
+                return R.drawable.quicksilverver;
+            default:
+                return R.drawable.alibabaver;
+        }
+    }
 }

@@ -96,10 +96,11 @@ public class Game extends ActionBarActivity {
     }
     private void playerMove(final Player on) {
         final ImageButton left = firstPlayerLeft;
-        flipCard(left);
+        final int drawable1 = on.getCard(0).getSkinRes(GameData.skinID), drawable2 = on.getCard(1).getSkinRes(GameData.skinID);
+        flipCard(left, drawable1);
         final ImageButton right = firstPlayerRight;
         left.setClickable(true);
-        flipCard(right);
+        flipCard(right, drawable2);
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -538,7 +539,7 @@ public class Game extends ActionBarActivity {
     };
 
     //currently just does animation, from back to front.
-    private void flipCard(final View toFlip) {
+    private void flipCard(final View toFlip, final int id) {
 
         new CountDownTimer(300, 100) {
             int a = 0;
@@ -551,8 +552,8 @@ public class Game extends ActionBarActivity {
                     setRightOut.start();
                     a++;
                 }
-                else if (a ==1) {
-                    toFlip.setBackgroundResource(R.drawable.background_trans);
+                else if (a == 1) {
+                    toFlip.setBackgroundResource(id);
                     final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
                             R.animator.flight_left_in);
                     setLeftIn.setTarget(toFlip);
@@ -641,8 +642,8 @@ public class Game extends ActionBarActivity {
         Animation zoomOutImage2 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         Animation zoomOutImage3 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         backgroundOnPaused.setVisibility(View.VISIBLE);
+        expandedCardImage.setImageResource(on.getCard(hand).getSkinRes(GameData.skinID));
         expandedCardImage.startAnimation(zoomOutImage);
-        expandedCardImage.setImageResource(R.drawable.background_trans);
         bPlay.startAnimation(zoomOutImage1);
         bCancel.startAnimation(zoomOutImage2);
         cardDescriptionText.startAnimation(zoomOutImage3);

@@ -1,7 +1,5 @@
 package jorgeandcompany.loveletter;
 
-import android.view.ContextMenu;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,13 +17,21 @@ public class GameData {
     public static int[] Score = {0,0,0,0};
     public static int firstOut;;
     public static int remain;
-
+    public static int [] skinset = new int [8];
+    public static int skinID;
+    public static ArrayList <String> skinNames;
     public static int TURN;
     public static boolean FINISH_GAME = false;
     public static boolean noOut = false;
     public static Game game;
 
-
+    static {
+        skinNames = new ArrayList<String>();
+        skinNames.add("Magi Skin");
+        skinNames.add("Batman Skin");
+        skinNames.add("Avengers Skin");
+        skinID = 1;
+    }
     public static void newGame() {
         deck = new Deck();
         discard = new ArrayList<Card>();
@@ -101,5 +107,6 @@ public class GameData {
         remain--;
         if (remain == 1) FINISH_GAME = true;
     }
+
 
 }

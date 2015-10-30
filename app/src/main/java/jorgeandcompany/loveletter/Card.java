@@ -16,4 +16,7 @@ public interface Card {
     int getValue();
 
     String getDescription(Context c);
+
+    int getSkinRes(int skinId);
+
 }

@@ -46,10 +46,6 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
             mp.setLooping(true);
             isMute = false;
         }
-        if (GameData.skin == 0) {
-            GameData.skin = 2;
-            GameData.addSkinSet(GameData.skin);
-        }
     }
 
     @Override

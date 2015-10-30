@@ -60,4 +60,18 @@ public class CardEight implements Card {
         String string = res.getString(R.string.Card_Eight_Description);
         return string;
     }
+
+    @Override
+    public int getSkinRes(int skinId) {
+        switch (skinId) {
+            case 1:
+                return R.drawable.judarver;
+            case 2:
+                return R.drawable.jokerver;
+            case 3:
+                return R.drawable.hulkver;
+            default:
+                return R.drawable.judarver;
+        }
+    }
 }
