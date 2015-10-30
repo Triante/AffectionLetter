@@ -13,6 +13,8 @@ public class Player
     private boolean isOut = false;
     boolean hasLeft = false;
     boolean hasRight = false;
+    private boolean isProtected = false;
+    private int total = 0;
 
     public Player (int playerNumber) {
         this.playerNumber = playerNumber;
@@ -43,29 +45,31 @@ public class Player
         if (hand == 1) {
             hasRight = false;
             rightCard.cardEffect(this);
+            total += rightCard.getValue();
             rightCard = null;
         }
         //left
         else {
             hasLeft = false;
             leftCard.cardEffect(this);
+            total += leftCard.getValue();
             leftCard = null;
         }
     }
 
-    public void discardCard(int hand)
+    public void discardCard()
     {
-        //right
-        if (hand == 1) {
-            hasRight = false;
-            rightCard.discardAffect(this);
-            rightCard = null;
-        }
-        //left
-        else {
+        if (hasLeft) {
             hasLeft = false;
             leftCard.discardAffect(this);
+            total += leftCard.getValue();
             leftCard = null;
+        }
+        else {
+            hasRight = false;
+            rightCard.discardAffect(this);
+            total += rightCard.getValue();
+            rightCard = null;
         }
     }
 
@@ -82,6 +86,9 @@ public class Player
         hasLeft = false;
         hasRight = false;
     }
+    public void in() {
+        isOut = false;
+    }
 
     public boolean hasLeftCard() {
         return hasLeft;
@@ -90,10 +97,16 @@ public class Player
         return hasRight;
     }
 
-
+    public void setCard(Card c) {
+        if (hasLeft) leftCard = c;
+        else rightCard = c;
+    }
     public Card getCard(int hand) {
         if (hand == 0) return getLeft();
         else return getRight();
+    }
+    public int getTotal() {
+       return total;
     }
     private Card getLeft() {
         return leftCard;
@@ -104,6 +117,17 @@ public class Player
     public Card getCard() {
         if (hasLeft) return leftCard;
         else return rightCard;
+    }
+    public void clearHand() {
+        leftCard = null;
+        rightCard = null;
+    }
+
+    public boolean isProtected() {
+        return isProtected;
+    }
+    public void setProtected(boolean set) {
+        isProtected = set;
     }
 
 

@@ -22,7 +22,6 @@ public class Deck {
 	private void shuffle() {
 		deck = new Stack();
 		int[] preDeck = {1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8};
-		//int[] preDeck = {1,1,1,1,1,8,8,8,8,8,8,8,8,8,8,8};
 		shuffleArray(preDeck);
 		shuffleArray(preDeck);
 		shuffleArray(preDeck);

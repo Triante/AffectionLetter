@@ -15,8 +15,9 @@ public class GameData {
     public static ArrayList<Card> discard;
     public static Card OutCard;
     public static int[] Score = {0,0,0,0};
-    public static int firstOut;;
+    public static int firstOut;
     public static int remain;
+    public static boolean CARD_SEVEN_IN_PLAY = false;
     public static int [] skinset = new int [8];
     public static int skinID;
     public static ArrayList <String> skinNames;
@@ -51,27 +52,40 @@ public class GameData {
     public static void newRound() {
         TURN = firstOut;
         game.clearTable();
-        FINISH_GAME = false;
+
+
         deck = new Deck();
-        discard = new ArrayList<Card>();
-        remain = 4;
+        discard = new ArrayList<>();
+        OutCard = null;
+        FINISH_GAME = false;
         noOut = false;
+        remain = 4;
+
+        PlayerList[TURN].in();
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
+        PlayerList[TURN].in();
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
+        PlayerList[TURN].in();
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
+        PlayerList[TURN].in();
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
     }
 
     private static void selectFirstTurnPlayer() {
-        int[] players = {1,2,3,4};
+        int[] players = {1,2,3,4,4,3,2,1};
         shuffleArray(players);
         shuffleArray(players);
         shuffleArray(players);
         TURN = players[0];
+        firstOut = TURN;
     }
     private static void shuffleArray(int[] ar) {
         long tsLong = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
@@ -105,7 +119,11 @@ public class GameData {
         PlayerList[p].out();
         if (!noOut) firstOut = p;
         remain--;
-        if (remain == 1) FINISH_GAME = true;
+        if (remain == 1) {
+            FINISH_GAME = true;
+            int winner = TURN -1;
+            Score[winner]++;
+        }
     }
 
 
