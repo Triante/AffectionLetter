@@ -189,7 +189,7 @@ public class CardTwo implements Card {
         look.setCancelable(false);
         look.setTitle("Card: " + GameData.PlayerList[id].getCard().getValue());
         ImageView image = new ImageView(GameData.game);
-        image.setImageResource(R.drawable.background_up);
+        image.setImageResource(GameData.PlayerList[id].getCard().getSkinRes(GameData.skinID));
         look.setView(image);
         look.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
