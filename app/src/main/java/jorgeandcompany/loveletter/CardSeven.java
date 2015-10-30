@@ -1,6 +1,8 @@
 package jorgeandcompany.loveletter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 
@@ -12,24 +14,24 @@ public class CardSeven implements Card {
 
     @Override
     public void drawAffect(Player player) {
+        GameData.CARD_SEVEN_IN_PLAY = true;
         return;
     }
 
     @Override
     public void cardEffect(final Player player) {
-        CountDownTimer c = new CountDownTimer(1000, 1000) {
+        AlertDialog.Builder play = new AlertDialog.Builder(GameData.game);
+        play.setCancelable(false);
+        play.setTitle("Card 7 Effect");
+        play.setMessage("Player" + player.getPlayerNumber() + " played card 7.");
+        play.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                GameData.out(player.getPlayerNumber());
+            public void onClick(DialogInterface dialog, int which) {
+                GameData.CARD_SEVEN_IN_PLAY = false;
                 GameData.game.endOfTurn(player);
             }
-        };
-        c.start();
+        });
+        play.show();
     }
 
     @Override

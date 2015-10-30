@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class CardOne implements Card {
             }
         };
         effect.setPositiveButton("OK", ok);
+        effect.setCancelable(false);
+        effect.setTitle("Card 1 Effect");
         effect.setMessage("Select a player to guess card.");
         effect.show();
     }
@@ -62,7 +65,6 @@ public class CardOne implements Card {
 
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
-        final int id1 = id;
         ImageButton one;
         if (GameData.PlayerList[id].hasLeft) {
             one = GameData.game.firstPlayerLeft;
@@ -74,8 +76,15 @@ public class CardOne implements Card {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
-                select.setTitle("You can't select your own card.");
-                select.setPositiveButton("OK", null);
+                select.setTitle("End your turn?\n");
+                select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GameData.game.endOfTurn(thePlayer);
+                    }
+                });
+                select.setNegativeButton("No", null);
+                select.setCancelable(false);
                 AlertDialog alertDialogObject = select.create();
                 alertDialogObject.show();
             }
@@ -90,12 +99,22 @@ public class CardOne implements Card {
         else {
             two = GameData.game.secondPlayerRight;
         }
-        two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               guess(id2, thePlayer);
-            }
-        });
+        if (GameData.PlayerList[id].isProtected()) {
+            two.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    protectedMessage(id2);
+                }
+            });
+        }
+        else {
+            two.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    guess(id2, thePlayer);
+                }
+            });
+        }
         id++;
         if (id == 5) id = 1;
         final int id3 = id;
@@ -106,12 +125,22 @@ public class CardOne implements Card {
         else {
             three = GameData.game.thirdPlayerRight;
         }
-       three.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               guess(id3, thePlayer);
-           }
-       });
+        if (GameData.PlayerList[id].isProtected()) {
+            three.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    protectedMessage(id3);
+                }
+            });
+        }
+        else {
+            three.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    guess(id3, thePlayer);
+                }
+            });
+        }
         id++;
         if (id == 5) id = 1;
         final int id4 = id;
@@ -122,20 +151,29 @@ public class CardOne implements Card {
         else {
             four = GameData.game.fourthPlayerRight;
         }
-        four.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                guess(id4, thePlayer);
-            }
-        });
-
-
+        if (GameData.PlayerList[id].isProtected()) {
+            four.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    protectedMessage(id4);
+                }
+            });
+        }
+        else {
+            four.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    guess(id4, thePlayer);
+                }
+            });
+        }
     }
 
     private void success(final int player, int guess, final Player thePlayer) {
         AlertDialog.Builder s = new AlertDialog.Builder(GameData.game);
-        s.setTitle("Congrats!");
-        s.setMessage("You guessed that player " + player + " had card " + guess +
+        s.setTitle("Card 1 Effect");
+        s.setMessage("Congrats!\n" +
+                "You guessed that player " + player + " had card " + guess +
                 "!\nPlayer " + player + " is now out!");
         s.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -149,8 +187,9 @@ public class CardOne implements Card {
     }
     private void failure(int player, int guess, final Player thePlayer) {
         AlertDialog.Builder f = new AlertDialog.Builder(GameData.game);
-        f.setTitle("Failure!");
-        f.setMessage("Player " + player + " does not have card " + guess +
+        f.setTitle("Card 1 Effect");
+        f.setMessage("Failed!\n" +
+                "Player " + player + " does not have card " + guess +
                 ".\nPlayer " + player + " is safe.");
         f.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -188,6 +227,13 @@ public class CardOne implements Card {
         AlertDialog alertDialogObject = select.create();
         alertDialogObject.show();
     }
+    private void protectedMessage(int p) {
+        AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
+        protect.setMessage("Player " + p + " is protected. Select another player");
+        protect.setPositiveButton("OK", null);
+        protect.show();
+    }
+
 
 
 }

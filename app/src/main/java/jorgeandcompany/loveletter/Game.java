@@ -21,12 +21,11 @@ import android.widget.TextView;
 
 
 public class Game extends ActionBarActivity {
-    public int deckcount = 16;
     public ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
     private Button bPlay, bCancel;
     private ImageView expandedCardImage, backgroundOnPaused;
-    private TextView cardDescriptionText;
+    private TextView cardDescriptionText, betaView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,10 @@ public class Game extends ActionBarActivity {
         });
         backgroundOnPaused = (ImageView) findViewById(R.id.backGround);
 
+        //beta view
+        betaView = (TextView) findViewById(R.id.beta_card_data);
+
+
         GameData.setContextMenu(this);
         GameData.newGame();
         handOutCards(GameData.TURN);
@@ -66,7 +69,11 @@ public class Game extends ActionBarActivity {
     public void multiPlayerGame() {
         int turn = GameData.TURN;;
         final Player on = GameData.PlayerList[turn];
-        CountDownTimer toMove = new CountDownTimer(3000, 2000) {
+        //remove card 4 effect if active
+        if (on.isProtected()) {
+            on.setProtected(false);
+        }
+        CountDownTimer toMove = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (on.hasLeftCard()) {
@@ -80,6 +87,9 @@ public class Game extends ActionBarActivity {
 
             @Override
             public void onFinish() {
+                if (GameData.getDeckCount() == 0) {
+                    deck.setVisibility(View.INVISIBLE);
+                }
                 playerMove(on);
             }
         };
@@ -113,6 +123,9 @@ public class Game extends ActionBarActivity {
                 imageZoomToOpen(on, 1, right);
             }
         });
+        //to set beta view
+        setBetaStuff();
+        //end beta view
     }
     public void endOfTurn(final Player on) {
         CountDownTimer toEnd = new CountDownTimer(2000, 1000) {
@@ -134,13 +147,11 @@ public class Game extends ActionBarActivity {
                 fourthPlayerLeft.setOnClickListener(null);
                 fourthPlayerRight.setClickable(false);
                 fourthPlayerRight.setOnClickListener(null);
-
-                GameData.nextTurn();
                 if (GameData.getDeckCount() == 1) {
                     ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
                     deckDummy.setVisibility(View.INVISIBLE);
-                    deck.setVisibility(View.INVISIBLE);
                 }
+                GameData.nextTurn();
             }
             @Override
             public void onFinish() {
@@ -150,7 +161,12 @@ public class Game extends ActionBarActivity {
                    }
                    AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
                    nextPlayerReady.setTitle("END");
-                   nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!");
+                   nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!\n" +
+                           "Current Score:\n" +
+                           "Player 1: " + GameData.Score[0]+ "\n" +
+                           "Player 2:" + GameData.Score[1]+ "\n" +
+                           "Player 3: " + GameData.Score[2]+ "\n" +
+                           "Player 4: " + GameData.Score[3]+ "\n");
                    DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
@@ -161,6 +177,20 @@ public class Game extends ActionBarActivity {
                    nextPlayerReady.setPositiveButton("YAY", ok);
                    nextPlayerReady.setCancelable(false);
                    nextPlayerReady.show();
+               }
+               else if (GameData.getDeckCount() == 0) {
+                   AlertDialog.Builder end = new AlertDialog.Builder(Game.this);
+                   end.setTitle("Game");
+                   end.setMessage("Deck out of cards. Game is over. No one wins >:]");
+                   end.setCancelable(false);
+                   end.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+                           GameData.newRound();
+                           handOutCards(GameData.TURN);
+                       }
+                   });
+                   end.show();
                }
                 else {
                    while (GameData.PlayerList[GameData.TURN].isOut()) {
@@ -634,7 +664,7 @@ public class Game extends ActionBarActivity {
     }
 
 
-    //also ends turn
+    //has method to play card. Ends a turn.
     private void imageZoomToOpen(final Player on, final int hand, final View toFlip) {
         Animation zoomOutImage = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         Animation zoomOutImage1 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
@@ -652,40 +682,18 @@ public class Game extends ActionBarActivity {
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageZoomToClose();
-                CountDownTimer t = new CountDownTimer(2000, 500) {
-                    boolean done = false;
-                    boolean otherDone = false;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (!done) {
-                            //flipBack method here
-                            if (hand == 0) {
-                                flipCardToBack(firstPlayerRight);
-                            }
-                            else {
-                                flipCardToBack(firstPlayerLeft);
-                            }
-                            done = true;
-                        }
-                        else if (!otherDone) {
-                            cardToCenterMultiPlayer(hand);
-                            otherDone = true;
-                        }
-
+                if (GameData.CARD_SEVEN_IN_PLAY) {
+                    if (on.getCard(hand).getValue() == 5 || on.getCard(hand).getValue() == 6) {
+                        cardSevenError();
                     }
-
-                    @Override
-                    public void onFinish() {
-                        on.playCard(hand);
-                        firstPlayerLeft.setBackgroundResource(R.drawable.background_up);
-                        firstPlayerRight.setBackgroundResource(R.drawable.background_up);
+                    else {
+                        playCard(on, hand);
+                        GameData.CARD_SEVEN_IN_PLAY = false;
                     }
-                };
-                t.start();
-
-
-
+                }
+                else {
+                    playCard(on, hand);
+                }
             }
         });
         bCancel.setVisibility(View.VISIBLE);
@@ -844,7 +852,6 @@ public class Game extends ActionBarActivity {
             fourthPlayerRight.setVisibility(View.INVISIBLE);
         }
     }
-
     public void clearTable() {
         firstPlayerLeft.setClickable(false);
         firstPlayerLeft.setOnClickListener(null);
@@ -871,6 +878,121 @@ public class Game extends ActionBarActivity {
         fourthPlayerRight.setOnClickListener(null);
         fourthPlayerRight.setVisibility(View.INVISIBLE);
         outCard.setVisibility(View.INVISIBLE);
+        ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
+        deckDummy.setVisibility(View.VISIBLE);
+    }
+    private void playCard(final Player on, final int hand) {
+        AlertDialog.Builder play = new AlertDialog.Builder(this);
+        play.setCancelable(false);
+        play.setMessage("Play card " + on.getCard(hand).getValue() + "?");
+        play.setNegativeButton("No", null);
+        play.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                imageZoomToClose();
+                CountDownTimer t = new CountDownTimer(2000, 500) {
+                    boolean done = false;
+                    boolean otherDone = false;
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (!done) {
+                            //flipBack method here
+                            if (hand == 0) {
+                                flipCardToBack(firstPlayerRight);
+                            } else {
+                                flipCardToBack(firstPlayerLeft);
+                            }
+                            done = true;
+                        } else if (!otherDone) {
+                            cardToCenterMultiPlayer(hand);
+                            otherDone = true;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        on.playCard(hand);
+                        firstPlayerLeft.setBackgroundResource(R.drawable.background_up);
+                        firstPlayerRight.setBackgroundResource(R.drawable.background_up);
+                    }
+                };
+                t.start();
+            }
+        });
+        play.show();
+    }
+    private void cardSevenError() {
+        AlertDialog.Builder no = new AlertDialog.Builder(this);
+        no.setCancelable(false);
+        no.setTitle("Card 7 Effect");
+        no.setMessage("This card can't be played. Please play card 7.");
+        no.setPositiveButton("OK", null);
+        no.show();
+    }
+    private void setBetaStuff() {
+        Card c1 = GameData.PlayerList[1].getCard(0);
+        Card c2 = GameData.PlayerList[1].getCard(1);
+        Card c3 = GameData.PlayerList[2].getCard(0);
+        Card c4 = GameData.PlayerList[2].getCard(1);
+        Card c5 = GameData.PlayerList[3].getCard(0);
+        Card c6 = GameData.PlayerList[3].getCard(1);
+        Card c7 = GameData.PlayerList[4].getCard(0);
+        Card c8 = GameData.PlayerList[4].getCard(1);
+        String top, middle, middle2, bottom;
+        if (c1 == null) {
+            top = "0 : ";
+        }
+        else {
+            top = c1.getValue() + " : ";
+        }
+        if (c2 == null) {
+            top = top + 0;
+        }
+        else {
+            top = top + c2.getValue();
+        }
+        if (c3 == null) {
+            middle = "0 : ";
+        }
+        else {
+            middle = c3.getValue() + " : ";
+        }
+        if (c4 == null) {
+            middle = middle + 0;
+        }
+        else {
+            middle = middle + c4.getValue();
+        }
+
+        if (c5 == null) {
+            middle2 = "0 : ";
+        }
+        else {
+            middle2 = c5.getValue() + " : ";
+        }
+        if (c6 == null) {
+            middle2 = middle2 + 0;
+        }
+        else {
+            middle2 = middle2 + c6.getValue();
+        }
+        if (c7 == null) {
+            bottom = "0 : ";
+        }
+        else {
+            bottom = c7.getValue() + " : ";
+        }
+        if (c8 == null) {
+            bottom = bottom + 0;
+        }
+        else {
+            bottom = bottom + c8.getValue();
+        }
+
+        String whole = "Beta Card Data" + "\nPlayer 1: " + top + "\nPlayer 2: " + middle + "\nPlayer 3: " + middle2
+                + "\nPlayer 4: " + bottom + "\nOut Card: " + GameData.OutCard.getValue() +"\nIn Deck: " +GameData.deck.getDeckCount();
+        betaView.setText(whole);
     }
 
     @Override

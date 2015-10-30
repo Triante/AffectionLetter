@@ -1,6 +1,8 @@
 package jorgeandcompany.loveletter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 
@@ -17,19 +19,18 @@ public class CardFour implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        CountDownTimer c = new CountDownTimer(1000, 1000) {
+        AlertDialog.Builder toProtect = new AlertDialog.Builder(GameData.game);
+        toProtect.setTitle("Card 4 Effect");
+        toProtect.setMessage("Player " + player.getPlayerNumber() + " is now protected.");
+        toProtect.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                GameData.out(player.getPlayerNumber());
+            public void onClick(DialogInterface dialog, int which) {
+                player.setProtected(true);
                 GameData.game.endOfTurn(player);
             }
-        };
-        c.start();
+        });
+        toProtect.setCancelable(false);
+        toProtect.show();
     }
 
     @Override

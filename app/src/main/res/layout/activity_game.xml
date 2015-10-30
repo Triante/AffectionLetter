@@ -208,6 +208,18 @@
         android:layout_alignEnd="@+id/card_description_text"
         android:visibility="invisible"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Beta Card Data:"
+        android:id="@+id/beta_card_data"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/discard"
+        android:layout_toRightOf="@+id/discard"
+        android:layout_above="@+id/discard" />
+
 
 </RelativeLayout>
 
