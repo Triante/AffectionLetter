@@ -70,19 +70,19 @@ public class Game extends ActionBarActivity {
         handOutCards(GameData.TURN);
 
 
-        Timer toChangeBeta = new Timer();
-        toChangeBeta.schedule(new TimerTask() {
-            Runnable beta = new Runnable() {
-                @Override
-                public void run() {
-                    setBetaStuff();
-                }
-            };
-            @Override
-            public void run() {
-                Game.this.runOnUiThread(beta);
-            }
-        }, 0, 200);
+//        Timer toChangeBeta = new Timer();
+//        toChangeBeta.schedule(new TimerTask() {
+//            Runnable beta = new Runnable() {
+//                @Override
+//                public void run() {
+//                    setBetaStuff();
+//                }
+//            };
+//            @Override
+//            public void run() {
+//                Game.this.runOnUiThread(beta);
+//            }
+//        }, 0, 200);
     }
 
     public void multiPlayerGame() {
@@ -144,7 +144,7 @@ public class Game extends ActionBarActivity {
             }
         });
         //to set beta view
-        setBetaStuff();
+        //setBetaStuff();
         //end beta view
     }
     //decides the end of games too
@@ -354,7 +354,7 @@ public class Game extends ActionBarActivity {
         secondPlayerRight.getLocationOnScreen(cardcoordinates);
         deck.getLocationOnScreen(deckcoordinates);
         translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
+        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
         translate.setDuration(1000);
         rotate.setDuration(1000);
         set = new AnimationSet (true);
@@ -406,7 +406,7 @@ public class Game extends ActionBarActivity {
         fourthPlayerRight.getLocationOnScreen(cardcoordinates);
         deck.getLocationOnScreen(deckcoordinates);
         translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
+        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
         translate.setDuration(1000);
         rotate.setDuration(1000);
         set = new AnimationSet (true);
@@ -453,7 +453,7 @@ public class Game extends ActionBarActivity {
         secondPlayerLeft.getLocationOnScreen(cardcoordinates);
         deck.getLocationOnScreen(deckcoordinates);
         translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
+        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
         translate.setDuration(1000);
         rotate.setDuration(1000);
         set = new AnimationSet (true);
@@ -505,7 +505,7 @@ public class Game extends ActionBarActivity {
         fourthPlayerLeft.getLocationOnScreen(cardcoordinates);
         deck.getLocationOnScreen(deckcoordinates);
         translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
+        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
         translate.setDuration(1000);
         rotate.setDuration(1000);
         set = new AnimationSet (true);
@@ -660,6 +660,7 @@ public class Game extends ActionBarActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (a == 0) {
+
                     final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
                             R.animator.flip_right_out);
                     setRightOut.setTarget(toFlip);
@@ -667,7 +668,7 @@ public class Game extends ActionBarActivity {
                     a++;
                 }
                 else if (a ==1) {
-                    toFlip.setBackgroundResource(R.drawable.background_up);
+                    toFlip.setBackgroundResource(R.drawable.magi_up);
                     final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
                             R.animator.flight_left_in);
                     setLeftIn.setTarget(toFlip);
@@ -970,8 +971,8 @@ public class Game extends ActionBarActivity {
                     @Override
                     public void onFinish() {
                         on.playCard(hand);
-                        firstPlayerLeft.setBackgroundResource(R.drawable.background_up);
-                        firstPlayerRight.setBackgroundResource(R.drawable.background_up);
+                        firstPlayerLeft.setBackgroundResource(R.drawable.magi_up);
+                        firstPlayerRight.setBackgroundResource(R.drawable.magi_up);
                     }
                 };
                 t.start();
@@ -1054,6 +1055,19 @@ public class Game extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
+        AlertDialog.Builder back = new AlertDialog.Builder(this);
+        back.setCancelable(false);
+        back.setTitle("Quit");
+        back.setMessage("Are you sure?");
+        back.setNegativeButton("No", null);
+        back.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        back.show();
+
         finish();
     }
 }
