@@ -337,8 +337,8 @@ public class CardSix implements Card {
                 int[] acoordinates = new int[2];
                 a.getLocationOnScreen(acoordinates);
                 b.getLocationOnScreen(bcoordinates);
-                Animation rotateb = new RotateAnimation(0, 90, b.getPivotX(), b.getPivotY());
-                Animation rotatea = new RotateAnimation(0, -90, a.getPivotX(), a.getPivotY());
+                Animation rotateb = new RotateAnimation(0, -90, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, 90, a.getPivotX(), a.getPivotY());
                 rotatea.setDuration(1000);
                 rotateb.setDuration(1000);
                 Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
@@ -435,8 +435,8 @@ public class CardSix implements Card {
                 int[] acoordinates = new int[2];
                 a.getLocationOnScreen(acoordinates);
                 b.getLocationOnScreen(bcoordinates);
-                Animation rotateb = new RotateAnimation(0, -90, b.getPivotX(), b.getPivotY());
-                Animation rotatea = new RotateAnimation(0, 90, a.getPivotX(), a.getPivotY());
+                Animation rotateb = new RotateAnimation(0, 90, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, -90, a.getPivotX(), a.getPivotY());
                 rotatea.setDuration(1000);
                 rotateb.setDuration(1000);
                 Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
