@@ -1067,7 +1067,5 @@ public class Game extends ActionBarActivity {
             }
         });
         back.show();
-
-        finish();
     }
 }
