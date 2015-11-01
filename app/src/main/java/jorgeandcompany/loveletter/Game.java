@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ public class Game extends ActionBarActivity {
     private Button bPlay, bCancel;
     private ImageView expandedCardImage, backgroundOnPaused;
     private TextView cardDescriptionText, betaView;
+    private static MediaPlayer gameMusic;
+    private static boolean isAnimating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class Game extends ActionBarActivity {
 
         GameData.setContextMenu(this);
         GameData.newGame();
+        gameMusic = MediaPlayer.create(getApplicationContext(), R.raw.magi_game);
+        gameMusic.setLooping(true);
+        gameMusic.start();
         handOutCards(GameData.TURN);
 
 
@@ -95,6 +101,7 @@ public class Game extends ActionBarActivity {
         CountDownTimer toMove = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                isAnimating = true;
                 if (on.hasLeftCard()) {
                     deckToRight(1);
                 }
@@ -110,6 +117,7 @@ public class Game extends ActionBarActivity {
                     deck.setVisibility(View.INVISIBLE);
                 }
                 playerMove(on);
+                isAnimating = false;
             }
         };
         toMove.start();
@@ -781,6 +789,7 @@ public class Game extends ActionBarActivity {
         new CountDownTimer(7000, 1000) {
             int a = -1;
             public void onTick(long millisUntilFinished) {
+                isAnimating = true;
                 if (a == 0) {
                     int[] cardcoordinates = new int[2];
                     int[] deckcoordinates = new int[2];
@@ -954,6 +963,7 @@ public class Game extends ActionBarActivity {
 
                     @Override
                     public void onTick(long millisUntilFinished) {
+                        isAnimating = true;
                         if (!done) {
                             //flipBack method here
                             if (hand == 0) {
@@ -1055,17 +1065,20 @@ public class Game extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder back = new AlertDialog.Builder(this);
-        back.setCancelable(false);
-        back.setTitle("Quit");
-        back.setMessage("Are you sure?");
-        back.setNegativeButton("No", null);
-        back.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        back.show();
+        if (!isAnimating) {
+            AlertDialog.Builder back = new AlertDialog.Builder(this);
+            back.setCancelable(false);
+            back.setTitle("Quit");
+            back.setMessage("Are you sure?");
+            back.setNegativeButton("No", null);
+            back.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    gameMusic.stop();
+                    finish();
+                }
+            });
+            back.show();
+        }
     }
 }
