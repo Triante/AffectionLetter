@@ -24,9 +24,19 @@ public class Player
         leftCard = GameData.deck.draw();
         hasLeft = true;
     }
+    public void drawOutCard() {
+        if (!hasLeft) {
+            hasLeft = true;
+            leftCard = GameData.drawOutCard();
+        }
+        else {
+            hasRight = true;
+            rightCard = GameData.drawOutCard();
+        }
+    }
 
-    public void drawCard()
-    {
+
+    public void drawCard() {
         if (!hasLeft) {
             hasLeft = true;
             leftCard = GameData.deck.draw();
@@ -38,9 +48,7 @@ public class Player
             rightCard.drawAffect(this);
         }
     }
-
-    public void playCard(int hand)
-    {
+    public void playCard(int hand) {
         //right
         if (hand == 1) {
             hasRight = false;
@@ -56,9 +64,7 @@ public class Player
             leftCard = null;
         }
     }
-
-    public void discardCard()
-    {
+    public void discardCard() {
         if (hasLeft) {
             hasLeft = false;
             leftCard.discardAffect(this);
