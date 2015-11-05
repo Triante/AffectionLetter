@@ -19,10 +19,10 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
     private Button bMainMenu1, bMainMenu2, bMainMenu3, bMainMenu4;
     private boolean singlePlayerState = false;
     private boolean multiPlayerState = false;
-    public static MediaPlayer mp;
-    public static boolean isMute = false;
-    public static int returnState;
-    public static int otherState;
+    public static Music theMusic = null;
+    public static int returnState = 0;
+    public static int otherState = 0;
+    private Thread newThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +39,12 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
         bMainMenu2.setOnClickListener(this);
         bMainMenu3.setOnClickListener(this);
         bMainMenu4.setOnClickListener(this);
-
-        if (!isMute) {
-            mp = MediaPlayer.create(getApplicationContext(), R.raw.pokemon_steven);
-            mp.start();
-            mp.setLooping(true);
-            isMute = false;
+        newThread = null;
+        if (theMusic == null) {
+            theMusic = new Music (new MediaPlayer().create(getApplicationContext(), R.raw.pokemon_steven));
+            Runnable musicRunnable = theMusic;
+            newThread = new Thread (musicRunnable);
+            newThread.start();
         }
     }
 
@@ -81,7 +81,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                     Intent gameBeta = new Intent(this, Game.class);
                     startActivity(gameBeta);
                     returnState = 0;
-                    mp.stop();
+                    theMusic.stop();
                 }
                 //Network play
                 else if (multiPlayerState) {
@@ -123,8 +123,8 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
 
     @Override
     public void onBackPressed() {
-        returnState = mp.getCurrentPosition();
-        mp.pause();
+        returnState = theMusic.getCurrentPosition();
+        theMusic.pause();
         moveTaskToBack(true);
         otherState = returnState;
     }
@@ -132,9 +132,19 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
     @Override
     protected void onResume() {
         super.onResume();
-        if (returnState == otherState) {
-            mp.seekTo(returnState);
-            mp.start();
-        }
+            if (newThread != null && !theMusic.isPlaying()) {
+                theMusic.stop();
+                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.pokemon_steven));
+                theMusic.restartPosition();
+                newThread = new Thread(theMusic);
+                if (theMusic.isMute()) {
+                    theMusic.setVolume(0,0);
+                }
+                newThread.start();
+                return;
+            }
+            if (returnState == otherState && newThread != null) {
+                theMusic.run();
+            }
     }
 }

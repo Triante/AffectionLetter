@@ -22,7 +22,7 @@ public class Option extends ActionBarActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             mute.setShowText(true);
         }
-        if (!MainMenu.isMute) {
+        if (!MainMenu.theMusic.isMute()) {
             mute.setChecked(true);
         }
 
@@ -44,13 +44,13 @@ public class Option extends ActionBarActivity {
         mute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MainMenu.isMute) {
-                    MainMenu.mp.setVolume(1, 1);
-                    MainMenu.isMute = false;
+                if (MainMenu.theMusic.isMute()) {
+                    MainMenu.theMusic.setVolume(1, 1);
+                    MainMenu.theMusic.changeMuteStatus();
 
                 } else {
-                    MainMenu.mp.setVolume(0, 0);
-                    MainMenu.isMute = true;
+                    MainMenu.theMusic.setVolume(0, 0);
+                    MainMenu.theMusic.changeMuteStatus();
                 }
             }
         });

@@ -267,15 +267,15 @@ public class CardFive implements Card {
                             }
 
                             public void onFinish() {
-                               button.setVisibility(View.VISIBLE);
+                                button.setVisibility(View.VISIBLE);
+                                if (GameData.deck.getDeckCount() == 0) {
+                                    GameData.game.deck.setVisibility(View.INVISIBLE);
+                                }
                             }
                         }.start();
                     }
 
                     public void onFinish() {
-                        if (GameData.deck.getDeckCount() == 0) {
-                            GameData.game.deck.setVisibility(View.INVISIBLE);
-                        }
                     }
                 }.start();
 
