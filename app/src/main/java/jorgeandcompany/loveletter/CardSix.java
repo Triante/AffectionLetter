@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 
 /**
@@ -191,17 +195,8 @@ public class CardSix implements Card {
         Card card2 = GameData.PlayerList[id].getCard();
         thePlayer.setCard(card2);
         GameData.PlayerList[id].setCard(card1);
-        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
-        success.setCancelable(false);
-        success.setTitle("Card 6 Effect");
-        success.setMessage("Success. You traded cards with player " + id + ".");
-        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(thePlayer);
-            }
-        });
-        success.show();
+        performAnimation(id, thePlayer);
+
     }
 
 
@@ -210,5 +205,275 @@ public class CardSix implements Card {
         protect.setMessage("Player " + p + " is protected. Select another player");
         protect.setPositiveButton("OK", null);
         protect.show();
+    }
+
+    private void performAnimation (final int id, final Player thePlayer) {
+        final ImageButton a, b;
+        int number2 = GameData.PlayerList[id].getPlayerNumber(), number1 = thePlayer.getPlayerNumber();
+        if (thePlayer.hasLeft) {
+            a = GameData.game.firstPlayerLeft;
+        }
+        else {
+            a = GameData.game.firstPlayerRight;
+        }
+
+        boolean hasLeft = GameData.PlayerList[id].hasLeft;
+
+        if (number1 == 1 && number2 == 2) {
+            if (hasLeft) {
+                b = GameData.game.secondPlayerLeft;
+            }
+            else {
+                b = GameData.game.secondPlayerRight;
+            }
+            animateSwap1to2(a,b,thePlayer,id);
+        }
+        else if (number1 == 1 && number2 == 3) {
+            if (hasLeft) {
+                b = GameData.game.thirdPlayerLeft;
+            }
+            else {
+                b = GameData.game.thirdPlayerRight;
+            }
+            animateSwap1to3(a, b, thePlayer, id);
+        }
+        else if (number1 == 1 && number2 == 4) {
+            if (hasLeft) {
+                b = GameData.game.fourthPlayerLeft;
+            }
+            else {
+                b = GameData.game.fourthPlayerRight;
+            }
+            animateSwap1to4(a, b, thePlayer, id);
+        }
+        else if (number1 == 2 && number2 == 1) {
+            if (hasLeft) {
+                b = GameData.game.fourthPlayerLeft;
+            }
+            else {
+                b = GameData.game.fourthPlayerRight;
+            }
+            animateSwap1to4(a, b, thePlayer, id);
+        }
+        else if (number1 == 2 && number2 == 4) {
+            if (hasLeft) {
+                b = GameData.game.thirdPlayerLeft;
+            }
+            else {
+                b = GameData.game.thirdPlayerRight;
+            }
+            animateSwap1to3(a, b, thePlayer, id);
+        }
+        else if (number1 == 2 && number2 == 3) {
+            if (hasLeft) {
+                b = GameData.game.secondPlayerLeft;
+            }
+            else {
+                b = GameData.game.secondPlayerRight;
+            }
+            animateSwap1to2(a,b,thePlayer,id);
+        }
+        else if (number1 == 3 && number2 == 1) {
+            if (hasLeft) {
+                b = GameData.game.thirdPlayerLeft;
+            }
+            else {
+                b = GameData.game.thirdPlayerRight;
+            }
+            animateSwap1to3(a, b, thePlayer, id);
+        }
+        else if (number1 == 3 && number2 == 2) {
+            if (hasLeft) {
+                b = GameData.game.fourthPlayerLeft;
+            }
+            else {
+                b = GameData.game.fourthPlayerRight;
+            }
+            animateSwap1to4(a, b, thePlayer, id);
+        }
+        else if (number1 == 3 && number2 == 4) {
+            if (hasLeft) {
+                b = GameData.game.secondPlayerLeft;
+            }
+            else {
+                b = GameData.game.secondPlayerRight;
+            }
+            animateSwap1to2(a,b,thePlayer,id);
+        }
+        else if (number1 == 4 && number2 == 1) {
+            if (hasLeft) {
+                b = GameData.game.secondPlayerLeft;
+            }
+            else {
+                b = GameData.game.secondPlayerRight;
+            }
+            animateSwap1to2(a,b,thePlayer,id);
+        }
+        else if (number1 == 4 && number2 == 2) {
+            if (hasLeft) {
+                b = GameData.game.thirdPlayerLeft;
+            }
+            else {
+                b = GameData.game.thirdPlayerRight;
+            }
+            animateSwap1to3(a, b, thePlayer, id);
+        }
+        else {
+            if (hasLeft) {
+                b = GameData.game.fourthPlayerLeft;
+            }
+            else {
+                b = GameData.game.fourthPlayerRight;
+            }
+            animateSwap1to4(a, b, thePlayer, id);
+        }
+
+    }
+
+    public void animateSwap1to2 (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                int[] bcoordinates = new int[2];
+                int[] acoordinates = new int[2];
+                a.getLocationOnScreen(acoordinates);
+                b.getLocationOnScreen(bcoordinates);
+                Animation rotateb = new RotateAnimation(0, -90, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, 90, a.getPivotX(), a.getPivotY());
+                rotatea.setDuration(1000);
+                rotateb.setDuration(1000);
+                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
+                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                translateb.setDuration(1000);
+                translatea.setDuration(1000);
+                AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
+                rotateandmovea.addAnimation(rotatea);
+                rotateandmovea.addAnimation(translatea);
+                rotateandmoveb.addAnimation(rotateb);
+                rotateandmoveb.addAnimation(translateb);
+                a.startAnimation(rotateandmovea);
+                b.startAnimation(rotateandmoveb);
+            }
+
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    public void onFinish() {
+                        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
+                        success.setCancelable(false);
+                        success.setTitle("Card 6 Effect");
+                        success.setMessage("Success. You traded cards with player " + id + ".");
+                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                GameData.game.endOfTurn(thePlayer);
+                            }
+                        });
+                        success.show();
+                    }
+                }.start();
+
+            }
+        }.start();
+    }
+
+    public void animateSwap1to3 (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                int[] bcoordinates = new int[2];
+                int[] acoordinates = new int[2];
+                a.getLocationOnScreen(acoordinates);
+                b.getLocationOnScreen(bcoordinates);
+                Animation rotateb = new RotateAnimation(0, 180, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, -180, a.getPivotX(), a.getPivotY());
+                rotatea.setDuration(1000);
+                rotateb.setDuration(1000);
+                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
+                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                translateb.setDuration(1000);
+                translatea.setDuration(1000);
+                AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
+                rotateandmovea.addAnimation(rotatea);
+                rotateandmovea.addAnimation(translatea);
+                rotateandmoveb.addAnimation(rotateb);
+                rotateandmoveb.addAnimation(translateb);
+                a.startAnimation(rotateandmovea);
+                b.startAnimation(rotateandmoveb);
+            }
+
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    public void onFinish() {
+                        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
+                        success.setCancelable(false);
+                        success.setTitle("Card 6 Effect");
+                        success.setMessage("Success. You traded cards with player " + id + ".");
+                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                GameData.game.endOfTurn(thePlayer);
+                            }
+                        });
+                        success.show();
+                    }
+                }.start();
+
+            }
+        }.start();
+    }
+
+    public void animateSwap1to4 (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                int[] bcoordinates = new int[2];
+                int[] acoordinates = new int[2];
+                a.getLocationOnScreen(acoordinates);
+                b.getLocationOnScreen(bcoordinates);
+                Animation rotateb = new RotateAnimation(0, 90, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, -90, a.getPivotX(), a.getPivotY());
+                rotatea.setDuration(1000);
+                rotateb.setDuration(1000);
+                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
+                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                translateb.setDuration(1000);
+                translatea.setDuration(1000);
+                AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
+                rotateandmovea.addAnimation(rotatea);
+                rotateandmovea.addAnimation(translatea);
+                rotateandmoveb.addAnimation(rotateb);
+                rotateandmoveb.addAnimation(translateb);
+                a.startAnimation(rotateandmovea);
+                b.startAnimation(rotateandmoveb);
+            }
+
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    public void onFinish() {
+                        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
+                        success.setCancelable(false);
+                        success.setTitle("Card 6 Effect");
+                        success.setMessage("Success. You traded cards with player " + id + ".");
+                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                GameData.game.endOfTurn(thePlayer);
+                            }
+                        });
+                        success.show();
+                    }
+                }.start();
+
+            }
+        }.start();
     }
 }
