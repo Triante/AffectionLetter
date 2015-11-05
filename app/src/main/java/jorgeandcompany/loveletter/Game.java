@@ -749,15 +749,13 @@ public class Game extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (GameData.CARD_SEVEN_IN_PLAY) {
-                    if (on.getCard(hand).getValue() == 5 || on.getCard(hand).getValue() == 6) {
+                    if (on.getCard(hand).getValue() == 5 || on.getCard(hand).getValue() == 6 && on.getCard(0).getValue() == 7) {
                         cardSevenError();
-                    }
-                    else {
+                    } else {
                         playCard(on, hand);
                         GameData.CARD_SEVEN_IN_PLAY = false;
                     }
-                }
-                else {
+                } else {
                     playCard(on, hand);
                 }
             }
