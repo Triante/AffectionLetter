@@ -266,7 +266,7 @@ public class CardSix implements Card {
                         AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
                         success.setCancelable(false);
                         success.setTitle("Card 6 Effect");
-                        success.setMessage("Player " + thePlayer.getPlayerNumber() " traded cards with player " + id + ".");
+                        success.setMessage("Player " + thePlayer.getPlayerNumber() + " traded cards with player " + id + ".");
                         success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -281,7 +281,7 @@ public class CardSix implements Card {
         }.start();
     }
 
-    public void animateSwap1to3 (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+    public void swapOneThree (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
                 int[] bcoordinates = new int[2];
@@ -330,7 +330,7 @@ public class CardSix implements Card {
         }.start();
     }
 
-    public void animateSwap1to4 (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+    public void swapOneFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
                 int[] bcoordinates = new int[2];
@@ -377,5 +377,15 @@ public class CardSix implements Card {
 
             }
         }.start();
+    }
+
+    public void swapTwoThree (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+
+    }
+    public void swapTwoFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+
+    }
+    public void swapThreeFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+
     }
 }
