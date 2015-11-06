@@ -13,7 +13,7 @@ public class CardSeven implements Card {
     private final int value = 7;
     @Override
     public void drawAffect(Player player) {
-        GameData.CARD_SEVEN_IN_PLAY = true;
+        player.setSeven(true);
         return;
     }
 
@@ -26,7 +26,7 @@ public class CardSeven implements Card {
         play.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.CARD_SEVEN_IN_PLAY = false;
+                player.setSeven(false);
                 GameData.game.endOfTurn(player);
             }
         });
@@ -35,7 +35,7 @@ public class CardSeven implements Card {
 
     @Override
     public void discardAffect(Player player) {
-        return;
+        player.setSeven(false);
     }
 
     @Override

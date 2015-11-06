@@ -73,7 +73,7 @@ public class CardSix implements Card {
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
         ImageButton one;
-        if (GameData.PlayerList[id].hasLeft) {
+        if (GameData.PlayerList[id].hasLeftCard()) {
             one = GameData.game.firstPlayerLeft;
         }
         else {
@@ -100,7 +100,7 @@ public class CardSix implements Card {
         if (id == 5) id = 1;
         final int id2 = id;
         ImageButton two;
-        if (GameData.PlayerList[id].hasLeft) {
+        if (GameData.PlayerList[id].hasLeftCard()) {
             two = GameData.game.secondPlayerLeft;
         }
         else {
@@ -126,7 +126,7 @@ public class CardSix implements Card {
         if (id == 5) id = 1;
         final int id3 = id;
         ImageButton three;
-        if (GameData.PlayerList[id].hasLeft) {
+        if (GameData.PlayerList[id].hasLeftCard()) {
             three = GameData.game.thirdPlayerLeft;
         }
         else {
@@ -152,7 +152,7 @@ public class CardSix implements Card {
         if (id == 5) id = 1;
         final int id4 = id;
         ImageButton four;
-        if (GameData.PlayerList[id].hasLeft) {
+        if (GameData.PlayerList[id].hasLeftCard()) {
             four = GameData.game.fourthPlayerLeft;
         }
         else {

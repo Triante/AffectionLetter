@@ -8,8 +8,7 @@ import java.util.Random;
  */
 public class GameData {
 
-    public static Player[] PlayerList = {null, new Player(1), new Player(2),
-            new Player(3), new Player(4)};
+    public static Player[] PlayerList = new Player[5];
 
     public static Deck deck;
     public static ArrayList<Card> discard;
@@ -17,7 +16,6 @@ public class GameData {
     public static Card OutCard;
     public static int remain;
     public static int firstOut;
-    public static boolean CARD_SEVEN_IN_PLAY;
     public static boolean FINISH_GAME;
     public static boolean noOut;
 
@@ -35,12 +33,26 @@ public class GameData {
         skinID = 1;
     }
 
+    public static void setPlayerMode(boolean single) {
+        if (single) {
+            PlayerList[1] = new HumanPlayer(1);
+            PlayerList[2] = new ComPlayerLevelOne(2);
+            PlayerList[3] = new ComPlayerLevelOne(3);
+            PlayerList[4] = new ComPlayerLevelOne(4);
+        }
+        else {
+            PlayerList[1] = new HumanPlayer(1);
+            PlayerList[2] = new HumanPlayer(2);
+            PlayerList[3] = new HumanPlayer(3);
+            PlayerList[4] = new HumanPlayer(4);
+        }
+    }
+
     public static void newGame() {
         deck = new Deck();
         discard = new ArrayList<Card>();
         selectFirstTurnPlayer();
         OutCard = deck.draw();
-        CARD_SEVEN_IN_PLAY = false;
         FINISH_GAME = false;
         noOut = false;
         remain = 4;
@@ -60,7 +72,6 @@ public class GameData {
         discard = new ArrayList<Card>();
         TURN = firstOut;
         OutCard = deck.draw();
-        CARD_SEVEN_IN_PLAY = false;
         FINISH_GAME = false;
         noOut = false;
         remain = 4;

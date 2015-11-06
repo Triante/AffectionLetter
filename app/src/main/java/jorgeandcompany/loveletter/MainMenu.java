@@ -64,21 +64,19 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
 
                 }
                 //local play
-                else if (multiPlayerState) {
-
-                }
                 else {
-                    multiPlayerState = true;
-                    bMainMenu1.setVisibility(View.INVISIBLE);
-                    bMainMenu2.setText("Local Multiplayer");
-                    bMainMenu3.setText("Network Multiplayer");
-                    bMainMenu4.setText("Back");
+                    Intent gameBeta = new Intent(this, Game.class);
+                    gameBeta.putExtra("single", false);
+                    startActivity(gameBeta);
+                    returnState = 0;
+                    mp.stop();
                 }
                 break;
             case R.id.bMainMenu3:
                 //Solo Game
                 if (singlePlayerState) {
                     Intent gameBeta = new Intent(this, Game.class);
+                    gameBeta.putExtra("single", true);
                     startActivity(gameBeta);
                     returnState = 0;
                     theMusic.stop();
