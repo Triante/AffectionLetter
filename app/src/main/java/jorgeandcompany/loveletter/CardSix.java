@@ -280,7 +280,6 @@ public class CardSix implements Card {
             }
         }.start();
     }
-
     public void swapOneThree (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -329,7 +328,6 @@ public class CardSix implements Card {
             }
         }.start();
     }
-
     public void swapOneFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -379,13 +377,11 @@ public class CardSix implements Card {
         }.start();
     }
 
-    public void swapTwoThree (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
-    }
-    public void swapTwoFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
-    }
-    public void swapThreeFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Card)) return false;
+        Card other = (Card) o;
+        if (getValue() == other.getValue()) return true;
+        else return false;
     }
 }

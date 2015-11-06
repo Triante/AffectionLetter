@@ -63,4 +63,12 @@ public class CardSeven implements Card {
                 return R.drawable.yunanver;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Card)) return false;
+        Card other = (Card) o;
+        if (getValue() == other.getValue()) return true;
+        else return false;
+    }
 }
