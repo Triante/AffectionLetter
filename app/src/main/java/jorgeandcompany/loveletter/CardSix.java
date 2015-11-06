@@ -72,7 +72,7 @@ public class CardSix implements Card {
 
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
-        ImageButton one;
+        final ImageButton one;
         if (GameData.PlayerList[id].hasLeftCard()) {
             one = GameData.game.firstPlayerLeft;
         }
@@ -99,7 +99,7 @@ public class CardSix implements Card {
         id++;
         if (id == 5) id = 1;
         final int id2 = id;
-        ImageButton two;
+        final ImageButton two;
         if (GameData.PlayerList[id].hasLeftCard()) {
             two = GameData.game.secondPlayerLeft;
         }
@@ -118,14 +118,14 @@ public class CardSix implements Card {
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    trade(id2, thePlayer);
+                    trade(id2, thePlayer, one, two);
                 }
             });
         }
         id++;
         if (id == 5) id = 1;
         final int id3 = id;
-        ImageButton three;
+        final ImageButton three;
         if (GameData.PlayerList[id].hasLeftCard()) {
             three = GameData.game.thirdPlayerLeft;
         }
@@ -144,14 +144,14 @@ public class CardSix implements Card {
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    trade(id3, thePlayer);
+                    trade(id3, thePlayer, one, three);
                 }
             });
         }
         id++;
         if (id == 5) id = 1;
         final int id4 = id;
-        ImageButton four;
+        final ImageButton four;
         if (GameData.PlayerList[id].hasLeftCard()) {
             four = GameData.game.fourthPlayerLeft;
         }
@@ -170,13 +170,13 @@ public class CardSix implements Card {
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    trade(id4, thePlayer);
+                    trade(id4, thePlayer, one, four);
                 }
             });
         }
     }
 
-    private void trade(final int id, final Player thePlayer) {
+    private void trade(final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
         AlertDialog.Builder toTrade = new AlertDialog.Builder(GameData.game);
         toTrade.setCancelable(false);
         toTrade.setTitle("Card 6 Effect");
@@ -185,17 +185,17 @@ public class CardSix implements Card {
         toTrade.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                tradeAction(id, thePlayer);
+                tradeAction(id, thePlayer, player, otherPlayer);
             }
         });
         toTrade.show();
     }
-    private void tradeAction(final int id, final Player thePlayer) {
+    private void tradeAction(final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
         Card card1 = thePlayer.getCard();
         Card card2 = GameData.PlayerList[id].getCard();
         thePlayer.setCard(card2);
         GameData.PlayerList[id].setCard(card1);
-        performAnimation(id, thePlayer);
+        performAnimation(id, thePlayer, player, otherPlayer);
 
     }
 
@@ -207,130 +207,32 @@ public class CardSix implements Card {
         protect.show();
     }
 
-    private void performAnimation (final int id, final Player thePlayer) {
-        final ImageButton a, b;
-        int number2 = GameData.PlayerList[id].getPlayerNumber(), number1 = thePlayer.getPlayerNumber();
-        if (thePlayer.hasLeft) {
-            a = GameData.game.firstPlayerLeft;
+    private void performAnimation (final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
+        final ImageButton b;
+        int number1 = thePlayer.getPlayerNumber();
+
+        if ((number1 == 1 && id == 2) || (number1 == 2 && id == 1)) {
+            swapOneTwo(player, otherPlayer,thePlayer,id);
+        }
+        else if ((number1 == 1 && id == 3) || (number1 == 3 && id == 1)) {
+            swapOneThree(player, otherPlayer, thePlayer, id);
+        }
+        else if ((number1 == 1 && id == 4) || (number1 == 4 && id == 1)) {
+            swapOneFour(player, otherPlayer, thePlayer, id);
+        }
+        else if ((number1 == 2 && id == 3) || (number1 == 3 && id == 2)) {
+            swapTwoThree(player, otherPlayer, thePlayer, id);
+        }
+        else if ((number1 == 2 && id == 4) || (number1 == 4 && id == 2)) {
+            swapTwoFour(player, otherPlayer, thePlayer, id);
         }
         else {
-            a = GameData.game.firstPlayerRight;
-        }
-
-        boolean hasLeft = GameData.PlayerList[id].hasLeft;
-
-        if (number1 == 1 && number2 == 2) {
-            if (hasLeft) {
-                b = GameData.game.secondPlayerLeft;
-            }
-            else {
-                b = GameData.game.secondPlayerRight;
-            }
-            animateSwap1to2(a,b,thePlayer,id);
-        }
-        else if (number1 == 1 && number2 == 3) {
-            if (hasLeft) {
-                b = GameData.game.thirdPlayerLeft;
-            }
-            else {
-                b = GameData.game.thirdPlayerRight;
-            }
-            animateSwap1to3(a, b, thePlayer, id);
-        }
-        else if (number1 == 1 && number2 == 4) {
-            if (hasLeft) {
-                b = GameData.game.fourthPlayerLeft;
-            }
-            else {
-                b = GameData.game.fourthPlayerRight;
-            }
-            animateSwap1to4(a, b, thePlayer, id);
-        }
-        else if (number1 == 2 && number2 == 1) {
-            if (hasLeft) {
-                b = GameData.game.fourthPlayerLeft;
-            }
-            else {
-                b = GameData.game.fourthPlayerRight;
-            }
-            animateSwap1to4(a, b, thePlayer, id);
-        }
-        else if (number1 == 2 && number2 == 4) {
-            if (hasLeft) {
-                b = GameData.game.thirdPlayerLeft;
-            }
-            else {
-                b = GameData.game.thirdPlayerRight;
-            }
-            animateSwap1to3(a, b, thePlayer, id);
-        }
-        else if (number1 == 2 && number2 == 3) {
-            if (hasLeft) {
-                b = GameData.game.secondPlayerLeft;
-            }
-            else {
-                b = GameData.game.secondPlayerRight;
-            }
-            animateSwap1to2(a,b,thePlayer,id);
-        }
-        else if (number1 == 3 && number2 == 1) {
-            if (hasLeft) {
-                b = GameData.game.thirdPlayerLeft;
-            }
-            else {
-                b = GameData.game.thirdPlayerRight;
-            }
-            animateSwap1to3(a, b, thePlayer, id);
-        }
-        else if (number1 == 3 && number2 == 2) {
-            if (hasLeft) {
-                b = GameData.game.fourthPlayerLeft;
-            }
-            else {
-                b = GameData.game.fourthPlayerRight;
-            }
-            animateSwap1to4(a, b, thePlayer, id);
-        }
-        else if (number1 == 3 && number2 == 4) {
-            if (hasLeft) {
-                b = GameData.game.secondPlayerLeft;
-            }
-            else {
-                b = GameData.game.secondPlayerRight;
-            }
-            animateSwap1to2(a,b,thePlayer,id);
-        }
-        else if (number1 == 4 && number2 == 1) {
-            if (hasLeft) {
-                b = GameData.game.secondPlayerLeft;
-            }
-            else {
-                b = GameData.game.secondPlayerRight;
-            }
-            animateSwap1to2(a,b,thePlayer,id);
-        }
-        else if (number1 == 4 && number2 == 2) {
-            if (hasLeft) {
-                b = GameData.game.thirdPlayerLeft;
-            }
-            else {
-                b = GameData.game.thirdPlayerRight;
-            }
-            animateSwap1to3(a, b, thePlayer, id);
-        }
-        else {
-            if (hasLeft) {
-                b = GameData.game.fourthPlayerLeft;
-            }
-            else {
-                b = GameData.game.fourthPlayerRight;
-            }
-            animateSwap1to4(a, b, thePlayer, id);
+            swapThreeFour(player, otherPlayer, thePlayer, id);
         }
 
     }
 
-    public void animateSwap1to2 (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+    public void swapOneTwo (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
                 int[] bcoordinates = new int[2];
@@ -364,7 +266,7 @@ public class CardSix implements Card {
                         AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
                         success.setCancelable(false);
                         success.setTitle("Card 6 Effect");
-                        success.setMessage("Success. You traded cards with player " + id + ".");
+                        success.setMessage("Player " + thePlayer.getPlayerNumber() " traded cards with player " + id + ".");
                         success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

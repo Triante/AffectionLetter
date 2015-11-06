@@ -19,7 +19,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
     private Button bMainMenu1, bMainMenu2, bMainMenu3, bMainMenu4;
     private boolean singlePlayerState = false;
     private boolean multiPlayerState = false;
-    public static Music theMusic = null;
+    private static Music theMusic = null;
     public static int returnState = 0;
     public static int otherState = 0;
     private Thread newThread;
@@ -66,10 +66,12 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 //local play
                 else {
                     Intent gameBeta = new Intent(this, Game.class);
+                    Game multiGame = new Game ();
+                    multiGame.setMusic(theMusic);
                     gameBeta.putExtra("single", false);
                     startActivity(gameBeta);
                     returnState = 0;
-                    mp.stop();
+                    theMusic.stop();
                 }
                 break;
             case R.id.bMainMenu3:
@@ -77,6 +79,8 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 if (singlePlayerState) {
                     Intent gameBeta = new Intent(this, Game.class);
                     gameBeta.putExtra("single", true);
+                    Game singleGame = new Game ();
+                    singleGame.setMusic(theMusic);
                     startActivity(gameBeta);
                     returnState = 0;
                     theMusic.stop();
@@ -110,7 +114,9 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 }
                 //options
                 else {
-                    Intent option = new Intent(this, Option.class);
+                    Option optionClass = new Option ();
+                    optionClass.setMusic(theMusic);
+                    Intent option = new Intent(this, optionClass.getClass());
                     startActivity(option);
                 }
                 break;

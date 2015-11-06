@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class Game extends ActionBarActivity {
     private ImageView expandedCardImage, backgroundOnPaused;
     private TextView cardDescriptionText, betaView;
     private boolean isSingleGame;
+    private static Music gameMusic = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class Game extends ActionBarActivity {
         //beta view
         betaView = (TextView) findViewById(R.id.beta_card_data);
 
-
+        startMusic();
         GameData.setContextMenu(this);
         GameData.setPlayerMode(isSingleGame);
         GameData.newGame();
@@ -86,6 +88,19 @@ public class Game extends ActionBarActivity {
 //                Game.this.runOnUiThread(beta);
 //            }
 //        }, 0, 200);
+    }
+
+    public void startMusic () {
+        gameMusic.setPlayer(new MediaPlayer().create(getApplication(), R.raw.magi_game));
+        if (gameMusic.isMute()) {
+            gameMusic.setVolume(0,0);
+        }
+        Thread newThread = new Thread(gameMusic);
+        newThread.start();
+    }
+
+    public void setMusic (Music piece) {
+        gameMusic = piece;
     }
 
     public void multiPlayerGame() {
@@ -1177,6 +1192,8 @@ public class Game extends ActionBarActivity {
         back.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                gameMusic.stop();
+                gameMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.pokemon_steven));
                 finish();
             }
         });

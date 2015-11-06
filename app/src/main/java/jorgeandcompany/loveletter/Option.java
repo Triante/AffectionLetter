@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 
 public class Option extends ActionBarActivity {
+    private static Music theMusic = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +23,7 @@ public class Option extends ActionBarActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             mute.setShowText(true);
         }
-        if (!MainMenu.theMusic.isMute()) {
+        if (!theMusic.isMute()) {
             mute.setChecked(true);
         }
 
@@ -44,13 +45,13 @@ public class Option extends ActionBarActivity {
         mute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MainMenu.theMusic.isMute()) {
-                    MainMenu.theMusic.setVolume(1, 1);
-                    MainMenu.theMusic.changeMuteStatus();
+                if (theMusic.isMute()) {
+                    theMusic.setVolume(1, 1);
+                    theMusic.changeMuteStatus();
 
                 } else {
-                    MainMenu.theMusic.setVolume(0, 0);
-                    MainMenu.theMusic.changeMuteStatus();
+                    theMusic.setVolume(0, 0);
+                    theMusic.changeMuteStatus();
                 }
             }
         });
@@ -60,5 +61,9 @@ public class Option extends ActionBarActivity {
     public void onBackPressed() {
         MainMenu.otherState++;
         finish();
+    }
+
+    public void setMusic (Music piece) {
+        theMusic = piece;
     }
 }
