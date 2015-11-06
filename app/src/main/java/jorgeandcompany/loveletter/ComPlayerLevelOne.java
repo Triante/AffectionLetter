@@ -2,6 +2,7 @@ package jorgeandcompany.loveletter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.ImageButton;
 
 import java.util.Random;
 

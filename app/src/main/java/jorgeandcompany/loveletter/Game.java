@@ -405,18 +405,26 @@ public class Game extends ActionBarActivity {
         }
     }
 
-    private void deckToFirstRight() {
+    private void dealCard(int rotation, ImageButton player) {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
         Animation translate;
         AnimationSet set;
-        firstPlayerRight.getLocationOnScreen(cardcoordinates);
+        Animation rotate;
+        player.getLocationOnScreen(cardcoordinates);
         deck.getLocationOnScreen(deckcoordinates);
         translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
+        rotate = new RotateAnimation(0, rotation, deck.getPivotX(), deck.getPivotY());
         translate.setDuration(1000);
-        set = new AnimationSet (true);
+        rotate.setDuration(1000);
+        set = new AnimationSet(true);
+        set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+    }
+
+    private void deckToFirstRight() {
+        dealCard(0, firstPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -427,21 +435,7 @@ public class Game extends ActionBarActivity {
 
     }
     private void deckToSecondRight() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        Animation translate;
-        Animation rotate;
-        AnimationSet set;
-        secondPlayerRight.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(90, secondPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -453,21 +447,7 @@ public class Game extends ActionBarActivity {
 
     }
     private void deckToThirdRight() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        Animation translate;
-        Animation rotate;
-        AnimationSet set;
-        thirdPlayerRight.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 180, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(180, thirdPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -479,21 +459,7 @@ public class Game extends ActionBarActivity {
 
     }
     private void deckToFourthRight() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        Animation translate;
-        Animation rotate;
-        AnimationSet set;
-        fourthPlayerRight.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(-90, fourthPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -505,17 +471,7 @@ public class Game extends ActionBarActivity {
     }
 
     private void deckToFirstLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        Animation translate;
-        AnimationSet set;
-        firstPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        translate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(0, firstPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -526,21 +482,7 @@ public class Game extends ActionBarActivity {
 
     }
     private void deckToSecondLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        Animation translate;
-        Animation rotate;
-        AnimationSet set;
-        secondPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(90, secondPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -552,21 +494,7 @@ public class Game extends ActionBarActivity {
 
     }
     private void deckToThirdLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        Animation translate;
-        Animation rotate;
-        AnimationSet set;
-        thirdPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 180, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(180, thirdPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -578,21 +506,7 @@ public class Game extends ActionBarActivity {
 
     }
     private void deckToFourthLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        Animation translate;
-        Animation rotate;
-        AnimationSet set;
-        fourthPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(-90, fourthPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 

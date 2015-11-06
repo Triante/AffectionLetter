@@ -208,39 +208,32 @@ public class CardSix implements Card {
     }
 
     private void performAnimation (final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
-        final ImageButton b;
         int number1 = thePlayer.getPlayerNumber();
 
-        if ((number1 == 1 && id == 2) || (number1 == 2 && id == 1)) {
-            swapOneTwo(player, otherPlayer,thePlayer,id);
+        if ((number1 == 1 && id == 2) || (number1 == 2 && id == 3) || (number1 == 3 && id == 4) || (number1 == 4 && id == 1)) {
+            swap(player, otherPlayer,thePlayer,id, -90, 90);
         }
-        else if ((number1 == 1 && id == 3) || (number1 == 3 && id == 1)) {
-            swapOneThree(player, otherPlayer, thePlayer, id);
+        else if((number1 == 2 && id == 1) || (number1 == 3 && id == 2) || (number1 == 4 && id == 3) || (number1 == 1 && id == 4)) {
+            swap(player, otherPlayer,thePlayer,id, 90, -90);
         }
-        else if ((number1 == 1 && id == 4) || (number1 == 4 && id == 1)) {
-            swapOneFour(player, otherPlayer, thePlayer, id);
-        }
-        else if ((number1 == 2 && id == 3) || (number1 == 3 && id == 2)) {
-            swapTwoThree(player, otherPlayer, thePlayer, id);
-        }
-        else if ((number1 == 2 && id == 4) || (number1 == 4 && id == 2)) {
-            swapTwoFour(player, otherPlayer, thePlayer, id);
+        else if ((number1 == 1 && id == 3) || (number1 == 2 && id == 4)){
+            swap(player, otherPlayer, thePlayer, id, -180, 180);
         }
         else {
-            swapThreeFour(player, otherPlayer, thePlayer, id);
+            swap(player, otherPlayer, thePlayer, id, 180, -180);
         }
 
     }
 
-    public void swapOneTwo (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
+    public void swap (final ImageButton a, final ImageButton b, final Player thePlayer, final int id, final int swap1, final int swap2) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
                 int[] bcoordinates = new int[2];
                 int[] acoordinates = new int[2];
                 a.getLocationOnScreen(acoordinates);
                 b.getLocationOnScreen(bcoordinates);
-                Animation rotateb = new RotateAnimation(0, -90, b.getPivotX(), b.getPivotY());
-                Animation rotatea = new RotateAnimation(0, 90, a.getPivotX(), a.getPivotY());
+                Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
                 rotatea.setDuration(1000);
                 rotateb.setDuration(1000);
                 Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
@@ -279,113 +272,5 @@ public class CardSix implements Card {
 
             }
         }.start();
-    }
-
-    public void swapOneThree (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-        new CountDownTimer(2000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                int[] bcoordinates = new int[2];
-                int[] acoordinates = new int[2];
-                a.getLocationOnScreen(acoordinates);
-                b.getLocationOnScreen(bcoordinates);
-                Animation rotateb = new RotateAnimation(0, 180, b.getPivotX(), b.getPivotY());
-                Animation rotatea = new RotateAnimation(0, -180, a.getPivotX(), a.getPivotY());
-                rotatea.setDuration(1000);
-                rotateb.setDuration(1000);
-                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
-                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
-                translateb.setDuration(1000);
-                translatea.setDuration(1000);
-                AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-                rotateandmovea.addAnimation(rotatea);
-                rotateandmovea.addAnimation(translatea);
-                rotateandmoveb.addAnimation(rotateb);
-                rotateandmoveb.addAnimation(translateb);
-                a.startAnimation(rotateandmovea);
-                b.startAnimation(rotateandmoveb);
-            }
-
-            public void onFinish() {
-                new CountDownTimer(2000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    public void onFinish() {
-                        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
-                        success.setCancelable(false);
-                        success.setTitle("Card 6 Effect");
-                        success.setMessage("Success. You traded cards with player " + id + ".");
-                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                GameData.game.endOfTurn(thePlayer);
-                            }
-                        });
-                        success.show();
-                    }
-                }.start();
-
-            }
-        }.start();
-    }
-
-    public void swapOneFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-        new CountDownTimer(2000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                int[] bcoordinates = new int[2];
-                int[] acoordinates = new int[2];
-                a.getLocationOnScreen(acoordinates);
-                b.getLocationOnScreen(bcoordinates);
-                Animation rotateb = new RotateAnimation(0, 90, b.getPivotX(), b.getPivotY());
-                Animation rotatea = new RotateAnimation(0, -90, a.getPivotX(), a.getPivotY());
-                rotatea.setDuration(1000);
-                rotateb.setDuration(1000);
-                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
-                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
-                translateb.setDuration(1000);
-                translatea.setDuration(1000);
-                AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-                rotateandmovea.addAnimation(rotatea);
-                rotateandmovea.addAnimation(translatea);
-                rotateandmoveb.addAnimation(rotateb);
-                rotateandmoveb.addAnimation(translateb);
-                a.startAnimation(rotateandmovea);
-                b.startAnimation(rotateandmoveb);
-            }
-
-            public void onFinish() {
-                new CountDownTimer(2000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    public void onFinish() {
-                        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
-                        success.setCancelable(false);
-                        success.setTitle("Card 6 Effect");
-                        success.setMessage("Success. You traded cards with player " + id + ".");
-                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                GameData.game.endOfTurn(thePlayer);
-                            }
-                        });
-                        success.show();
-                    }
-                }.start();
-
-            }
-        }.start();
-    }
-
-    public void swapTwoThree (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
-    }
-    public void swapTwoFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
-    }
-    public void swapThreeFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
     }
 }
