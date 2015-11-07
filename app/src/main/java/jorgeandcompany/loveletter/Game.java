@@ -923,7 +923,7 @@ public class Game extends ActionBarActivity {
                 AlertDialog.Builder preGame = new AlertDialog.Builder(Game.this);
                 String mes;
                 if (isSingleGame) mes = "Player " + GameData.TURN + " is up. Select OK when ready.";
-                else  mes = "Player " + GameData.TURN + " is up.\nPlease pass to player and select OK when ready.";
+                else  mes = "Player " + GameData.TURN + " is the first to gop.\nPlease pass to player and select OK when ready.";
                 preGame.setMessage(mes);
                 DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
                     @Override
