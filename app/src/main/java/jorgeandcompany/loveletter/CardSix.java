@@ -220,15 +220,6 @@ public class CardSix implements Card {
         else if ((number1 == 1 && id == 4) || (number1 == 4 && id == 1)) {
             swapOneFour(player, otherPlayer, thePlayer, id);
         }
-        else if ((number1 == 2 && id == 3) || (number1 == 3 && id == 2)) {
-            swapTwoThree(player, otherPlayer, thePlayer, id);
-        }
-        else if ((number1 == 2 && id == 4) || (number1 == 4 && id == 2)) {
-            swapTwoFour(player, otherPlayer, thePlayer, id);
-        }
-        else {
-            swapThreeFour(player, otherPlayer, thePlayer, id);
-        }
 
     }
 

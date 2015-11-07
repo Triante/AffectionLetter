@@ -236,6 +236,9 @@ public class Game extends ActionBarActivity {
                        GameData.nextTurn();
                    }
                    GameData.Score[GameData.TURN - 1]++;
+                   if (GameData.Score[GameData.TURN - 1] == 7) {
+                       GameData.GAME_COMPLETE = true;
+                   }
                    AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
                    nextPlayerReady.setTitle("END");
                    nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!\n" +
@@ -247,8 +250,13 @@ public class Game extends ActionBarActivity {
                    DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
-                           GameData.newRound();
-                           handOutCards(GameData.TURN);
+                           if (GameData.GAME_COMPLETE) {
+                               endOfGame(GameData.TURN);
+                           }
+                           else {
+                               GameData.newRound();
+                               handOutCards(GameData.TURN);
+                           }
                        }
                    };
                    nextPlayerReady.setPositiveButton("YAY", ok);
@@ -285,6 +293,9 @@ public class Game extends ActionBarActivity {
                    {
                        winners += " " + x + " and";
                        GameData.Score[x-1]++;
+                       if (GameData.Score[x - 1] == 7) {
+                           GameData.GAME_COMPLETE = true;
+                       }
                    }
                    winners = winners.substring(0, winners.length() - 4);
                    AlertDialog.Builder end = new AlertDialog.Builder(Game.this);
@@ -298,8 +309,17 @@ public class Game extends ActionBarActivity {
                    end.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
-                           GameData.newRound();
-                           handOutCards(GameData.TURN);
+                           if (GameData.GAME_COMPLETE) {
+                               if (GameData.Score[0] == 7) endOfGame(1);
+                               else if (GameData.Score[1] == 7) endOfGame(2);
+                               else if (GameData.Score[2] == 7) endOfGame(3);
+                               else endOfGame(4);
+                           }
+                           else
+                           {
+                               GameData.newRound();
+                               handOutCards(GameData.TURN);
+                           }
                        }
                    });
                    end.show();
@@ -339,6 +359,29 @@ public class Game extends ActionBarActivity {
         };
         toEnd.start();
      }
+    private void endOfGame(int winner) {
+        AlertDialog.Builder win = new AlertDialog.Builder(this);
+        win.setCancelable(false);
+        win.setTitle("Game Over");
+        win.setMessage("The winner is player " + winner + "!\n" +
+                "Play again?");
+        win.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                clearTable();
+                GameData.newGame();
+                handOutCards(GameData.TURN);
+            }
+        });
+        win.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                gameMusic.stop();
+                finish();
+            }
+        });
+        win.show();
+    }
 
     //animations
     public void deckToRight(int playerID) {
@@ -754,7 +797,7 @@ public class Game extends ActionBarActivity {
         }.start();
     }
 
-    private void cardToCenterSinglePlayer(Player on, int hand) {
+    public void cardToCenterSinglePlayer(Player on, int hand) {
         //left
         int playerNum = on.getPlayerNumber();
         if (hand == 0) {

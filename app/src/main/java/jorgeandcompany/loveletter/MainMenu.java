@@ -148,6 +148,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 return;
             }
             if (returnState == otherState && newThread != null) {
+                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.pokemon_steven));
                 theMusic.run();
             }
     }

@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by Firemon123 on 11/5/2015.
  */
-public class ComPlayerLevelTwo implements Player {
+public class hoogabooga implements Player {
     private Card leftCard = null;
     private Card rightCard = null;
     private final int playerNumber;
@@ -26,7 +26,7 @@ public class ComPlayerLevelTwo implements Player {
     private boolean toPlayOne = false;
 
 
-    public ComPlayerLevelTwo(int playerNumber) {
+    public hoogabooga(int playerNumber) {
         this.playerNumber = playerNumber;
     }
 
@@ -75,7 +75,7 @@ public class ComPlayerLevelTwo implements Player {
                     }
                     done = true;
                 } else if (!otherDone) {
-                    GameData.game.cardToCenterSinglePlayer(ComPlayerLevelTwo.this, toPlay);
+                    GameData.game.cardToCenterSinglePlayer(hoogabooga.this, toPlay);
                     otherDone = true;
                 }
 
@@ -168,8 +168,11 @@ public class ComPlayerLevelTwo implements Player {
         hasLeft = false;
         hasRight = false;
         isProtected = false;
+        remembers = false;
         leftCard = null;
         rightCard = null;
+        rememberCardNum = 0;
+        rememberPlayerNum = 0;
     }
 
     @Override
@@ -259,7 +262,7 @@ public class ComPlayerLevelTwo implements Player {
             if (hand[0] == 4) return 0;
             else return 1;
         }
-        else if ((hand[0] == 1 || hand[1]== 1) && remembers && !GameData.PlayerList[rememberPlayerNum].isProtected()) {
+        else if ((hand[0] == 1 || hand[1]== 1) && remembers && !GameData.PlayerList[rememberPlayerNum].isProtected() && rememberCardNum != 1) {
             toPlayOne = true;
             if (hand[0] == 1) return 0;
             else return 1;
@@ -293,7 +296,7 @@ public class ComPlayerLevelTwo implements Player {
             else return 1;
         }
         else {
-        // (hand[0] == 8 || hand[1] == 8)
+            // (hand[0] == 8 || hand[1] == 8)
             if (hand[0] == 8) return 1;
             else return 0;
         }
@@ -349,7 +352,7 @@ public class ComPlayerLevelTwo implements Player {
         String message = "";
         int chosen = selectPlayer();
         int guess;
-        if(toPlayOne) {
+        if(toPlayOne && rememberCardNum == 1) {
             guess = rememberCardNum;
             toPlayOne = false;
             remembers = false;
@@ -386,7 +389,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn(hoogabooga.this);
             }
         });
         alert.show();
@@ -410,7 +413,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn(hoogabooga.this);
             }
         });
         alert.show();
@@ -452,7 +455,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn(hoogabooga.this);
             }
         });
         alert.show();
@@ -466,7 +469,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn(hoogabooga.this);
             }
         });
         alert.show();
@@ -497,7 +500,7 @@ public class ComPlayerLevelTwo implements Player {
                     } else {
                         GameData.PlayerList[select].drawFirstCard();
                     }
-                    GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                    GameData.game.endOfTurn(hoogabooga.this);
                 }
                 else {
                     GameData.PlayerList[select].discardCard();
@@ -527,7 +530,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn(hoogabooga.this);
             }
         });
         alert.show();
@@ -540,7 +543,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn(hoogabooga.this);
             }
         });
         alert.show();
@@ -554,7 +557,7 @@ public class ComPlayerLevelTwo implements Player {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GameData.out(playerNumber);
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn(hoogabooga.this);
             }
         });
         alert.show();
