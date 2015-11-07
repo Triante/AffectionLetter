@@ -371,7 +371,8 @@ public class ComPlayerLevelTwo implements Player {
             message = "Player " + playerNumber + " used card 1.\n" +
                     "Player " + playerNumber + " guessed if player " + chosen + " had card "+ guess + "." ;
             if (GameData.PlayerList[chosen].getCard().getValue() == guess) {
-                message += "\nPlayer " + playerNumber + " guessed correctly. Player "+ chosen + "is out.";
+                message += "\nPlayer " + playerNumber + " guessed correctly.\n" +
+                        "Player "+ chosen + " is out.";
                 GameData.out(chosen);
             }
             else {

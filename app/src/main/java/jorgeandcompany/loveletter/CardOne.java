@@ -216,8 +216,8 @@ public class CardOne implements Card {
             @Override
             public void onClick(DialogInterface dialog, int guess) {
                 int theGuess = guess + 2;
-                Card a = CardFactory.createCard(theGuess);
-                if (GameData.PlayerList[toCheck].getCard().equals(theGuess)) {
+                Card card = CardFactory.createCard(theGuess);
+                if (GameData.PlayerList[toCheck].getCard().equals(card)) {
                     success(toCheck, theGuess, player);
                 } else {
                     failure(toCheck, theGuess, player);

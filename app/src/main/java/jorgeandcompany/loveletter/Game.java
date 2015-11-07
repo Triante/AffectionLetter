@@ -83,19 +83,19 @@ public class Game extends ActionBarActivity {
         handOutCards(GameData.TURN);
 
 
-//        Timer toChangeBeta = new Timer();
-//        toChangeBeta.schedule(new TimerTask() {
-//            Runnable beta = new Runnable() {
-//                @Override
-//                public void run() {
-//                    setBetaStuff();
-//                }
-//            };
-//            @Override
-//            public void run() {
-//                Game.this.runOnUiThread(beta);
-//            }
-//        }, 0, 200);
+        Timer toChangeBeta = new Timer();
+        toChangeBeta.schedule(new TimerTask() {
+            Runnable beta = new Runnable() {
+                @Override
+                public void run() {
+                    setBetaStuff();
+                }
+            };
+            @Override
+            public void run() {
+                Game.this.runOnUiThread(beta);
+            }
+        }, 0, 200);
     }
 
 
