@@ -18,6 +18,7 @@ public class GameData {
     public static int firstOut;
     public static boolean FINISH_GAME;
     public static boolean noOut;
+    public static boolean GAME_COMPLETE;
 
 
     public static Game game;
@@ -36,9 +37,9 @@ public class GameData {
     public static void setPlayerMode(boolean single) {
         if (single) {
             PlayerList[1] = new HumanPlayer(1);
-            PlayerList[2] = new ComPlayerLevelOne(2);
-            PlayerList[3] = new ComPlayerLevelOne(3);
-            PlayerList[4] = new ComPlayerLevelOne(4);
+            PlayerList[2] = new ComPlayerLevelTwo(2);
+            PlayerList[3] = new ComPlayerLevelTwo(3);
+            PlayerList[4] = new ComPlayerLevelTwo(4);
         }
         else {
             PlayerList[1] = new HumanPlayer(1);
@@ -49,19 +50,30 @@ public class GameData {
     }
 
     public static void newGame() {
+        Score[0] = 0;
+        Score[1] = 0;
+        Score[2] = 0;
+        Score[3] = 0;
+
         deck = new Deck();
         discard = new ArrayList<Card>();
         selectFirstTurnPlayer();
         OutCard = deck.draw();
         FINISH_GAME = false;
         noOut = false;
+        GAME_COMPLETE = false;
         remain = 4;
+
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
+        PlayerList[TURN].clearHand();
         PlayerList[TURN].drawFirstCard();
         nextTurn();
     }

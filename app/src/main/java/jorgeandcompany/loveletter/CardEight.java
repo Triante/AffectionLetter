@@ -74,4 +74,12 @@ public class CardEight implements Card {
                 return R.drawable.judarver;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Card)) return false;
+        Card other = (Card) o;
+        if (getValue() == other.getValue()) return true;
+        else return false;
+    }
 }

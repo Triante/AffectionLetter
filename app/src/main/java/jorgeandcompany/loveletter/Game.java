@@ -83,37 +83,24 @@ public class Game extends ActionBarActivity {
         handOutCards(GameData.TURN);
 
 
-//        Timer toChangeBeta = new Timer();
-//        toChangeBeta.schedule(new TimerTask() {
-//            Runnable beta = new Runnable() {
-//                @Override
-//                public void run() {
-//                    setBetaStuff();
-//                }
-//            };
-//            @Override
-//            public void run() {
-//                Game.this.runOnUiThread(beta);
-//            }
-//        }, 0, 200);
+        Timer toChangeBeta = new Timer();
+        toChangeBeta.schedule(new TimerTask() {
+            Runnable beta = new Runnable() {
+                @Override
+                public void run() {
+                    setBetaStuff();
+                }
+            };
+            @Override
+            public void run() {
+                Game.this.runOnUiThread(beta);
+            }
+        }, 0, 200);
     }
 
-    public void startMusic () throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method m = Music.class.getDeclaredMethod("setPlayer", MediaPlayer.class);
-        m.invoke(gameMusic, new MediaPlayer().create(getApplication(), R.raw.magi_game));
-        if (Music.isMute()) {
-            gameMusic.setVolume(0,0);
-        }
-        Thread newThread = new Thread(gameMusic);
-        newThread.start();
-    }
-
-    public void setMusic (Music piece) {
-        gameMusic = piece;
-    }
 
     public void multiPlayerGame() {
-        int turn = GameData.TURN;
+        int turn = GameData.TURN;;
         final Player on = GameData.PlayerList[turn];
         //remove card 4 effect if active
         if (on.isProtected()) {
@@ -153,7 +140,7 @@ public class Game extends ActionBarActivity {
 //        }
     }
     public void singlePlayerGame() {
-        int turn = GameData.TURN;
+        int turn = GameData.TURN;;
         final Player on = GameData.PlayerList[turn];
         //remove card 4 effect if active
         if (on.isProtected()) {
@@ -249,6 +236,9 @@ public class Game extends ActionBarActivity {
                        GameData.nextTurn();
                    }
                    GameData.Score[GameData.TURN - 1]++;
+                   if (GameData.Score[GameData.TURN - 1] == 7) {
+                       GameData.GAME_COMPLETE = true;
+                   }
                    AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
                    nextPlayerReady.setTitle("END");
                    nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!\n" +
@@ -260,8 +250,13 @@ public class Game extends ActionBarActivity {
                    DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
-                           GameData.newRound();
-                           handOutCards(GameData.TURN);
+                           if (GameData.GAME_COMPLETE) {
+                               endOfGame(GameData.TURN);
+                           }
+                           else {
+                               GameData.newRound();
+                               handOutCards(GameData.TURN);
+                           }
                        }
                    };
                    nextPlayerReady.setPositiveButton("YAY", ok);
@@ -298,6 +293,9 @@ public class Game extends ActionBarActivity {
                    {
                        winners += " " + x + " and";
                        GameData.Score[x-1]++;
+                       if (GameData.Score[x - 1] == 7) {
+                           GameData.GAME_COMPLETE = true;
+                       }
                    }
                    winners = winners.substring(0, winners.length() - 4);
                    AlertDialog.Builder end = new AlertDialog.Builder(Game.this);
@@ -311,8 +309,17 @@ public class Game extends ActionBarActivity {
                    end.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
-                           GameData.newRound();
-                           handOutCards(GameData.TURN);
+                           if (GameData.GAME_COMPLETE) {
+                               if (GameData.Score[0] == 7) endOfGame(1);
+                               else if (GameData.Score[1] == 7) endOfGame(2);
+                               else if (GameData.Score[2] == 7) endOfGame(3);
+                               else endOfGame(4);
+                           }
+                           else
+                           {
+                               GameData.newRound();
+                               handOutCards(GameData.TURN);
+                           }
                        }
                    });
                    end.show();
@@ -352,26 +359,31 @@ public class Game extends ActionBarActivity {
         };
         toEnd.start();
      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void endOfGame(int winner) {
+        AlertDialog.Builder win = new AlertDialog.Builder(this);
+        win.setCancelable(false);
+        win.setTitle("Game Over");
+        win.setMessage("The winner is player " + winner + "!\n" +
+                "Play again?");
+        win.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                clearTable();
+                GameData.newGame();
+                handOutCards(GameData.TURN);
+            }
+        });
+        win.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                gameMusic.stop();
+                finish();
+            }
+        });
+        win.show();
+    }
 
     //animations
-
     public void deckToRight(int playerID) {
         switch (playerID){
             case 1:
@@ -429,7 +441,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                firstPlayerRight.setVisibility(View.VISIBLE);
+                firstPlayerRight.setVisibility(firstPlayerRight.VISIBLE);
             }
         }.start();
 
@@ -440,7 +452,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                secondPlayerRight.setVisibility(View.VISIBLE);
+                secondPlayerRight.setVisibility(secondPlayerRight.VISIBLE);
             }
         }.start();
 
@@ -452,7 +464,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                thirdPlayerRight.setVisibility(View.VISIBLE);
+                thirdPlayerRight.setVisibility(thirdPlayerRight.VISIBLE);
             }
         }.start();
 
@@ -464,7 +476,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                fourthPlayerRight.setVisibility(View.VISIBLE);
+                fourthPlayerRight.setVisibility(fourthPlayerRight.VISIBLE);
             }
         }.start();
 
@@ -476,7 +488,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                firstPlayerLeft.setVisibility(View.VISIBLE);
+                firstPlayerLeft.setVisibility(firstPlayerLeft.VISIBLE);
             }
         }.start();
 
@@ -487,7 +499,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                secondPlayerLeft.setVisibility(View.VISIBLE);
+                secondPlayerLeft.setVisibility(secondPlayerLeft.VISIBLE);
             }
         }.start();
 
@@ -499,7 +511,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                thirdPlayerLeft.setVisibility(View.VISIBLE);
+                thirdPlayerLeft.setVisibility(thirdPlayerLeft.VISIBLE);
             }
         }.start();
 
@@ -511,7 +523,7 @@ public class Game extends ActionBarActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                fourthPlayerLeft.setVisibility(View.VISIBLE);
+                fourthPlayerLeft.setVisibility(fourthPlayerLeft.VISIBLE);
             }
         }.start();
 
@@ -525,9 +537,8 @@ public class Game extends ActionBarActivity {
         Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
         translate.setDuration(1000);
         firstPlayerRight.startAnimation(translate);
-        firstPlayerRight.setVisibility(View.INVISIBLE);
+        firstPlayerRight.setVisibility(firstPlayerRight.INVISIBLE);
     }
-
     private void secondRightToDeck() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -541,9 +552,8 @@ public class Game extends ActionBarActivity {
         rotateandmove.addAnimation(rotate);
         rotateandmove.addAnimation(translateleftrigt);
         secondPlayerRight.startAnimation(rotateandmove);
-        secondPlayerRight.setVisibility(View.INVISIBLE);
+        secondPlayerRight.setVisibility(secondPlayerRight.INVISIBLE);
     }
-
     private void thirdRightToDeck() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -552,9 +562,8 @@ public class Game extends ActionBarActivity {
         Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
         translate.setDuration(1000);
         thirdPlayerRight.startAnimation(translate);
-        thirdPlayerRight.setVisibility(View.INVISIBLE);
+        thirdPlayerRight.setVisibility(thirdPlayerRight.INVISIBLE);
     }
-
     private void fourthRightToDeck() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -568,7 +577,7 @@ public class Game extends ActionBarActivity {
         rotateandmove.addAnimation(rotate);
         rotateandmove.addAnimation(translateleftrigt);
         fourthPlayerRight.startAnimation(rotateandmove);
-        fourthPlayerRight.setVisibility(View.INVISIBLE);
+        fourthPlayerRight.setVisibility(fourthPlayerRight.INVISIBLE);
     }
 
     private void firstLeftToDeck() {
@@ -579,9 +588,8 @@ public class Game extends ActionBarActivity {
         Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
         translate.setDuration(1000);
         firstPlayerLeft.startAnimation(translate);
-        firstPlayerLeft.setVisibility(View.INVISIBLE);
+        firstPlayerLeft.setVisibility(firstPlayerLeft.INVISIBLE);
     }
-
     private void secondLeftToDeck() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -595,9 +603,8 @@ public class Game extends ActionBarActivity {
         rotateandmove.addAnimation(rotate);
         rotateandmove.addAnimation(translateleftrigt);
         secondPlayerLeft.startAnimation(rotateandmove);
-        secondPlayerLeft.setVisibility(View.INVISIBLE);
+        secondPlayerLeft.setVisibility(secondPlayerLeft.INVISIBLE);
     }
-
     private void thirdLeftToDeck() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -606,9 +613,8 @@ public class Game extends ActionBarActivity {
         Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
         translate.setDuration(1000);
         thirdPlayerLeft.startAnimation(translate);
-        thirdPlayerLeft.setVisibility(View.INVISIBLE);
+        thirdPlayerLeft.setVisibility(thirdPlayerLeft.INVISIBLE);
     }
-
     private void fourthLeftToDeck() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -622,7 +628,28 @@ public class Game extends ActionBarActivity {
         rotateandmove.addAnimation(rotate);
         rotateandmove.addAnimation(translateleftrigt);
         fourthPlayerLeft.startAnimation(rotateandmove);
-        fourthPlayerLeft.setVisibility(View.INVISIBLE);
+        fourthPlayerLeft.setVisibility(fourthPlayerLeft.INVISIBLE);
+    }
+
+    private void deckToOutCard() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        Animation translate;
+        AnimationSet set;
+        outCard.getLocationOnScreen(cardcoordinates);
+        deck.getLocationOnScreen(deckcoordinates);
+        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
+        translate.setDuration(1000);
+        set = new AnimationSet (true);
+        set.addAnimation(translate);
+        deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                outCard.setVisibility(firstPlayerLeft.VISIBLE);
+            }
+        }.start();
     }
 
     //currently just does animation, from back to front.
@@ -684,7 +711,7 @@ public class Game extends ActionBarActivity {
         }.start();
     }
 
-    private void cardToCenterSinglePlayer(Player on, int hand) {
+    public void cardToCenterSinglePlayer(Player on, int hand) {
         //left
         int playerNum = on.getPlayerNumber();
         if (hand == 0) {
@@ -721,7 +748,6 @@ public class Game extends ActionBarActivity {
         if (hand == 0) firstLeftToDeck();
         else firstRightToDeck();
     }
-
 
     //has method to play card. Ends a turn.
     private void imageZoomToOpen(final Player on, final int hand, final View toFlip) {
@@ -782,24 +808,7 @@ public class Game extends ActionBarActivity {
             int a = -1;
             public void onTick(long millisUntilFinished) {
                 if (a == 0) {
-                    int[] cardcoordinates = new int[2];
-                    int[] deckcoordinates = new int[2];
-                    Animation translate;
-                    AnimationSet set;
-                    outCard.getLocationOnScreen(cardcoordinates);
-                    deck.getLocationOnScreen(deckcoordinates);
-                    translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-                    translate.setDuration(1000);
-                    set = new AnimationSet (true);
-                    set.addAnimation(translate);
-                    deck.startAnimation(set);
-                    new CountDownTimer(1000, 1000) {
-                        public void onTick(long millisUntilFinished) {}
-
-                        public void onFinish() {
-                            outCard.setVisibility(View.VISIBLE);
-                        }
-                    }.start();
+                    deckToOutCard();
                     a = firstPlayer;
                 }
                 else if (a == 1) {
@@ -828,7 +837,7 @@ public class Game extends ActionBarActivity {
                 AlertDialog.Builder preGame = new AlertDialog.Builder(Game.this);
                 String mes;
                 if (isSingleGame) mes = "Player " + GameData.TURN + " is up. Select OK when ready.";
-                else  mes = "Player " + GameData.TURN + " is up.\nPlease pass to player and select OK when ready.";
+                else  mes = "Player " + GameData.TURN + " is the first to gop.\nPlease pass to player and select OK when ready.";
                 preGame.setMessage(mes);
                 DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
                     @Override
@@ -1109,6 +1118,18 @@ public class Game extends ActionBarActivity {
         String whole = "Beta Card Data" + "\nPlayer 1: " + top + "\nPlayer 2: " + middle + "\nPlayer 3: " + middle2
                 + "\nPlayer 4: " + bottom + "\nOut Card: " + GameData.OutCard.getValue() +"\nIn Deck: " +GameData.deck.getDeckCount();
         betaView.setText(whole);
+    }
+    public void startMusic () throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method m = Music.class.getDeclaredMethod("setPlayer", MediaPlayer.class);
+        m.invoke(gameMusic, new MediaPlayer().create(getApplication(), R.raw.magi_game));
+        if (Music.isMute()) {
+            gameMusic.setVolume(0,0);
+        }
+        Thread newThread = new Thread(gameMusic);
+        newThread.start();
+    }
+    public void setMusic (Music piece) {
+        gameMusic = piece;
     }
 
     @Override
