@@ -3,6 +3,11 @@ package jorgeandcompany.loveletter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 
 import java.util.Random;
 
@@ -512,14 +517,136 @@ public class ComPlayerLevelTwo implements Player {
     }
     private void effectSix() {
         String message = "";
-        int chosen = selectPlayer();
+        final int chosen = selectPlayer();
         if (chosen != 0) {
-            message = "Player " + playerNumber + " used card 6.\n" +
-                    "Player " + playerNumber + " traded cards with player " + chosen;
             Card c1 = getCard();
             Card c2 = GameData.PlayerList[chosen].getCard();
             setCard(c2);
             GameData.PlayerList[chosen].setCard(c1);
+            ImageButton temp1 = null;
+            ImageButton temp2 = null;
+            final int swap1;
+            final int swap2;
+            if (GameData.PlayerList[playerNumber].hasLeftCard()) {
+                switch(playerNumber){
+                    case 1:
+                        temp1 = GameData.game.firstPlayerLeft;
+                        break;
+                    case 2:
+                        temp1 = GameData.game.secondPlayerLeft;
+                        break;
+                    case 3:
+                        temp1 = GameData.game.thirdPlayerLeft;
+                        break;
+                    case 4:
+                        temp1 = GameData.game.fourthPlayerLeft;
+                        break;
+                }
+            }
+            else {
+                switch(playerNumber){
+                    case 1:
+                        temp1 = GameData.game.firstPlayerRight;
+                        break;
+                    case 2:
+                        temp1 = GameData.game.secondPlayerRight;
+                        break;
+                    case 3:
+                        temp1 = GameData.game.thirdPlayerRight;
+                        break;
+                    case 4:
+                        temp1 = GameData.game.fourthPlayerRight;
+                        break;
+                }
+            }
+            if (GameData.PlayerList[chosen].hasLeftCard()) {
+                switch(chosen){
+                    case 1:
+                        temp2 = GameData.game.firstPlayerLeft;
+                        break;
+                    case 2:
+                        temp2 = GameData.game.secondPlayerLeft;
+                        break;
+                    case 3:
+                        temp2 = GameData.game.thirdPlayerLeft;
+                        break;
+                    case 4:
+                        temp2 = GameData.game.fourthPlayerLeft;
+                        break;
+                }
+            }
+            else {
+                switch(chosen){
+                    case 1:
+                        temp2 = GameData.game.firstPlayerRight;
+                        break;
+                    case 2:
+                        temp2 = GameData.game.secondPlayerRight;
+                        break;
+                    case 3:
+                        temp2 = GameData.game.thirdPlayerRight;
+                        break;
+                    case 4:
+                        temp2 = GameData.game.fourthPlayerRight;
+                        break;
+                }
+            }
+            final ImageButton a = temp1;
+            final ImageButton b = temp2;
+
+            if ((playerNumber == 1 && chosen == 2) || (playerNumber == 2 && chosen == 3) || (playerNumber == 3 && chosen == 4) || (playerNumber == 4 && chosen == 1)) {
+                swap1 = -90;
+                swap2 = 90;
+            }
+            else if((playerNumber == 2 && chosen == 1) || (playerNumber == 3 && chosen == 2) || (playerNumber == 4 && chosen == 3) || (playerNumber == 1 && chosen == 4)) {
+                swap1 = 90;
+                swap2 = -90;
+            }
+            else if ((playerNumber == 1 && chosen == 3) || (playerNumber == 2 && chosen == 4)){
+                swap1 = -180;
+                swap2 = 180;
+            }
+            else {
+                swap1 = 180;
+                swap2 = -180;
+            }
+            new CountDownTimer(2000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    int[] bcoordinates = new int[2];
+                    int[] acoordinates = new int[2];
+                    a.getLocationOnScreen(acoordinates);
+                    b.getLocationOnScreen(bcoordinates);
+                    Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
+                    Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
+                    rotatea.setDuration(1000);
+                    rotateb.setDuration(1000);
+                    Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
+                    Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                    translateb.setDuration(1000);
+                    translatea.setDuration(1000);
+                    AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
+                    rotateandmovea.addAnimation(rotatea);
+                    rotateandmovea.addAnimation(translatea);
+                    rotateandmoveb.addAnimation(rotateb);
+                    rotateandmoveb.addAnimation(translateb);
+                    a.startAnimation(rotateandmovea);
+                    b.startAnimation(rotateandmoveb);
+                }
+
+                public void onFinish() {
+                    new CountDownTimer(2000, 1000) {
+                        public void onTick(long millisUntilFinished) {
+
+                        }
+
+                        public void onFinish() {
+                        }
+                    }.start();
+
+                }
+            }.start();
+            message = "Player " + playerNumber + " used card 6.\n" +
+                    "Player " + playerNumber + " traded cards with player " + chosen;
         }
         else {
             message = "Player " + playerNumber + " used card 6. Active players were all protected.";
