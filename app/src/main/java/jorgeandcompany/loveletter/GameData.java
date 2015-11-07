@@ -37,9 +37,9 @@ public class GameData {
     public static void setPlayerMode(boolean single) {
         if (single) {
             PlayerList[1] = new HumanPlayer(1);
-            PlayerList[2] = new hoogabooga(2);
-            PlayerList[3] = new hoogabooga(3);
-            PlayerList[4] = new hoogabooga(4);
+            PlayerList[2] = new ComPlayerLevelTwo(2);
+            PlayerList[3] = new ComPlayerLevelTwo(3);
+            PlayerList[4] = new ComPlayerLevelTwo(4);
         }
         else {
             PlayerList[1] = new HumanPlayer(1);

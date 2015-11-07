@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by Firemon123 on 11/5/2015.
  */
-public class hoogabooga implements Player {
+public class ComPlayerLevelTwo implements Player {
     private Card leftCard = null;
     private Card rightCard = null;
     private final int playerNumber;
@@ -26,7 +26,7 @@ public class hoogabooga implements Player {
     private boolean toPlayOne = false;
 
 
-    public hoogabooga(int playerNumber) {
+    public ComPlayerLevelTwo(int playerNumber) {
         this.playerNumber = playerNumber;
     }
 
@@ -75,7 +75,7 @@ public class hoogabooga implements Player {
                     }
                     done = true;
                 } else if (!otherDone) {
-                    GameData.game.cardToCenterSinglePlayer(hoogabooga.this, toPlay);
+                    GameData.game.cardToCenterSinglePlayer(ComPlayerLevelTwo.this, toPlay);
                     otherDone = true;
                 }
 
@@ -389,7 +389,7 @@ public class hoogabooga implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(hoogabooga.this);
+                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
             }
         });
         alert.show();
@@ -413,7 +413,7 @@ public class hoogabooga implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(hoogabooga.this);
+                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
             }
         });
         alert.show();
@@ -455,7 +455,7 @@ public class hoogabooga implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(hoogabooga.this);
+                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
             }
         });
         alert.show();
@@ -469,7 +469,7 @@ public class hoogabooga implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(hoogabooga.this);
+                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
             }
         });
         alert.show();
@@ -500,7 +500,7 @@ public class hoogabooga implements Player {
                     } else {
                         GameData.PlayerList[select].drawFirstCard();
                     }
-                    GameData.game.endOfTurn(hoogabooga.this);
+                    GameData.game.endOfTurn(ComPlayerLevelTwo.this);
                 }
                 else {
                     GameData.PlayerList[select].discardCard();
@@ -530,7 +530,7 @@ public class hoogabooga implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(hoogabooga.this);
+                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
             }
         });
         alert.show();
@@ -543,7 +543,7 @@ public class hoogabooga implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(hoogabooga.this);
+                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
             }
         });
         alert.show();
@@ -557,7 +557,7 @@ public class hoogabooga implements Player {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GameData.out(playerNumber);
-                GameData.game.endOfTurn(hoogabooga.this);
+                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
             }
         });
         alert.show();
