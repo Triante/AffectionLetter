@@ -59,10 +59,10 @@ public class CardFive implements Card {
         int id = thePlayer.getPlayerNumber();
         final ImageButton one;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            one = GameData.game.firstPlayerLeft;
+            one = GameData.game.getButton("firstPlayerLeft");
         }
         else {
-            one = GameData.game.firstPlayerRight;
+            one = GameData.game.getButton("firstPlayerRight");
         }
         one.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,10 +87,10 @@ public class CardFive implements Card {
         final int id2 = id;
         final ImageButton two;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            two = GameData.game.secondPlayerLeft;
+            two = GameData.game.getButton("secondPlayerLeft");
         }
         else {
-            two = GameData.game.secondPlayerRight;
+            two = GameData.game.getButton("secondPlayerRight");
         }
         if (GameData.PlayerList[id].isProtected()) {
             two.setOnClickListener(new View.OnClickListener() {
@@ -113,10 +113,10 @@ public class CardFive implements Card {
         final int id3 = id;
         final ImageButton three;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            three = GameData.game.thirdPlayerLeft;
+            three = GameData.game.getButton("thirdPlayerLeft");
         }
         else {
-            three = GameData.game.thirdPlayerRight;
+            three = GameData.game.getButton("thirdPlayerRight");
         }
         if (GameData.PlayerList[id].isProtected()) {
             three.setOnClickListener(new View.OnClickListener() {
@@ -139,10 +139,10 @@ public class CardFive implements Card {
         final int id4 = id;
         final ImageButton four;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            four = GameData.game.fourthPlayerLeft;
+            four = GameData.game.getButton("fourthPlayerLeft");
         }
         else {
-            four = GameData.game.fourthPlayerRight;
+            four = GameData.game.getButton("fourthPlayerRight");
         }
         if (GameData.PlayerList[id].isProtected()) {
             four.setOnClickListener(new View.OnClickListener() {
@@ -225,20 +225,20 @@ public class CardFive implements Card {
         final Animation translateb;
         final Animation translatea;
         final AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-        GameData.game.deck.getLocationOnScreen(acoordinates);
+        GameData.game.getButton("deck").getLocationOnScreen(acoordinates);
         button.getLocationOnScreen(bcoordinates);
-        if (button == GameData.game.firstPlayerLeft || button == GameData.game.firstPlayerRight) {
+        if (button == GameData.game.getButton("firstPlayerLeft") || button == GameData.game.getButton("firstPlayerRight")) {
             rotateb = new RotateAnimation(0, 0, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 0, GameData.game.deck.getPivotX(), GameData.game.deck.getPivotY());
-        } else if (button == GameData.game.secondPlayerLeft || button == GameData.game.secondPlayerRight) {
+            rotatea = new RotateAnimation(0, 0, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
+        } else if (button == GameData.game.getButton("secondPlayerLeft") || button == GameData.game.getButton("secondPlayerRight")) {
             rotateb = new RotateAnimation(0, -90, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 90, GameData.game.deck.getPivotX(), GameData.game.deck.getPivotY());
-        } else if (button == GameData.game.thirdPlayerLeft || button == GameData.game.thirdPlayerRight) {
+            rotatea = new RotateAnimation(0, 90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
+        } else if (button == GameData.game.getButton("thirdPlayerLeft") || button == GameData.game.getButton("thirdPlayerRight")) {
             rotateb = new RotateAnimation(0, 180, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 180, GameData.game.deck.getPivotX(), GameData.game.deck.getPivotY());
+            rotatea = new RotateAnimation(0, 180, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
         } else {
             rotateb = new RotateAnimation(0, 90, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, -90, GameData.game.deck.getPivotX(), GameData.game.deck.getPivotY());
+            rotatea = new RotateAnimation(0, -90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
         }
 
         translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
@@ -260,7 +260,7 @@ public class CardFive implements Card {
             public void onFinish() {
                 new CountDownTimer(2000, 1000) {
                     public void onTick(long millisUntilFinished) {
-                        GameData.game.deck.startAnimation(rotateandmovea);
+                        GameData.game.getButton("deck").startAnimation(rotateandmovea);
                         new CountDownTimer(1000, 1000) {
                             public void onTick(long millisUntilFinished) {
 
@@ -269,7 +269,7 @@ public class CardFive implements Card {
                             public void onFinish() {
                                 button.setVisibility(View.VISIBLE);
                                 if (GameData.deck.getDeckCount() == 0) {
-                                    GameData.game.deck.setVisibility(View.INVISIBLE);
+                                    GameData.game.getButton("deck").setVisibility(View.INVISIBLE);
                                 }
                             }
                         }.start();
