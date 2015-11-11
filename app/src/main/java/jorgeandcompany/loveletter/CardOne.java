@@ -216,7 +216,8 @@ public class CardOne implements Card {
             @Override
             public void onClick(DialogInterface dialog, int guess) {
                 int theGuess = guess + 2;
-                if (GameData.PlayerList[toCheck].getCard().getValue() == theGuess) {
+                Card card = CardFactory.createCard(theGuess);
+                if (GameData.PlayerList[toCheck].getCard().equals(card)) {
                     success(toCheck, theGuess, player);
                 } else {
                     failure(toCheck, theGuess, player);
@@ -248,4 +249,11 @@ public class CardOne implements Card {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Card)) return false;
+        Card other = (Card) o;
+        if (getValue() == other.getValue()) return true;
+        else return false;
+    }
 }

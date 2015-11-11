@@ -19,4 +19,6 @@ public interface Card {
 
     int getSkinRes(int skinId);
 
+    boolean equals(Object o);
+
 }
