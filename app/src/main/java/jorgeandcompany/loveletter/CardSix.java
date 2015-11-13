@@ -12,6 +12,8 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 
+import java.util.Arrays;
+
 /**
  * Created by Firemon123 on 10/1/2015.
  */
@@ -215,19 +217,24 @@ public class CardSix implements Card {
             swapOneTwo(player, otherPlayer,thePlayer,id);
         }
         else if ((number1 == 1 && id == 3) || (number1 == 3 && id == 1)) {
-            swapOneThree(player, otherPlayer, thePlayer, id);
+           // swapOneThree(player, otherPlayer, thePlayer, id);
+            swapOneTwo(player, otherPlayer,thePlayer,id);
         }
         else if ((number1 == 1 && id == 4) || (number1 == 4 && id == 1)) {
-            swapOneFour(player, otherPlayer, thePlayer, id);
+            //swapOneFour(player, otherPlayer, thePlayer, id);
+            swapOneTwo(player, otherPlayer,thePlayer,id);
         }
         else if ((number1 == 2 && id == 3) || (number1 == 3 && id == 2)) {
-            swapTwoThree(player, otherPlayer, thePlayer, id);
+            swapOneTwo(player, otherPlayer,thePlayer,id);
+           // swapTwoThree(player, otherPlayer, thePlayer, id);
         }
         else if ((number1 == 2 && id == 4) || (number1 == 4 && id == 2)) {
-            swapTwoFour(player, otherPlayer, thePlayer, id);
+            swapOneTwo(player, otherPlayer,thePlayer,id);
+            //swapTwoFour(player, otherPlayer, thePlayer, id);
         }
         else {
-            swapThreeFour(player, otherPlayer, thePlayer, id);
+            swapOneTwo(player, otherPlayer,thePlayer,id);
+            //swapThreeFour(player, otherPlayer, thePlayer, id);
         }
 
     }
@@ -237,10 +244,17 @@ public class CardSix implements Card {
             public void onTick(long millisUntilFinished) {
                 int[] bcoordinates = new int[2];
                 int[] acoordinates = new int[2];
+                //ImageButton a1 = GameData.game.secondPlayerLeft;
+                //ImageButton b1 = GameData.game.fourthPlayerLeft;
+                //a1.getLocationOnScreen(acoordinates);
+                //b1.getLocationOnScreen(bcoordinates);
                 a.getLocationOnScreen(acoordinates);
                 b.getLocationOnScreen(bcoordinates);
+
                 Animation rotateb = new RotateAnimation(0, -90, b.getPivotX(), b.getPivotY());
                 Animation rotatea = new RotateAnimation(0, 90, a.getPivotX(), a.getPivotY());
+                //Animation rotateb = new RotateAnimation(0, -180, b1.getPivotX(), b1.getPivotY());
+                //Animation rotatea = new RotateAnimation(0, 180, a1.getPivotX(), a1.getPivotY());
                 rotatea.setDuration(1000);
                 rotateb.setDuration(1000);
                 Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
@@ -378,14 +392,13 @@ public class CardSix implements Card {
             }
         }.start();
     }
-
     public void swapTwoThree (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
+            // 1-4
     }
     public void swapTwoFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
+            //1-3
     }
     public void swapThreeFour (final ImageButton a, final ImageButton b, final Player thePlayer, final int id) {
-
+            //1-2
     }
 }
