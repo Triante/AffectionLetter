@@ -2,6 +2,12 @@ package jorgeandcompany.loveletter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.CountDownTimer;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 
 import java.util.Random;
 
@@ -17,12 +23,14 @@ public class ComPlayerLevelOne implements Player {
     private boolean hasRight = false;
     private boolean isProtected = false;
     private int total = 0;
+    private GameAnimation theAnimation;
 
     //com lvl 1 variables
 
 
-    public ComPlayerLevelOne(int playerNumber) {
+    public ComPlayerLevelOne(int playerNumber, GameAnimation anim) {
         this.playerNumber = playerNumber;
+        this.theAnimation = anim;
     }
 
     @Override
@@ -56,7 +64,35 @@ public class ComPlayerLevelOne implements Player {
     public void playCard(int hand) {
         //total += rightCard.getValue();
         hand = selectCardToPlay();
-        cardEffect(hand);
+        final int toPlay = hand;
+        //(3000, 1000) where the first 1000 is the flip, whenever that gets implemented
+        CountDownTimer play = new CountDownTimer(2000, 500) {
+            boolean done = false;
+            boolean otherDone = false;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (!done) {
+                    //flipBack method here
+                    if (toPlay == 0) {
+                        //flipCardToBack(firstPlayerRight);
+                    } else {
+                        //flipCardToBack(firstPlayerLeft);
+                    }
+                    done = true;
+                } else if (!otherDone) {
+                    GameAnimation theAnimation = GameData.game.provideAnimations();
+                    theAnimation.cardToDiscardSinglePlayer(ComPlayerLevelOne.this, toPlay);
+                    otherDone = true;
+                }
+
+            }
+            @Override
+            public void onFinish() {
+                cardEffect(toPlay);
+                //reset card background for non re-flipped card.
+            }
+        };
+        play.start();
     }
     @Override
     public void discardCard() {
@@ -427,14 +463,17 @@ public class ComPlayerLevelOne implements Player {
     }
     private void effectSix() {
         String message = "";
-        int chosen = selectPlayer();
+        final int chosen = selectPlayer();
         if (chosen != 0) {
-            message = "Player " + playerNumber + " used card 6.\n" +
-                    "Player " + playerNumber + " traded cards with player " + chosen;
             Card c1 = getCard();
             Card c2 = GameData.PlayerList[chosen].getCard();
             setCard(c2);
             GameData.PlayerList[chosen].setCard(c1);
+            GameAnimation newAnimation = GameData.game.provideAnimations();
+            newAnimation.swapSingle6(playerNumber, chosen);
+
+            message = "Player " + playerNumber + " used card 6.\n" +
+                    "Player " + playerNumber + " traded cards with player " + chosen;
         }
         else {
             message = "Player " + playerNumber + " used card 6. Active players were all protected.";

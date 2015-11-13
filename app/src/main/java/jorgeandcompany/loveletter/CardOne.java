@@ -66,10 +66,10 @@ public class CardOne implements Card {
         int id = thePlayer.getPlayerNumber();
         ImageButton one;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            one = GameData.game.firstPlayerLeft;
+            one = GameData.game.getButton("firstPlayerLeft");
         }
         else {
-            one = GameData.game.firstPlayerRight;
+            one = GameData.game.getButton("firstPlayerRight");
         }
         one.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,10 +93,10 @@ public class CardOne implements Card {
         final int id2 = id;
         ImageButton two;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            two = GameData.game.secondPlayerLeft;
+            two = GameData.game.getButton("secondPlayerLeft");
         }
         else {
-            two = GameData.game.secondPlayerRight;
+            two = GameData.game.getButton("secondPlayerRight");
         }
         if (GameData.PlayerList[id].isProtected()) {
             two.setOnClickListener(new View.OnClickListener() {
@@ -119,10 +119,10 @@ public class CardOne implements Card {
         final int id3 = id;
         ImageButton three;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            three = GameData.game.thirdPlayerLeft;
+            three = GameData.game.getButton("thirdPlayerLeft");
         }
         else {
-            three = GameData.game.thirdPlayerRight;
+            three = GameData.game.getButton("thirdPlayerRight");
         }
         if (GameData.PlayerList[id].isProtected()) {
             three.setOnClickListener(new View.OnClickListener() {
@@ -145,10 +145,10 @@ public class CardOne implements Card {
         final int id4 = id;
         ImageButton four;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            four = GameData.game.fourthPlayerLeft;
+            four = GameData.game.getButton("fourthPlayerLeft");
         }
         else {
-            four = GameData.game.fourthPlayerRight;
+            four = GameData.game.getButton("fourthPlayerRight");
         }
         if (GameData.PlayerList[id].isProtected()) {
             four.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +216,8 @@ public class CardOne implements Card {
             @Override
             public void onClick(DialogInterface dialog, int guess) {
                 int theGuess = guess + 2;
-                if (GameData.PlayerList[toCheck].getCard().getValue() == theGuess) {
+                Card card = CardFactory.createCard(theGuess);
+                if (GameData.PlayerList[toCheck].getCard().equals(card)) {
                     success(toCheck, theGuess, player);
                 } else {
                     failure(toCheck, theGuess, player);
@@ -248,4 +249,11 @@ public class CardOne implements Card {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Card)) return false;
+        Card other = (Card) o;
+        if (getValue() == other.getValue()) return true;
+        else return false;
+    }
 }

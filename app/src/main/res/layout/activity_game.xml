@@ -138,8 +138,7 @@
         android:layout_toEndOf="@+id/deck"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:visibility="invisible"
-        android:background="@drawable/magi_up"/>
+        android:visibility="invisible" />
 
     <ImageButton
         android:layout_width="50dp"
