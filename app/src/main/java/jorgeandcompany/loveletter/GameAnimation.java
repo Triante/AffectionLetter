@@ -842,7 +842,12 @@ public class GameAnimation {
         final Animation translateb;
         final Animation translatea;
         final AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-        GameData.game.getButton("deck").getLocationOnScreen(acoordinates);
+        if (GameData.deck.getDeckCount() < 2) {
+            GameData.game.getButton("outcard").getLocationOnScreen(acoordinates);
+        }
+        else {
+            GameData.game.getButton("deck").getLocationOnScreen(acoordinates);
+        }
         GameData.game.getButton("discard").getLocationOnScreen(discardcoordinates);
         button.getLocationOnScreen(bcoordinates);
         leftDefault.getLocationOnScreen(ccoordinates);
