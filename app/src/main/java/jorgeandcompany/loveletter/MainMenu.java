@@ -41,7 +41,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
         bMainMenu4.setOnClickListener(this);
         newThread = null;
         if (theMusic == null) {
-            theMusic = new Music (new MediaPlayer().create(getApplicationContext(), R.raw.pokemon_steven));
+            theMusic = new Music (new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
             Runnable musicRunnable = theMusic;
             newThread = new Thread (musicRunnable);
             newThread.start();
@@ -126,19 +126,11 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
     }
 
     @Override
-    public void onBackPressed() {
-        returnState = theMusic.getCurrentPosition();
-        theMusic.pause();
-        moveTaskToBack(true);
-        otherState = returnState;
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
             if (newThread != null && !theMusic.isPlaying()) {
                 theMusic.stop();
-                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.pokemon_steven));
+                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
                 theMusic.restartPosition();
                 newThread = new Thread(theMusic);
                 if (theMusic.isMute()) {
@@ -148,8 +140,45 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                 return;
             }
             if (returnState == otherState && newThread != null) {
-                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.pokemon_steven));
+                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
                 theMusic.run();
             }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        returnState = theMusic.getCurrentPosition();
+        theMusic.pause();
+        moveTaskToBack(true);
+        otherState = returnState;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
+            returnState = theMusic.getCurrentPosition();
+            theMusic.pause();
+            moveTaskToBack(true);
+            otherState = returnState;
+            return true;
+        }
+        else if ((keyCode == KeyEvent.KEYCODE_POWER)) {
+            returnState = theMusic.getCurrentPosition();
+            theMusic.pause();
+            moveTaskToBack(true);
+            otherState = returnState;
+            return true;
+        }
+        else if ((keyCode == KeyEvent.KEYCODE_WINDOW)) {
+            returnState = theMusic.getCurrentPosition();
+            theMusic.pause();
+            moveTaskToBack(true);
+            otherState = returnState;
+            return true;
+        }
+        else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

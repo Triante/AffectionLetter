@@ -2,8 +2,11 @@ package jorgeandcompany.loveletter;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
@@ -45,6 +48,27 @@ public class GameAnimation {
             isAnimating = true;
         }
     }
+
+    public void deckToOutCard() {
+        int[] cardcoordinates = new int[2];
+        int[] deckcoordinates = new int[2];
+        Animation translate;
+        AnimationSet set;
+        outCard.getLocationOnScreen(cardcoordinates);
+        deck.getLocationOnScreen(deckcoordinates);
+        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
+        translate.setDuration(1000);
+        set = new AnimationSet (true);
+        set.addAnimation(translate);
+        deck.startAnimation(set);
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                outCard.setVisibility(firstPlayerLeft.VISIBLE);
+            }
+        }.start();
+    }
     public void deckToRight(int playerID) {
         switch (playerID){
             case 1:
@@ -78,18 +102,25 @@ public class GameAnimation {
         }
     }
 
-    public void deckToFirstRight() {
+    private void dealCard(int rotation, ImageButton player) {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
+        Animation translate;
         AnimationSet set;
-        firstPlayerRight.getLocationOnScreen(cardcoordinates);
+        Animation rotate;
+        player.getLocationOnScreen(cardcoordinates);
         deck.getLocationOnScreen(deckcoordinates);
         translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
+        rotate = new RotateAnimation(0, rotation, deck.getPivotX(), deck.getPivotY());
         translate.setDuration(1000);
-        set = new AnimationSet (true);
+        rotate.setDuration(1000);
+        set = new AnimationSet(true);
+        set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+    }
+    public void deckToFirstRight() {
+        dealCard(0, firstPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -100,21 +131,7 @@ public class GameAnimation {
 
     }
     public void deckToSecondRight() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
-        android.view.animation.Animation rotate;
-        AnimationSet set;
-        secondPlayerRight.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(90, secondPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -126,21 +143,7 @@ public class GameAnimation {
 
     }
     public void deckToThirdRight() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
-        android.view.animation.Animation rotate;
-        AnimationSet set;
-        thirdPlayerRight.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 180, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(180, thirdPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -152,21 +155,7 @@ public class GameAnimation {
 
     }
     public void deckToFourthRight() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
-        android.view.animation.Animation rotate;
-        AnimationSet set;
-        fourthPlayerRight.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(-90, fourthPlayerRight);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -178,17 +167,7 @@ public class GameAnimation {
     }
 
     public void deckToFirstLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
-        AnimationSet set;
-        firstPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        translate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(0, firstPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -199,21 +178,7 @@ public class GameAnimation {
 
     }
     public void deckToSecondLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
-        android.view.animation.Animation rotate;
-        AnimationSet set;
-        secondPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(90, secondPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -225,21 +190,7 @@ public class GameAnimation {
 
     }
     public void deckToThirdLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
-        android.view.animation.Animation rotate;
-        AnimationSet set;
-        thirdPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, 180, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(180, thirdPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -251,21 +202,7 @@ public class GameAnimation {
 
     }
     public void deckToFourthLeft() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        android.view.animation.Animation translate;
-        android.view.animation.Animation rotate;
-        AnimationSet set;
-        fourthPlayerLeft.getLocationOnScreen(cardcoordinates);
-        deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, -90, deck.getPivotX(), deck.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        set = new AnimationSet (true);
-        set.addAnimation(rotate);
-        set.addAnimation(translate);
-        deck.startAnimation(set);
+        dealCard(-90, fourthPlayerLeft);
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}
 
@@ -307,8 +244,13 @@ public class GameAnimation {
         discard.getLocationOnScreen(deckcoordinates);
         thirdPlayerRight.getLocationOnScreen(cardcoordinates);
         android.view.animation.Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        android.view.animation.Animation rotate = new RotateAnimation(0, 180, thirdPlayerRight.getPivotX(), thirdPlayerRight.getPivotY());
         translate.setDuration(1000);
-        thirdPlayerRight.startAnimation(translate);
+        rotate.setDuration(1000);
+        AnimationSet rotateandmove = new AnimationSet(false);
+        rotateandmove.addAnimation(rotate);
+        rotateandmove.addAnimation(translate);
+        thirdPlayerRight.startAnimation(rotateandmove);
         thirdPlayerRight.setVisibility(thirdPlayerRight.INVISIBLE);
     };
     public void fourthRightToDiscard() {
@@ -357,9 +299,14 @@ public class GameAnimation {
         int[] deckcoordinates = new int[2];
         discard.getLocationOnScreen(deckcoordinates);
         thirdPlayerLeft.getLocationOnScreen(cardcoordinates);
+        android.view.animation.Animation rotate = new RotateAnimation(0, 180, thirdPlayerLeft.getPivotX(), thirdPlayerLeft.getPivotY());
         android.view.animation.Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
         translate.setDuration(1000);
-        thirdPlayerLeft.startAnimation(translate);
+        rotate.setDuration(1000);
+        AnimationSet rotateandmove = new AnimationSet(false);
+        rotateandmove.addAnimation(rotate);
+        rotateandmove.addAnimation(translate);
+        thirdPlayerLeft.startAnimation(rotateandmove);
         thirdPlayerLeft.setVisibility(thirdPlayerLeft.INVISIBLE);
     };
     public void fourthLeftToDiscard() {
@@ -380,14 +327,22 @@ public class GameAnimation {
 
     //currently just does animation, from back to front.
     public void flipCard(final View toFlip, final int id) {
-
-        new CountDownTimer(300, 100) {
+        final int rightout, leftin;
+        if (toFlip == firstPlayerLeft || toFlip == firstPlayerRight || toFlip == thirdPlayerLeft || toFlip == thirdPlayerRight) {
+            rightout = R.animator.flip_right_out;
+            leftin = R.animator.flight_left_in;
+        }
+        else {
+            rightout = R.animator.flip_horizontal_right_out;
+            leftin = R.animator.flip_horizontal_left_in;
+        }
+        new CountDownTimer(400, 100) {
             int a = 0;
             @Override
             public void onTick(long millisUntilFinished) {
                 if (a == 0) {
                     final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(thisGame.getApplicationContext(),
-                            R.animator.flip_right_out);
+                            rightout);
                     setRightOut.setTarget(toFlip);
                     setRightOut.start();
                     a++;
@@ -395,9 +350,10 @@ public class GameAnimation {
                 else if (a == 1) {
                     toFlip.setBackgroundResource(id);
                     final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(thisGame.getApplicationContext(),
-                            R.animator.flight_left_in);
+                            leftin);
                     setLeftIn.setTarget(toFlip);
                     setLeftIn.start();
+                    a++;
                 }
             }
 
@@ -411,7 +367,7 @@ public class GameAnimation {
     }
     //front to back
     public void flipCardToBack(final View toFlip) {
-        new CountDownTimer(300, 100) {
+        new CountDownTimer(400, 100) {
             int a = 0;
             @Override
             public void onTick(long millisUntilFinished) {
@@ -429,6 +385,7 @@ public class GameAnimation {
                             R.animator.flight_left_in);
                     setLeftIn.setTarget(toFlip);
                     setLeftIn.start();
+                    a++;
                 }
             }
 
@@ -443,47 +400,241 @@ public class GameAnimation {
         int playerNum = on.getPlayerNumber();
         if (hand == 0) {
             if (playerNum == 1) {
-                firstLeftToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(firstPlayerLeft, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                firstLeftToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+                }.start();
             }
             else if (playerNum == 2) {
-                secondLeftToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(secondPlayerLeft, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                secondLeftToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+                }.start();
             }
             else if (playerNum == 3) {
-                thirdLeftToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(thirdPlayerLeft, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                thirdLeftToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+                }.start();
             }
             else {
-                fourthLeftToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(fourthPlayerLeft, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                fourthLeftToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();;
+                    }
+                }.start();
             }
         }
         //right
         else {
             if (playerNum == 1) {
-                firstRightToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(firstPlayerRight, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                               firstRightToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+                }.start();
             }
             else if (playerNum == 2) {
-                secondRightToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(secondPlayerRight, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                secondRightToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+                }.start();
             }
             else if (playerNum == 3) {
-                thirdRightToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(thirdPlayerRight, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                thirdRightToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+                }.start();
             }
             else {
-                fourthRightToDiscard();
+                new CountDownTimer(400,100) {
+                    int a = 0;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        if (a == 0) {
+                            flipCard(fourthPlayerRight, R.drawable.background_trans);
+                            a++;
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        new CountDownTimer(2000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                fourthRightToDiscard();
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (discard.getVisibility() == View.INVISIBLE) {
+                                    discard.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+                }.start();
             }
 
-            new CountDownTimer(2000,1000) {
-
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    if (discard.getVisibility() == View.INVISIBLE) {
-                        discard.setVisibility(View.VISIBLE);
-                    }
-                }
-            }.start();
         }
     }
     public void cardToDiscardMultiPlayer(final int hand) {
@@ -507,4 +658,247 @@ public class GameAnimation {
         }.start();
     }
 
+    public void swapCard6(final ImageButton a, final ImageButton b, final Player thePlayer, final int id, final int swap1, final int swap2) {
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                int[] bcoordinates = new int[2];
+                int[] acoordinates = new int[2];
+                a.getLocationOnScreen(acoordinates);
+                b.getLocationOnScreen(bcoordinates);
+                Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
+                rotatea.setDuration(1000);
+                rotateb.setDuration(1000);
+                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
+                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                translateb.setDuration(1000);
+                translatea.setDuration(1000);
+                AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
+                rotateandmovea.addAnimation(rotatea);
+                rotateandmovea.addAnimation(translatea);
+                rotateandmoveb.addAnimation(rotateb);
+                rotateandmoveb.addAnimation(translateb);
+                a.startAnimation(rotateandmovea);
+                b.startAnimation(rotateandmoveb);
+            }
+
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    public void onFinish() {
+                        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
+                        success.setCancelable(false);
+                        success.setTitle("Card 6 Effect");
+                        success.setMessage("Player " + thePlayer.getPlayerNumber() + " traded cards with player " + id + ".");
+                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                GameData.game.endOfTurn(thePlayer);
+                            }
+                        });
+                        success.show();
+                    }
+                }.start();
+
+            }
+        }.start();
+    }
+
+    public void swapSingle6 (int playerNumber, int chosen) {
+        ImageButton temp1 = null;
+        ImageButton temp2 = null;
+        final int swap1;
+        final int swap2;
+        if (GameData.PlayerList[playerNumber].hasLeftCard()) {
+            switch(playerNumber){
+                case 1:
+                    temp1 = firstPlayerLeft;
+                    break;
+                case 2:
+                    temp1 = secondPlayerLeft;
+                    break;
+                case 3:
+                    temp1 = thirdPlayerLeft;
+                    break;
+                case 4:
+                    temp1 = fourthPlayerLeft;
+                    break;
+            }
+        }
+        else {
+            switch(playerNumber){
+                case 1:
+                    temp1 = firstPlayerRight;
+                    break;
+                case 2:
+                    temp1 = secondPlayerRight;
+                    break;
+                case 3:
+                    temp1 = thirdPlayerRight;
+                    break;
+                case 4:
+                    temp1 = fourthPlayerRight;
+                    break;
+            }
+        }
+        if (GameData.PlayerList[chosen].hasLeftCard()) {
+            switch(chosen){
+                case 1:
+                    temp2 = firstPlayerLeft;
+                    break;
+                case 2:
+                    temp2 = secondPlayerLeft;
+                    break;
+                case 3:
+                    temp2 = thirdPlayerLeft;
+                    break;
+                case 4:
+                    temp2 = fourthPlayerLeft;
+                    break;
+            }
+        }
+        else {
+            switch(chosen){
+                case 1:
+                    temp2 = firstPlayerRight;
+                    break;
+                case 2:
+                    temp2 = secondPlayerRight;
+                    break;
+                case 3:
+                    temp2 = thirdPlayerRight;
+                    break;
+                case 4:
+                    temp2 = fourthPlayerRight;
+                    break;
+            }
+        }
+        final ImageButton a = temp1;
+        final ImageButton b = temp2;
+
+        if ((playerNumber == 1 && chosen == 2) || (playerNumber == 2 && chosen == 3) || (playerNumber == 3 && chosen == 4) || (playerNumber == 4 && chosen == 1)) {
+            swap1 = -90;
+            swap2 = 90;
+        }
+        else if((playerNumber == 2 && chosen == 1) || (playerNumber == 3 && chosen == 2) || (playerNumber == 4 && chosen == 3) || (playerNumber == 1 && chosen == 4)) {
+            swap1 = 90;
+            swap2 = -90;
+        }
+        else if ((playerNumber == 1 && chosen == 3) || (playerNumber == 2 && chosen == 4)){
+            swap1 = -180;
+            swap2 = 180;
+        }
+        else {
+            swap1 = 180;
+            swap2 = -180;
+        }
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                int[] bcoordinates = new int[2];
+                int[] acoordinates = new int[2];
+                a.getLocationOnScreen(acoordinates);
+                b.getLocationOnScreen(bcoordinates);
+                Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
+                Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
+                rotatea.setDuration(1000);
+                rotateb.setDuration(1000);
+                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
+                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                translateb.setDuration(1000);
+                translatea.setDuration(1000);
+                AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
+                rotateandmovea.addAnimation(rotatea);
+                rotateandmovea.addAnimation(translatea);
+                rotateandmoveb.addAnimation(rotateb);
+                rotateandmoveb.addAnimation(translateb);
+                a.startAnimation(rotateandmovea);
+                b.startAnimation(rotateandmoveb);
+            }
+
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    public void onFinish() {
+                    }
+                }.start();
+
+            }
+        }.start();
+    }
+
+    public void discardAnimation (final ImageButton button, final ImageButton leftDefault) {
+        final int[] bcoordinates = new int[2];
+        final int[] ccoordinates = new int[2];
+        final int[] acoordinates = new int[2];
+        final int[] discardcoordinates = new int [2];
+        final Animation rotateb;
+        final Animation rotatea;
+        final Animation translateb;
+        final Animation translatea;
+        final AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
+        GameData.game.getButton("deck").getLocationOnScreen(acoordinates);
+        GameData.game.getButton("discard").getLocationOnScreen(discardcoordinates);
+        button.getLocationOnScreen(bcoordinates);
+        leftDefault.getLocationOnScreen(ccoordinates);
+        if (button == GameData.game.getButton("firstPlayerLeft") || button == GameData.game.getButton("firstPlayerRight")) {
+            rotateb = new RotateAnimation(0, 0, button.getPivotX(), button.getPivotY());
+            rotatea = new RotateAnimation(0, 0, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
+        } else if (button == GameData.game.getButton("secondPlayerLeft") || button == GameData.game.getButton("secondPlayerRight")) {
+            rotateb = new RotateAnimation(0, -90, button.getPivotX(), button.getPivotY());
+            rotatea = new RotateAnimation(0, 90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
+        } else if (button == GameData.game.getButton("thirdPlayerLeft") || button == GameData.game.getButton("thirdPlayerRight")) {
+            rotateb = new RotateAnimation(0, 180, button.getPivotX(), button.getPivotY());
+            rotatea = new RotateAnimation(0, 180, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
+        } else {
+            rotateb = new RotateAnimation(0, 90, button.getPivotX(), button.getPivotY());
+            rotatea = new RotateAnimation(0, -90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
+        }
+
+        translateb = new TranslateAnimation(0, discardcoordinates[0] - bcoordinates[0], 0, discardcoordinates[1] - bcoordinates[1]);
+        translatea = new TranslateAnimation(0, ccoordinates[0] - acoordinates[0], 0, ccoordinates[1] - acoordinates[1]);
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                rotatea.setDuration(1000);
+                rotateb.setDuration(1000);
+                translateb.setDuration(1000);
+                translatea.setDuration(1000);
+                rotateandmovea.addAnimation(rotatea);
+                rotateandmovea.addAnimation(translatea);
+                rotateandmoveb.addAnimation(rotateb);
+                rotateandmoveb.addAnimation(translateb);
+                button.startAnimation(rotateandmoveb);
+                button.setVisibility(View.INVISIBLE);
+            }
+
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        GameData.game.getButton("deck").startAnimation(rotateandmovea);
+                        new CountDownTimer(1000, 1000) {
+                            public void onTick(long millisUntilFinished) {
+
+                            }
+
+                            public void onFinish() {
+                                leftDefault.setVisibility(View.VISIBLE);
+                                if (GameData.deck.getDeckCount() == 0) {
+                                    GameData.game.getButton("deck").setVisibility(View.INVISIBLE);
+                                }
+                            }
+                        }.start();
+                    }
+
+                    public void onFinish() {
+                    }
+                }.start();
+
+            }
+        }.start();
+    }
 }

@@ -148,7 +148,7 @@ public class CardThree implements Card {
         final int id4 = id;
         ImageButton four;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            four = GameData.game.getButton("ourthPlayerLeft");
+            four = GameData.game.getButton("fourthPlayerLeft");
         }
         else {
             four = GameData.game.getButton("fourthPlayerRight");

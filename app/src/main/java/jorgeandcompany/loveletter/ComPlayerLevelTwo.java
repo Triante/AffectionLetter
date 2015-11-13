@@ -80,7 +80,8 @@ public class ComPlayerLevelTwo implements Player {
                     }
                     done = true;
                 } else if (!otherDone) {
-                    GameData.game.cardToCenterSinglePlayer(ComPlayerLevelTwo.this, toPlay);
+                    GameAnimation theAnimation = GameData.game.provideAnimations();
+                    theAnimation.cardToDiscardSinglePlayer(ComPlayerLevelTwo.this, toPlay);
                     otherDone = true;
                 }
 
@@ -88,6 +89,18 @@ public class ComPlayerLevelTwo implements Player {
             @Override
             public void onFinish() {
                 cardEffect(toPlay);
+                if (ComPlayerLevelTwo.this.getPlayerNumber() == 2) {
+                    GameData.game.getButton("secondPlayerLeft").setBackgroundResource(R.drawable.magi_left);
+                    GameData.game.getButton("secondPlayerRight").setBackgroundResource(R.drawable.magi_left);
+                }
+                else if (ComPlayerLevelTwo.this.getPlayerNumber() == 3) {
+                    GameData.game.getButton("thirdPlayerLeft").setBackgroundResource(R.drawable.magi_down);
+                    GameData.game.getButton("thirdPlayerRight").setBackgroundResource(R.drawable.magi_down);
+                }
+                else {
+                    GameData.game.getButton("fourthPlayerLeft").setBackgroundResource(R.drawable.magi_right);
+                    GameData.game.getButton("fourthPlayerRight").setBackgroundResource(R.drawable.magi_right);
+                }
                 //reset card background for non re-flipped card.
             }
         };
@@ -481,39 +494,99 @@ public class ComPlayerLevelTwo implements Player {
         alert.show();
     }
     private void effectFive() {
-        String message = "";
         final int chosen = selectPlayer();
         if (chosen != 0) {
-            message = "Player " + playerNumber + " used card 5. Player " + playerNumber + " chose player " + chosen + " to discard his or her card and draw a new one";
+            new CountDownTimer(4000,1000) {
+                String message = "Player " + playerNumber + " used card 5. Player " + playerNumber + " chose player " + chosen + " to discard his or her card and draw a new one";
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if (millisUntilFinished >= 3000 && millisUntilFinished <= 4000) {
+                        int select;
+                        if (chosen == 0) select = playerNumber;
+                        else select = chosen;
+                        GameAnimation animation = GameData.game.provideAnimations();
+                        final ImageButton[] set = chooseCardButton(select);
+                        animation.discardAnimation(set[0], set[1]);
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+                    alert.setCancelable(false);
+                    alert.setTitle("Card 5 Effect");
+                    alert.setMessage(message);
+                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int select;
+                            if (chosen == 0) select = playerNumber;
+                            else select = chosen;
+                            if (GameData.PlayerList[select].getCard().getValue() != 8) {
+                                GameData.PlayerList[select].discardCard();
+                                if (GameData.getDeckCount() == 0) {
+                                    GameData.PlayerList[select].drawOutCard();
+                                } else {
+                                    GameData.PlayerList[select].drawFirstCard();
+                                }
+                                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                            }
+                            else {
+                                GameData.PlayerList[select].discardCard();
+                            }
+                        }
+                    });
+                    alert.show();
+                }
+            }.start();
+
         }
         else {
-            message = "Player " + playerNumber + " used card 5. Player " + playerNumber + " discarded his or her own card";
-        }
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
-        alert.setCancelable(false);
-        alert.setTitle("Card 5 Effect");
-        alert.setMessage(message);
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                int select;
-                if (chosen == 0) select = playerNumber;
-                else select = chosen;
-                if (GameData.PlayerList[select].getCard().getValue() != 8) {
-                    GameData.PlayerList[select].discardCard();
-                    if (GameData.getDeckCount() == 0) {
-                        GameData.PlayerList[select].drawOutCard();
-                    } else {
-                        GameData.PlayerList[select].drawFirstCard();
+            new CountDownTimer(4000,1000) {
+                String message = "Player " + playerNumber + " used card 5. Player " + playerNumber + " discarded his or her own card";
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if(millisUntilFinished >= 3000 && millisUntilFinished <= 4000) {
+                        int select;
+                        if (chosen == 0) select = playerNumber;
+                        else select = chosen;
+                        GameAnimation animation = GameData.game.provideAnimations();
+                        final ImageButton[] set = chooseCardButton(select);
+                        animation.discardAnimation(set[0], set[1]);
                     }
-                    GameData.game.endOfTurn(ComPlayerLevelTwo.this);
                 }
-                else {
-                    GameData.PlayerList[select].discardCard();
+
+                @Override
+                public void onFinish() {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+                    alert.setCancelable(false);
+                    alert.setTitle("Card 5 Effect");
+                    alert.setMessage(message);
+                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int select;
+                            if (chosen == 0) select = playerNumber;
+                            else select = chosen;
+                            if (GameData.PlayerList[select].getCard().getValue() != 8) {
+                                GameData.PlayerList[select].discardCard();
+                                if (GameData.getDeckCount() == 0) {
+                                    GameData.PlayerList[select].drawOutCard();
+                                } else {
+                                    GameData.PlayerList[select].drawFirstCard();
+                                }
+                                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                            }
+                            else {
+                                GameData.PlayerList[select].discardCard();
+                            }
+                        }
+                    });
+                    alert.show();
                 }
-            }
-        });
-        alert.show();
+            }.start();
+        }
+
     }
     private void effectSix() {
         String message = "";
@@ -523,145 +596,48 @@ public class ComPlayerLevelTwo implements Player {
             Card c2 = GameData.PlayerList[chosen].getCard();
             setCard(c2);
             GameData.PlayerList[chosen].setCard(c1);
-            ImageButton temp1 = null;
-            ImageButton temp2 = null;
-            final int swap1;
-            final int swap2;
-            if (GameData.PlayerList[playerNumber].hasLeftCard()) {
-                switch(playerNumber){
-                    case 1:
-                        temp1 = GameData.game.firstPlayerLeft;
-                        break;
-                    case 2:
-                        temp1 = GameData.game.secondPlayerLeft;
-                        break;
-                    case 3:
-                        temp1 = GameData.game.thirdPlayerLeft;
-                        break;
-                    case 4:
-                        temp1 = GameData.game.fourthPlayerLeft;
-                        break;
-                }
-            }
-            else {
-                switch(playerNumber){
-                    case 1:
-                        temp1 = GameData.game.firstPlayerRight;
-                        break;
-                    case 2:
-                        temp1 = GameData.game.secondPlayerRight;
-                        break;
-                    case 3:
-                        temp1 = GameData.game.thirdPlayerRight;
-                        break;
-                    case 4:
-                        temp1 = GameData.game.fourthPlayerRight;
-                        break;
-                }
-            }
-            if (GameData.PlayerList[chosen].hasLeftCard()) {
-                switch(chosen){
-                    case 1:
-                        temp2 = GameData.game.firstPlayerLeft;
-                        break;
-                    case 2:
-                        temp2 = GameData.game.secondPlayerLeft;
-                        break;
-                    case 3:
-                        temp2 = GameData.game.thirdPlayerLeft;
-                        break;
-                    case 4:
-                        temp2 = GameData.game.fourthPlayerLeft;
-                        break;
-                }
-            }
-            else {
-                switch(chosen){
-                    case 1:
-                        temp2 = GameData.game.firstPlayerRight;
-                        break;
-                    case 2:
-                        temp2 = GameData.game.secondPlayerRight;
-                        break;
-                    case 3:
-                        temp2 = GameData.game.thirdPlayerRight;
-                        break;
-                    case 4:
-                        temp2 = GameData.game.fourthPlayerRight;
-                        break;
-                }
-            }
-            final ImageButton a = temp1;
-            final ImageButton b = temp2;
+            new CountDownTimer(2000,1000) {
 
-            if ((playerNumber == 1 && chosen == 2) || (playerNumber == 2 && chosen == 3) || (playerNumber == 3 && chosen == 4) || (playerNumber == 4 && chosen == 1)) {
-                swap1 = -90;
-                swap2 = 90;
-            }
-            else if((playerNumber == 2 && chosen == 1) || (playerNumber == 3 && chosen == 2) || (playerNumber == 4 && chosen == 3) || (playerNumber == 1 && chosen == 4)) {
-                swap1 = 90;
-                swap2 = -90;
-            }
-            else if ((playerNumber == 1 && chosen == 3) || (playerNumber == 2 && chosen == 4)){
-                swap1 = -180;
-                swap2 = 180;
-            }
-            else {
-                swap1 = 180;
-                swap2 = -180;
-            }
-            new CountDownTimer(2000, 1000) {
+                @Override
                 public void onTick(long millisUntilFinished) {
-                    int[] bcoordinates = new int[2];
-                    int[] acoordinates = new int[2];
-                    a.getLocationOnScreen(acoordinates);
-                    b.getLocationOnScreen(bcoordinates);
-                    Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
-                    Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
-                    rotatea.setDuration(1000);
-                    rotateb.setDuration(1000);
-                    Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
-                    Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
-                    translateb.setDuration(1000);
-                    translatea.setDuration(1000);
-                    AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-                    rotateandmovea.addAnimation(rotatea);
-                    rotateandmovea.addAnimation(translatea);
-                    rotateandmoveb.addAnimation(rotateb);
-                    rotateandmoveb.addAnimation(translateb);
-                    a.startAnimation(rotateandmovea);
-                    b.startAnimation(rotateandmoveb);
+                    GameAnimation theAnimation = GameData.game.provideAnimations();
+                    theAnimation.swapSingle6(playerNumber, chosen);
+
                 }
 
+                @Override
                 public void onFinish() {
-                    new CountDownTimer(2000, 1000) {
-                        public void onTick(long millisUntilFinished) {
-
+                    String message = "";
+                    message = "Player " + playerNumber + " used card 6.\n" +
+                            "Player " + playerNumber + " traded cards with player " + chosen;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+                    alert.setCancelable(false);
+                    alert.setTitle("Card 6 Effect");
+                    alert.setMessage(message);
+                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            GameData.game.endOfTurn(ComPlayerLevelTwo.this);
                         }
-
-                        public void onFinish() {
-                        }
-                    }.start();
-
+                    });
+                    alert.show();
                 }
             }.start();
-            message = "Player " + playerNumber + " used card 6.\n" +
-                    "Player " + playerNumber + " traded cards with player " + chosen;
         }
         else {
             message = "Player " + playerNumber + " used card 6. Active players were all protected.";
+            AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+            alert.setCancelable(false);
+            alert.setTitle("Card 6 Effect");
+            alert.setMessage(message);
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                }
+            });
+            alert.show();
         }
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
-        alert.setCancelable(false);
-        alert.setTitle("Card 6 Effect");
-        alert.setMessage(message);
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
-            }
-        });
-        alert.show();
     }
     private void effectSeven() {
         AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
@@ -689,5 +665,51 @@ public class ComPlayerLevelTwo implements Player {
             }
         });
         alert.show();
+    }
+
+    private ImageButton [] chooseCardButton (int playerNumber) {
+        ImageButton [] leftandright = new ImageButton [2];
+        if (playerNumber == 1) {
+            if (GameData.PlayerList[playerNumber].hasLeftCard()) {
+                leftandright[0] = GameData.game.getButton("firstplayerleft");
+                leftandright[1] = GameData.game.getButton("firstplayerleft");
+            }
+            else {
+                leftandright [0] = GameData.game.getButton("firstplayerright");
+                leftandright [1] = GameData.game.getButton("firstplayerleft");
+            }
+        }
+        else if (playerNumber == 2) {
+            if (GameData.PlayerList[playerNumber].hasLeftCard()) {
+                leftandright [0] = GameData.game.getButton("secondplayerleft");
+                leftandright [1] = GameData.game.getButton("secondplayerleft");
+            }
+            else {
+                leftandright [0] =  GameData.game.getButton("secondplayerright");
+                leftandright [1] = GameData.game.getButton("secondplayerleft");
+            }
+        }
+        else if (playerNumber == 3) {
+            if (GameData.PlayerList[playerNumber].hasLeftCard()) {
+                leftandright [0] = GameData.game.getButton("thirdplayerleft");
+                leftandright [1] = GameData.game.getButton("thirdplayerleft");
+            }
+            else {
+                leftandright [0] = GameData.game.getButton("thirdplayerright");
+                leftandright [1] = GameData.game.getButton("thirdplayerleft");
+            }
+        }
+        else {
+            if (GameData.PlayerList[playerNumber].hasLeftCard()) {
+                leftandright [0] = GameData.game.getButton("fourthplayerleft");
+                leftandright [1] = GameData.game.getButton("fourthplayerleft");
+            }
+            else {
+                leftandright [0] = GameData.game.getButton("fourthplayerright");
+                leftandright [1] = GameData.game.getButton("fourthplayerleft");
+            }
+        }
+
+        return leftandright;
     }
 }

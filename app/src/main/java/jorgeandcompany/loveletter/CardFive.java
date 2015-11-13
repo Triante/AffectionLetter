@@ -57,12 +57,14 @@ public class CardFive implements Card {
 
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
-        final ImageButton one;
+        final ImageButton one, oneb;
         if (GameData.PlayerList[id].hasLeftCard()) {
             one = GameData.game.getButton("firstPlayerLeft");
+            oneb = GameData.game.getButton("firstPlayerLeft");
         }
         else {
             one = GameData.game.getButton("firstPlayerRight");
+            oneb = GameData.game.getButton("firstPlayerLeft");
         }
         one.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +75,7 @@ public class CardFive implements Card {
                 select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        toDiscardAction(thePlayer.getPlayerNumber(), thePlayer, one);
+                        toDiscardAction(thePlayer.getPlayerNumber(), thePlayer, one, oneb);
                     }
                 });
                 select.setNegativeButton("No", null);
@@ -85,12 +87,14 @@ public class CardFive implements Card {
         id++;
         if (id == 5) id = 1;
         final int id2 = id;
-        final ImageButton two;
+        final ImageButton two, twob;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            two = GameData.game.getButton("secondPlayerLeft");
+            two = GameData.game.getButton("secondPlayerleft");
+            twob = GameData.game.getButton("secondPlayerleft");
         }
         else {
-            two = GameData.game.getButton("secondPlayerRight");
+            two = GameData.game.getButton("secondPlayerright");
+            twob = GameData.game.getButton("secondPlayerleft");
         }
         if (GameData.PlayerList[id].isProtected()) {
             two.setOnClickListener(new View.OnClickListener() {
@@ -104,19 +108,21 @@ public class CardFive implements Card {
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toDiscard(id2, thePlayer, two);
+                    toDiscard(id2, thePlayer, two, twob);
                 }
             });
         }
         id++;
         if (id == 5) id = 1;
         final int id3 = id;
-        final ImageButton three;
+        final ImageButton three, threeb;
         if (GameData.PlayerList[id].hasLeftCard()) {
             three = GameData.game.getButton("thirdPlayerLeft");
+            threeb = GameData.game.getButton("thirdPlayerLeft");
         }
         else {
             three = GameData.game.getButton("thirdPlayerRight");
+            threeb = GameData.game.getButton("thirdPlayerLeft");
         }
         if (GameData.PlayerList[id].isProtected()) {
             three.setOnClickListener(new View.OnClickListener() {
@@ -130,19 +136,21 @@ public class CardFive implements Card {
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toDiscard(id3, thePlayer, three);
+                    toDiscard(id3, thePlayer, three, threeb);
                 }
             });
         }
         id++;
         if (id == 5) id = 1;
         final int id4 = id;
-        final ImageButton four;
+        final ImageButton four, fourb;
         if (GameData.PlayerList[id].hasLeftCard()) {
-            four = GameData.game.getButton("fourthPlayerLeft");
+            four = GameData.game.getButton("fourthPlayerleft");
+            fourb = GameData.game.getButton("fourthPlayerleft");
         }
         else {
-            four = GameData.game.getButton("fourthPlayerRight");
+            four = GameData.game.getButton("fourthPlayerright");
+            fourb = GameData.game.getButton("fourthPlayerleft");
         }
         if (GameData.PlayerList[id].isProtected()) {
             four.setOnClickListener(new View.OnClickListener() {
@@ -156,19 +164,19 @@ public class CardFive implements Card {
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toDiscard(id4, thePlayer, four);
+                    toDiscard(id4, thePlayer, four, fourb);
                 }
             });
         }
     }
-    private void toDiscard(final int id, final Player thePlayer, final ImageButton button) {
+    private void toDiscard(final int id, final Player thePlayer, final ImageButton button, final ImageButton button2) {
         AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
         select.setTitle("Card 5 Effect?\n");
         select.setMessage("Discard player " + id + "'s hand?");
         select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                toDiscardAction(id, thePlayer, button);
+                toDiscardAction(id, thePlayer, button, button2);
             }
         });
         select.setNegativeButton("No", null);
@@ -176,12 +184,13 @@ public class CardFive implements Card {
         AlertDialog alertDialogObject = select.create();
         alertDialogObject.show();
     }
-    private void toDiscardAction(final int id, final Player thePlayer, final ImageButton button) {
+    private void toDiscardAction(final int id, final Player thePlayer, final ImageButton button, final ImageButton button2) {
         if (GameData.PlayerList[id].getCard().getValue() == 8) {
             GameData.PlayerList[id].discardCard();
         }
         else {
-            discardAnimation(button);
+            GameAnimation animation = GameData.game.provideAnimations();
+            animation.discardAnimation(button, button2);
             new CountDownTimer(4000, 1000) {
                 public void onTick (long time) {
 
@@ -215,72 +224,6 @@ public class CardFive implements Card {
         protect.setMessage("Player " + p + " is protected. Select another player");
         protect.setPositiveButton("OK", null);
         protect.show();
-    }
-
-    private void discardAnimation (final ImageButton button) {
-        final int[] bcoordinates = new int[2];
-        final int[] acoordinates = new int[2];
-        final Animation rotateb;
-        final Animation rotatea;
-        final Animation translateb;
-        final Animation translatea;
-        final AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-        GameData.game.getButton("deck").getLocationOnScreen(acoordinates);
-        button.getLocationOnScreen(bcoordinates);
-        if (button == GameData.game.getButton("firstPlayerLeft") || button == GameData.game.getButton("firstPlayerRight")) {
-            rotateb = new RotateAnimation(0, 0, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 0, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        } else if (button == GameData.game.getButton("secondPlayerLeft") || button == GameData.game.getButton("secondPlayerRight")) {
-            rotateb = new RotateAnimation(0, -90, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        } else if (button == GameData.game.getButton("thirdPlayerLeft") || button == GameData.game.getButton("thirdPlayerRight")) {
-            rotateb = new RotateAnimation(0, 180, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 180, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        } else {
-            rotateb = new RotateAnimation(0, 90, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, -90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        }
-
-        translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
-        translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
-        new CountDownTimer(2000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                rotatea.setDuration(1000);
-                rotateb.setDuration(1000);
-                translateb.setDuration(1000);
-                translatea.setDuration(1000);
-                rotateandmovea.addAnimation(rotatea);
-                rotateandmovea.addAnimation(translatea);
-                rotateandmoveb.addAnimation(rotateb);
-                rotateandmoveb.addAnimation(translateb);
-                button.startAnimation(rotateandmoveb);
-                button.setVisibility(View.INVISIBLE);
-            }
-
-            public void onFinish() {
-                new CountDownTimer(2000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        GameData.game.getButton("deck").startAnimation(rotateandmovea);
-                        new CountDownTimer(1000, 1000) {
-                            public void onTick(long millisUntilFinished) {
-
-                            }
-
-                            public void onFinish() {
-                                button.setVisibility(View.VISIBLE);
-                                if (GameData.deck.getDeckCount() == 0) {
-                                    GameData.game.getButton("deck").setVisibility(View.INVISIBLE);
-                                }
-                            }
-                        }.start();
-                    }
-
-                    public void onFinish() {
-                    }
-                }.start();
-
-            }
-        }.start();
     }
 
     @Override

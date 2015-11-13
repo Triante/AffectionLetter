@@ -23,12 +23,14 @@ public class ComPlayerLevelOne implements Player {
     private boolean hasRight = false;
     private boolean isProtected = false;
     private int total = 0;
+    private GameAnimation theAnimation;
 
     //com lvl 1 variables
 
 
-    public ComPlayerLevelOne(int playerNumber) {
+    public ComPlayerLevelOne(int playerNumber, GameAnimation anim) {
         this.playerNumber = playerNumber;
+        this.theAnimation = anim;
     }
 
     @Override
@@ -62,7 +64,35 @@ public class ComPlayerLevelOne implements Player {
     public void playCard(int hand) {
         //total += rightCard.getValue();
         hand = selectCardToPlay();
-        cardEffect(hand);
+        final int toPlay = hand;
+        //(3000, 1000) where the first 1000 is the flip, whenever that gets implemented
+        CountDownTimer play = new CountDownTimer(2000, 500) {
+            boolean done = false;
+            boolean otherDone = false;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (!done) {
+                    //flipBack method here
+                    if (toPlay == 0) {
+                        //flipCardToBack(firstPlayerRight);
+                    } else {
+                        //flipCardToBack(firstPlayerLeft);
+                    }
+                    done = true;
+                } else if (!otherDone) {
+                    GameAnimation theAnimation = GameData.game.provideAnimations();
+                    theAnimation.cardToDiscardSinglePlayer(ComPlayerLevelOne.this, toPlay);
+                    otherDone = true;
+                }
+
+            }
+            @Override
+            public void onFinish() {
+                cardEffect(toPlay);
+                //reset card background for non re-flipped card.
+            }
+        };
+        play.start();
     }
     @Override
     public void discardCard() {
@@ -439,128 +469,9 @@ public class ComPlayerLevelOne implements Player {
             Card c2 = GameData.PlayerList[chosen].getCard();
             setCard(c2);
             GameData.PlayerList[chosen].setCard(c1);
-            ImageButton temp1 = null;
-            ImageButton temp2 = null;
-            final int swap1;
-            final int swap2;
-            if (GameData.PlayerList[playerNumber].hasLeftCard()) {
-                switch(playerNumber){
-                    case 1:
-                        temp1 = GameData.game.firstPlayerLeft;
-                        break;
-                    case 2:
-                        temp1 = GameData.game.secondPlayerLeft;
-                        break;
-                    case 3:
-                        temp1 = GameData.game.thirdPlayerLeft;
-                        break;
-                    case 4:
-                        temp1 = GameData.game.fourthPlayerLeft;
-                        break;
-                }
-            }
-            else {
-                switch(playerNumber){
-                    case 1:
-                        temp1 = GameData.game.firstPlayerRight;
-                        break;
-                    case 2:
-                        temp1 = GameData.game.secondPlayerRight;
-                        break;
-                    case 3:
-                        temp1 = GameData.game.thirdPlayerRight;
-                        break;
-                    case 4:
-                        temp1 = GameData.game.fourthPlayerRight;
-                        break;
-                }
-            }
-            if (GameData.PlayerList[chosen].hasLeftCard()) {
-                switch(chosen){
-                    case 1:
-                        temp2 = GameData.game.firstPlayerLeft;
-                        break;
-                    case 2:
-                        temp2 = GameData.game.secondPlayerLeft;
-                        break;
-                    case 3:
-                        temp2 = GameData.game.thirdPlayerLeft;
-                        break;
-                    case 4:
-                        temp2 = GameData.game.fourthPlayerLeft;
-                        break;
-                }
-            }
-            else {
-                switch(chosen){
-                    case 1:
-                        temp2 = GameData.game.firstPlayerRight;
-                        break;
-                    case 2:
-                        temp2 = GameData.game.secondPlayerRight;
-                        break;
-                    case 3:
-                        temp2 = GameData.game.thirdPlayerRight;
-                        break;
-                    case 4:
-                        temp2 = GameData.game.fourthPlayerRight;
-                        break;
-                }
-            }
-            final ImageButton a = temp1;
-            final ImageButton b = temp2;
+            GameAnimation newAnimation = GameData.game.provideAnimations();
+            newAnimation.swapSingle6(playerNumber, chosen);
 
-            if ((playerNumber == 1 && chosen == 2) || (playerNumber == 2 && chosen == 3) || (playerNumber == 3 && chosen == 4) || (playerNumber == 4 && chosen == 1)) {
-                swap1 = -90;
-                swap2 = 90;
-            }
-            else if((playerNumber == 2 && chosen == 1) || (playerNumber == 3 && chosen == 2) || (playerNumber == 4 && chosen == 3) || (playerNumber == 1 && chosen == 4)) {
-                swap1 = 90;
-                swap2 = -90;
-            }
-            else if ((playerNumber == 1 && chosen == 3) || (playerNumber == 2 && chosen == 4)){
-               swap1 = -180;
-               swap2 = 180;
-            }
-            else {
-                swap1 = 180;
-                swap2 = -180;
-            }
-            new CountDownTimer(2000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    int[] bcoordinates = new int[2];
-                    int[] acoordinates = new int[2];
-                    a.getLocationOnScreen(acoordinates);
-                    b.getLocationOnScreen(bcoordinates);
-                    Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
-                    Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
-                    rotatea.setDuration(1000);
-                    rotateb.setDuration(1000);
-                    Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
-                    Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
-                    translateb.setDuration(1000);
-                    translatea.setDuration(1000);
-                    AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-                    rotateandmovea.addAnimation(rotatea);
-                    rotateandmovea.addAnimation(translatea);
-                    rotateandmoveb.addAnimation(rotateb);
-                    rotateandmoveb.addAnimation(translateb);
-                    a.startAnimation(rotateandmovea);
-                    b.startAnimation(rotateandmoveb);
-                }
-
-                public void onFinish() {
-                    new CountDownTimer(2000, 1000) {
-                        public void onTick(long millisUntilFinished) {
-
-                        }
-
-                        public void onFinish() {
-                        }
-                    }.start();
-
-                }
-            }.start();
             message = "Player " + playerNumber + " used card 6.\n" +
                     "Player " + playerNumber + " traded cards with player " + chosen;
         }
