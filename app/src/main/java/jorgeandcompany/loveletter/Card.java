@@ -7,11 +7,7 @@ import android.content.Context;
  */
 public interface Card {
 
-    void drawAffect(Player player);
-
     void cardEffect(Player player);
-
-    void discardAffect(Player player);
 
     int getValue();
 
