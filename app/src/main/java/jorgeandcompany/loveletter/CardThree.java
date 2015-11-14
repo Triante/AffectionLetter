@@ -13,10 +13,6 @@ import android.widget.ImageButton;
  */
 public class CardThree implements Card {
     private final int value = 3;
-    @Override
-    public void drawAffect(Player player) {
-        return;
-    }
 
     @Override
     public void cardEffect(final Player player) {
@@ -32,11 +28,6 @@ public class CardThree implements Card {
         effect.setTitle("Card 3 Effect");
         effect.setMessage("Select a player to compare cards with.");
         effect.show();
-    }
-
-    @Override
-    public void discardAffect(Player player) {
-        return;
     }
 
     @Override

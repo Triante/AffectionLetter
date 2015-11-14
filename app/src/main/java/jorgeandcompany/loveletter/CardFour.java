@@ -13,11 +13,6 @@ public class CardFour implements Card {
     private final int value = 4;
 
     @Override
-    public void drawAffect(Player player) {
-        return;
-    }
-
-    @Override
     public void cardEffect(final Player player) {
         AlertDialog.Builder toProtect = new AlertDialog.Builder(GameData.game);
         toProtect.setTitle("Card 4 Effect");
@@ -31,11 +26,6 @@ public class CardFour implements Card {
         });
         toProtect.setCancelable(false);
         toProtect.show();
-    }
-
-    @Override
-    public void discardAffect(Player player) {
-        return;
     }
 
     @Override

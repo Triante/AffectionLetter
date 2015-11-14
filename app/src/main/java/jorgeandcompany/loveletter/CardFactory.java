@@ -20,9 +20,9 @@ public class CardFactory {
             case 6:
                 return new CardSix();
             case 7:
-                return new CardSeven();
+                return new DrawDiscard(new CardSeven());
             case 8:
-                return new CardEight();
+                return new DrawDiscard(new CardEight());
             default:
                 return new CardOne();
         }
