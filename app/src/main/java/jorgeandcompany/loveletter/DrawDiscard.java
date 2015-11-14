@@ -24,12 +24,10 @@ public class DrawDiscard extends DrawDiscardDecorator {
 
     public void discardAffect(final Player player) {
 
-        if(card.getValue() == 7)
-        {
+        switch(card.getValue()){
+            case 7:
             player.setSeven(false);
-        }
-        else if(card.getValue() == 8)
-        {
+            case 8:
             AlertDialog.Builder gameOver= new AlertDialog.Builder(GameData.game);
             gameOver.setCancelable(false);
             gameOver.setTitle("Card 8 Effect");
@@ -42,10 +40,6 @@ public class DrawDiscard extends DrawDiscardDecorator {
                 }
             });
             gameOver.show();
-        }
-        else
-        {
-
         }
     }
 }
