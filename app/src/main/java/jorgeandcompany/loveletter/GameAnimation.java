@@ -396,6 +396,7 @@ public class GameAnimation {
     public void cardToDiscardSinglePlayer(Player on, int hand) {
         //left
         int playerNum = on.getPlayerNumber();
+        final int card = on.getCard(hand).getSkinRes(GameData.skinID);
         if (hand == 0) {
             if (playerNum == 1) {
                 new CountDownTimer(400,100) {
@@ -421,6 +422,7 @@ public class GameAnimation {
                                 if (discard.getVisibility() == View.INVISIBLE) {
                                     discard.setVisibility(View.VISIBLE);
                                 }
+                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -450,6 +452,7 @@ public class GameAnimation {
                                 if (discard.getVisibility() == View.INVISIBLE) {
                                     discard.setVisibility(View.VISIBLE);
                                 }
+                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -479,6 +482,7 @@ public class GameAnimation {
                                 if (discard.getVisibility() == View.INVISIBLE) {
                                     discard.setVisibility(View.VISIBLE);
                                 }
+                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -540,6 +544,7 @@ public class GameAnimation {
                                 if (discard.getVisibility() == View.INVISIBLE) {
                                     discard.setVisibility(View.VISIBLE);
                                 }
+                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -569,6 +574,7 @@ public class GameAnimation {
                                 if (discard.getVisibility() == View.INVISIBLE) {
                                     discard.setVisibility(View.VISIBLE);
                                 }
+                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -598,6 +604,7 @@ public class GameAnimation {
                                 if (discard.getVisibility() == View.INVISIBLE) {
                                     discard.setVisibility(View.VISIBLE);
                                 }
+                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -627,6 +634,7 @@ public class GameAnimation {
                                 if (discard.getVisibility() == View.INVISIBLE) {
                                     discard.setVisibility(View.VISIBLE);
                                 }
+                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }

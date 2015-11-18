@@ -88,12 +88,12 @@
         android:layout_width="50dp"
         android:layout_height="75dp"
         android:id="@+id/player1left"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/deck"
         android:visibility="invisible"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/magi_up"
-        android:clickable="false"/>
+        android:clickable="false"
+        android:layout_alignBottom="@+id/player1right"
+        android:layout_toLeftOf="@+id/deck"
+        android:layout_toStartOf="@+id/deck" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -132,8 +132,8 @@
         android:clickable="false"/>
 
     <ImageButton
-        android:layout_width="70dp"
-        android:layout_height="55dp"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
         android:id="@+id/player2left"
         android:layout_alignTop="@+id/player4right"
         android:layout_alignParentLeft="true"
@@ -144,8 +144,8 @@
         android:clickable="false"/>
 
     <ImageButton
-        android:layout_width="70dp"
-        android:layout_height="55dp"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
         android:id="@+id/player2right"
         android:layout_alignTop="@+id/player4left"
         android:layout_alignParentLeft="true"
@@ -157,8 +157,8 @@
         android:layout_marginLeft="16dp" />
 
     <ImageButton
-        android:layout_width="70dp"
-        android:layout_height="55dp"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
         android:id="@+id/player4right"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/dummy"
@@ -169,8 +169,8 @@
         />
 
     <ImageButton
-        android:layout_width="70dp"
-        android:layout_height="55dp"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
         android:id="@+id/player4left"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/dummy"
@@ -203,12 +203,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/expanded_image"
         android:scaleType="fitXY"
+        android:visibility="invisible"
         android:layout_alignTop="@+id/player3left"
-        android:layout_alignRight="@+id/player4left"
-        android:layout_alignBottom="@+id/player1right"
-        android:layout_alignLeft="@+id/player1right"
-        android:layout_alignStart="@+id/player1right"
-        android:visibility="invisible"/>
+        android:layout_toRightOf="@+id/deck"
+        android:layout_toEndOf="@+id/deck" />
 
     <TextView
         android:layout_width="wrap_content"

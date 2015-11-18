@@ -7,6 +7,8 @@ public class HumanPlayer implements Player {
 
     private Card leftCard = null;
     private Card rightCard = null;
+    private DrawDiscard leftDrawDiscard = null;
+    private DrawDiscard rightDrawDiscard = null;
     private final int playerNumber;
     private boolean isOut = false;
     private boolean hasLeft = false;
@@ -22,7 +24,8 @@ public class HumanPlayer implements Player {
     @Override
     public void drawFirstCard() {
         leftCard = GameData.deck.draw();
-        leftCard.drawAffect(this);
+        leftDrawDiscard = new DrawDiscard(leftCard);
+        leftDrawDiscard.drawAffect(this);
         hasLeft = true;
     }
     @Override
@@ -41,12 +44,14 @@ public class HumanPlayer implements Player {
         if (!hasLeft) {
             hasLeft = true;
             leftCard = GameData.deck.draw();
-            leftCard.drawAffect(this);
+            leftDrawDiscard = new DrawDiscard(leftCard);
+            leftDrawDiscard.drawAffect(this);
         }
         else {
             hasRight = true;
             rightCard = GameData.deck.draw();
-            rightCard.drawAffect(this);
+            rightDrawDiscard = new DrawDiscard(rightCard);
+            rightDrawDiscard.drawAffect(this);
         }
     }
     @Override
@@ -72,14 +77,16 @@ public class HumanPlayer implements Player {
     public void discardCard() {
         if (hasLeft) {
             hasLeft = false;
-            leftCard.discardAffect(this);
+            leftDrawDiscard = new DrawDiscard(leftCard);
+            leftDrawDiscard.discardAffect(this);
             total += leftCard.getValue();
             GameData.discardPile.addToDiscard(leftCard);
             leftCard = null;
         }
         else {
             hasRight = false;
-            rightCard.discardAffect(this);
+            rightDrawDiscard = new DrawDiscard(rightCard);
+            rightDrawDiscard.discardAffect(this);
             total += rightCard.getValue();
             GameData.discardPile.addToDiscard(rightCard);
             rightCard = null;

@@ -1,5 +1,7 @@
 package jorgeandcompany.loveletter;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -91,8 +93,8 @@ public class GameData {
         nextTurn();
     }
     public static void newRound() {
+        game.getButton("discard").setVisibility(View.INVISIBLE );
         game.clearTable();
-
         deck = new Deck();
         discardPile = new DiscardPile();
         TURN = firstOut;

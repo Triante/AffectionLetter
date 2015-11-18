@@ -19,11 +19,6 @@ public class CardFive implements Card {
     private final int value = 5;
 
     @Override
-    public void drawAffect(Player player) {
-        return;
-    }
-
-    @Override
     public void cardEffect(final Player player) {
         AlertDialog.Builder effect = new AlertDialog.Builder(GameData.game);
         effect.setCancelable(false);
@@ -36,11 +31,6 @@ public class CardFive implements Card {
             }
         });
         effect.show();
-    }
-
-    @Override
-    public void discardAffect(Player player) {
-        return;
     }
 
     @Override
