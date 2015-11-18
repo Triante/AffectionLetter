@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.os.CountDownTimer;
 
 /**
  * Created by Firemon123 on 10/1/2015.
@@ -22,7 +21,7 @@ public class CardSeven implements Card {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 player.setSeven(false);
-                GameData.game.endOfTurn(player);
+                GameData.game.endOfTurn();
             }
         });
         play.show();

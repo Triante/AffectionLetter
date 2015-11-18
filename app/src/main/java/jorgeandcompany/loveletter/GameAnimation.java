@@ -702,7 +702,7 @@ public class GameAnimation {
                         success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                GameData.game.endOfTurn(thePlayer);
+                                GameData.game.endOfTurn();
                             }
                         });
                         success.show();

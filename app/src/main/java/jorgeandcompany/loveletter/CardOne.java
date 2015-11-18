@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +68,7 @@ public class CardOne implements Card {
                 select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        GameData.game.endOfTurn(thePlayer);
+                        GameData.game.endOfTurn();
                     }
                 });
                 select.setNegativeButton("No", null);
@@ -169,7 +167,7 @@ public class CardOne implements Card {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GameData.out(player);
-                GameData.game.endOfTurn(thePlayer);
+                GameData.game.endOfTurn();
             }
         });
         AlertDialog alertDialogObject = s.create();
@@ -184,7 +182,7 @@ public class CardOne implements Card {
         f.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(thePlayer);
+                GameData.game.endOfTurn();
             }
         });
         AlertDialog alertDialogObject = f.create();

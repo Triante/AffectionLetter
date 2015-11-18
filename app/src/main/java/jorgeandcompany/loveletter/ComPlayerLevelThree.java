@@ -6,7 +6,6 @@ import android.os.CountDownTimer;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
@@ -312,7 +311,7 @@ public class ComPlayerLevelThree implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -335,7 +334,7 @@ public class ComPlayerLevelThree implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -377,7 +376,7 @@ public class ComPlayerLevelThree implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -391,7 +390,7 @@ public class ComPlayerLevelThree implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -433,7 +432,7 @@ public class ComPlayerLevelThree implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                                GameData.game.endOfTurn();
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -479,7 +478,7 @@ public class ComPlayerLevelThree implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                                GameData.game.endOfTurn();
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -522,7 +521,7 @@ public class ComPlayerLevelThree implements Player {
                     alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                            GameData.game.endOfTurn();
                         }
                     });
                     alert.show();
@@ -538,7 +537,7 @@ public class ComPlayerLevelThree implements Player {
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                    GameData.game.endOfTurn();
                 }
             });
             alert.show();
@@ -552,7 +551,7 @@ public class ComPlayerLevelThree implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -566,7 +565,7 @@ public class ComPlayerLevelThree implements Player {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GameData.out(playerNumber);
-                GameData.game.endOfTurn(ComPlayerLevelThree.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();

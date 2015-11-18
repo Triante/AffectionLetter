@@ -3,10 +3,6 @@ package jorgeandcompany.loveletter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 
 import java.util.Random;
@@ -360,7 +356,7 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -381,7 +377,7 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -423,7 +419,7 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -437,7 +433,7 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -478,7 +474,7 @@ public class ComPlayerLevelOne implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                                GameData.game.endOfTurn();
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -524,7 +520,7 @@ public class ComPlayerLevelOne implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                                GameData.game.endOfTurn();
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -566,7 +562,7 @@ public class ComPlayerLevelOne implements Player {
                     alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                            GameData.game.endOfTurn();
                         }
                     });
                     alert.show();
@@ -582,7 +578,7 @@ public class ComPlayerLevelOne implements Player {
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                    GameData.game.endOfTurn();
                 }
             });
             alert.show();
@@ -596,7 +592,7 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -610,7 +606,7 @@ public class ComPlayerLevelOne implements Player {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GameData.out(playerNumber);
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();

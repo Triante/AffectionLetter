@@ -249,7 +249,7 @@ public class Game extends ActionBarActivity {
     }
 
     //decides the end of games too
-    public void endOfTurn(final Player on) {
+    public void endOfTurn() {
         if (!theAnimation.isAnimating()) {
             theAnimation.changeAnimatingState();
         }
