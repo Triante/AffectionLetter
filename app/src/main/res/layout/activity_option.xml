@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Options"
-        android:id="@+id/skin" />
+        android:id="@+id/skin"
+        android:layout_gravity="center_horizontal" />
 
 
     <Switch

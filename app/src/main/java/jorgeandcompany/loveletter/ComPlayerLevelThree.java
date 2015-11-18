@@ -3,18 +3,18 @@ package jorgeandcompany.loveletter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 /**
- * Created by Firemon123 on 11/3/2015.
+ * Created by Firemon123 on 11/13/2015.
  */
-public class ComPlayerLevelOne implements Player {
+public class ComPlayerLevelThree implements Player {
+
     private Card leftCard = null;
     private Card rightCard = null;
     private final int playerNumber;
@@ -24,11 +24,13 @@ public class ComPlayerLevelOne implements Player {
     private boolean isProtected = false;
     private int total = 0;
 
-    //com lvl 1 variables
+    //com lvl 3 variables
+    private AIBrain ai;
 
 
-    public ComPlayerLevelOne(int playerNumber) {
+    public ComPlayerLevelThree(int playerNumber) {
         this.playerNumber = playerNumber;
+        ai = new AIBrain();
     }
 
     @Override
@@ -60,9 +62,8 @@ public class ComPlayerLevelOne implements Player {
     }
     @Override
     public void playCard(int hand) {
-        //total += rightCard.getValue();
-        hand = selectCardToPlay();
-        final int toPlay = hand;
+        ai.updateRememberFlags();
+        final int toPlay = selectCardToPlay();
         //(3000, 1000) where the first 1000 is the flip, whenever that gets implemented
         CountDownTimer play = new CountDownTimer(2000, 500) {
             boolean done = false;
@@ -79,7 +80,7 @@ public class ComPlayerLevelOne implements Player {
                     done = true;
                 } else if (!otherDone) {
                     GameAnimation theAnimation = GameData.game.provideAnimations();
-                    theAnimation.cardToDiscardSinglePlayer(ComPlayerLevelOne.this, toPlay);
+                    theAnimation.cardToDiscardSinglePlayer(ComPlayerLevelThree.this, toPlay);
                     otherDone = true;
                 }
 
@@ -103,6 +104,7 @@ public class ComPlayerLevelOne implements Player {
             }
         };
         play.start();
+
     }
     @Override
     public void discardCard() {
@@ -143,6 +145,7 @@ public class ComPlayerLevelOne implements Player {
         isProtected = false;
         leftCard = null;
         rightCard = null;
+        ai = new AIBrain();
     }
 
     @Override
@@ -189,6 +192,7 @@ public class ComPlayerLevelOne implements Player {
         isProtected = false;
         leftCard = null;
         rightCard = null;
+        ai = new AIBrain();
     }
 
     @Override
@@ -229,59 +233,9 @@ public class ComPlayerLevelOne implements Player {
             ar[i] = a;
         }
     }
-    private int selectPlayer() {
-        int[] selectablePlayers = new int[3];
-        int turn = GameData.TURN;
-        turn++;
-        boolean anySelectable = false;
-        int i = 0;
-        if (turn == 5) {
-            turn = 1;
-        }
-        while (turn != playerNumber) {
-            if (!GameData.PlayerList[turn].isOut() && !GameData.PlayerList[turn].isProtected()) {
-                selectablePlayers[i] = GameData.PlayerList[turn].getPlayerNumber();
-                anySelectable = true;
-            }
-            else {
-                selectablePlayers[i] = 0;
-            }
-            turn++;
-            if (turn == 5) {
-                turn = 1;
-            }
-            i++;
-        }
-        int chosen;
-        if (anySelectable) {
-            shuffleArray(selectablePlayers);
-            shuffleArray(selectablePlayers);
-            chosen = selectablePlayers[0];
-            if (chosen == 0) {
-                chosen = selectablePlayers[1];
-                if (chosen == 0) {
-                    chosen = selectablePlayers[2];
-                }
-            }
-            return chosen;
-        }
-        else {
-            return 0;
-        }
-    }
+
     private int selectCardToPlay() {
-        int left = leftCard.getValue();
-        int right = rightCard.getValue();
-        if (left == 7 || right == 7) {
-            if (left == 5 || left == 6 || right == 5 || right == 6) {
-                if (left == 7) return 0;
-                else return 1;
-            }
-        }
-        if (left < right) return 0;
-        else return 1;
-
-
+        return ai.selectCardToPlay();
     }
     private void cardEffect(int hand) {
         int key;
@@ -332,17 +286,15 @@ public class ComPlayerLevelOne implements Player {
     }
     private void effectOne() {
         String message = "";
-        int chosen = selectPlayer();
-        int[] cards = {2,3,4,5,6,7,8};
-        shuffleArray(cards);
-        shuffleArray(cards);
-        shuffleArray(cards);
-        int guess = cards[5];
+        int chosen = ai.selectPlayer(1);
+        int guess = ai.guessCard(chosen);
+
         if (chosen != 0) {
             message = "Player " + playerNumber + " used card 1.\n" +
                     "Player " + playerNumber + " guessed if player " + chosen + " had card "+ guess + "." ;
             if (GameData.PlayerList[chosen].getCard().getValue() == guess) {
-                message += "\nPlayer " + playerNumber + " guessed correctly. Player "+ chosen + "is out.";
+                message += "\nPlayer " + playerNumber + " guessed correctly.\n" +
+                        "Player "+ chosen + " is out.";
                 GameData.out(chosen);
             }
             else {
@@ -360,14 +312,16 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn(ComPlayerLevelThree.this);
             }
         });
         alert.show();
     }
     private void effectTwo() {
         String message = "";
-        int chosen = selectPlayer();
+        int chosen = ai.selectPlayer(2);
+        int chosenCard = GameData.PlayerList[chosen].getCard().getValue();
+        ai.setCardToRemember(chosen, chosenCard);
         if (chosen != 0) {
             message = "Player " + playerNumber + " used card 2. Player " + playerNumber + " now knows player " + chosen + "'s card";
         }
@@ -381,14 +335,14 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn(ComPlayerLevelThree.this);
             }
         });
         alert.show();
     }
     private void effectThree() {
         String message = "";
-        final int chosen = selectPlayer();
+        final int chosen = ai.selectPlayer(3);
         if (chosen != 0) {
             int c1 = getCard().getValue();
             int c2 = GameData.PlayerList[chosen].getCard().getValue();
@@ -423,7 +377,7 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn(ComPlayerLevelThree.this);
             }
         });
         alert.show();
@@ -437,13 +391,14 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn(ComPlayerLevelThree.this);
             }
         });
         alert.show();
     }
     private void effectFive() {
-        final int chosen = selectPlayer();
+        final int chosen = ai.selectPlayer(5);
+        ai.forgetCard(chosen);
         if (chosen != 0) {
             new CountDownTimer(4000,1000) {
                 String message = "Player " + playerNumber + " used card 5. Player " + playerNumber + " chose player " + chosen + " to discard his or her card and draw a new one";
@@ -478,7 +433,7 @@ public class ComPlayerLevelOne implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                                GameData.game.endOfTurn(ComPlayerLevelThree.this);
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -524,7 +479,7 @@ public class ComPlayerLevelOne implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                                GameData.game.endOfTurn(ComPlayerLevelThree.this);
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -539,10 +494,11 @@ public class ComPlayerLevelOne implements Player {
     }
     private void effectSix() {
         String message = "";
-        final int chosen = selectPlayer();
+        final int chosen = ai.selectPlayer(6);
         if (chosen != 0) {
             Card c1 = getCard();
             Card c2 = GameData.PlayerList[chosen].getCard();
+            ai.setCardToRemember(chosen, c1.getValue());
             setCard(c2);
             GameData.PlayerList[chosen].setCard(c1);
             new CountDownTimer(2000,1000) {
@@ -566,7 +522,7 @@ public class ComPlayerLevelOne implements Player {
                     alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                            GameData.game.endOfTurn(ComPlayerLevelThree.this);
                         }
                     });
                     alert.show();
@@ -582,7 +538,7 @@ public class ComPlayerLevelOne implements Player {
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                    GameData.game.endOfTurn(ComPlayerLevelThree.this);
                 }
             });
             alert.show();
@@ -596,7 +552,7 @@ public class ComPlayerLevelOne implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn(ComPlayerLevelThree.this);
             }
         });
         alert.show();
@@ -610,7 +566,7 @@ public class ComPlayerLevelOne implements Player {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GameData.out(playerNumber);
-                GameData.game.endOfTurn(ComPlayerLevelOne.this);
+                GameData.game.endOfTurn(ComPlayerLevelThree.this);
             }
         });
         alert.show();
@@ -660,6 +616,233 @@ public class ComPlayerLevelOne implements Player {
         }
 
         return leftandright;
+    }
+
+    class AIBrain {
+        private int[] rememberedCards = {-1, -1, -1, -1, -1};
+        private boolean remembersCard = false;
+        private boolean remembersEight = false;
+
+        private int selectCardToPlay() {
+            int leftValue = leftCard.getValue();
+            switch (leftValue) {
+                case 1:
+                    return cardOnePriority();
+                case 2:
+                    return cardTwoPriority();
+                case 3:
+                    return cardThreePriority();
+                case 4:
+                    return cardFourPriority();
+                case 5:
+                    return cardFivePriority();
+                case 6:
+                    return cardSixPriority();
+                case 7:
+                    return cardSevenPriority();
+                case 8:
+                    return cardEightPriority();
+                default:
+                    return 1;
+            }
+        }
+
+        private int cardOnePriority() {
+            if (remembersCard || remembersEight) return 0;
+            int rightValue = rightCard.getValue();
+            if (rightValue == 1 || rightValue == 2 || rightValue == 4) return 1;
+            if (rightValue == 7 && toFluff()) return 1;
+            return 0;
+        }
+
+        private int cardTwoPriority() {
+            int rightValue = rightCard.getValue();
+            if (rightValue == 1 && remembersCard) return 1;
+            if (rightValue == 5 && remembersEight) return 1;
+            if (rightValue ==2 || rightValue == 4) return 1;
+            if (rightValue == 7 && toFluff()) return 1;
+            return 0;
+        }
+
+        private int cardThreePriority() {
+            int rightValue = rightCard.getValue();
+            if (rightValue == 1 || rightValue == 2 || rightValue ==3 || rightValue == 4 || rightValue == 5) return 1;
+            return 0;
+        }
+
+        private int cardFourPriority() {
+            int rightValue = rightCard.getValue();
+            if (rightValue == 1 && remembersCard) return 1;
+            if (rightValue == 5 && remembersEight) return 1;
+            return 0;
+        }
+
+        private int cardFivePriority() {
+            if (remembersEight) return 0;
+            int rightValue = rightCard.getValue();
+            if (rightValue == 1 && remembersCard) return 1;
+            if (rightValue == 2 || rightValue == 4 || rightValue == 5 || rightValue == 7) return 1;
+            return 0;
+        }
+
+        private int cardSixPriority() {
+            int rightValue = rightCard.getValue();
+            if (rightValue == 1 || rightValue == 3 || rightValue == 4 || rightValue == 7) return 1;
+            return 0;
+        }
+
+        private int cardSevenPriority() {
+            int rightValue = rightCard.getValue();
+            if (rightValue == 1 && remembersCard) return 1;
+            if (rightValue == 3 || rightValue == 4) return 1;
+            return 0;
+        }
+
+        private int cardEightPriority() {
+            return 1;
+        }
+
+        private boolean toFluff() {
+            Random rnd = new Random();
+            return rnd.nextBoolean();
+        }
+
+        private int selectPlayer(int cardNumber) {
+            if (cardNumber == 1) {
+                if (remembersCard || remembersEight) {
+                    if (rememberedCards[1] != 1 &&  rememberedCards[1] != -1
+                            && !GameData.PlayerList[1].isProtected()  && !GameData.PlayerList[1].isOut()) return 1;
+                    if (rememberedCards[2] != 1 &&  rememberedCards[2] != -1
+                            && !GameData.PlayerList[2].isProtected()  && !GameData.PlayerList[2].isOut()) return 2;
+                    if (rememberedCards[3] != 1 &&  rememberedCards[3] != -1
+                            && !GameData.PlayerList[3].isProtected()  && !GameData.PlayerList[3].isOut()) return 3;
+                    if (rememberedCards[4] != 1 &&  rememberedCards[4] != -1
+                            && !GameData.PlayerList[4].isProtected()  && !GameData.PlayerList[4].isOut()) return 4;
+                }
+            }
+
+            if (cardNumber == 3) {
+                if (rememberedCards[1] < getCard().getValue() &&  rememberedCards[1] != -1
+                        && !GameData.PlayerList[1].isProtected()  && !GameData.PlayerList[1].isOut()) return 1;
+                if (rememberedCards[2] < getCard().getValue() &&  rememberedCards[2] != -1
+                        && !GameData.PlayerList[2].isProtected()  && !GameData.PlayerList[2].isOut()) return 2;
+                if (rememberedCards[3] < getCard().getValue() &&  rememberedCards[3] != -1
+                        && !GameData.PlayerList[3].isProtected()  && !GameData.PlayerList[3].isOut()) return 3;
+                if (rememberedCards[4] < getCard().getValue() &&  rememberedCards[4] != -1
+                        && !GameData.PlayerList[4].isProtected()  && !GameData.PlayerList[4].isOut()) return 4;
+            }
+
+            if (cardNumber == 5) {
+                if (rememberedCards[1] == 8
+                        && !GameData.PlayerList[1].isProtected()  && !GameData.PlayerList[1].isOut()) return 1;
+                if (rememberedCards[2] == 8
+                        && !GameData.PlayerList[2].isProtected()  && !GameData.PlayerList[2].isOut()) return 2;
+                if (rememberedCards[3] == 8
+                        && !GameData.PlayerList[3].isProtected()  && !GameData.PlayerList[3].isOut()) return 3;
+                if (rememberedCards[4] == 8
+                        && !GameData.PlayerList[4].isProtected()  && !GameData.PlayerList[4].isOut()) return 4;
+            }
+
+            // else if another card or no match
+            int[] selectablePlayers = new int[3];
+            int turn = GameData.TURN;
+            turn++;
+            boolean anySelectable = false;
+            int i = 0;
+            if (turn == 5) {
+                turn = 1;
+            }
+            while (turn != playerNumber) {
+                if (!GameData.PlayerList[turn].isOut() && !GameData.PlayerList[turn].isProtected()) {
+                    selectablePlayers[i] = GameData.PlayerList[turn].getPlayerNumber();
+                    anySelectable = true;
+                }
+                else {
+                    selectablePlayers[i] = 0;
+                }
+                turn++;
+                if (turn == 5) {
+                    turn = 1;
+                }
+                i++;
+            }
+            int chosen;
+            if (anySelectable) {
+                shuffleArray(selectablePlayers);
+                shuffleArray(selectablePlayers);
+                chosen = selectablePlayers[0];
+                if (chosen == 0) {
+                    chosen = selectablePlayers[1];
+                    if (chosen == 0) {
+                        chosen = selectablePlayers[2];
+                    }
+                }
+                return chosen;
+            }
+            else {
+                return 0;
+            }
+        }
+
+        private int guessCard(int player) {
+            int guess;
+            if (remembersCard && rememberedCards[player] != 1 && rememberedCards[player] != -1)
+            {
+                guess = rememberedCards[player];
+                forgetCard(player);
+                return guess;
+            }
+            int[] discard = GameData.discardPile.getDiscardInformation();
+            int[] cardsNotToPlay = {-1, 0, 0, 0, 0, 0, 0, 0, 0};
+            for (int i = 0; i < discard.length; i++) {
+                int card = discard[i];
+                cardsNotToPlay[card]++;
+            }
+            cardsNotToPlay[getCard().getValue()]++;
+
+            ArrayList<Integer> cardsToGuess = new ArrayList<>();
+            if (cardsNotToPlay[2] != 2) cardsToGuess.add(2);
+            if (cardsNotToPlay[2] != 2) cardsToGuess.add(3);
+            if (cardsNotToPlay[2] != 2) cardsToGuess.add(4);
+            if (cardsNotToPlay[2] != 2) cardsToGuess.add(5);
+            if (cardsNotToPlay[2] != 1) cardsToGuess.add(6);
+            if (cardsNotToPlay[2] != 1) cardsToGuess.add(7);
+            if (cardsNotToPlay[2] != 1) cardsToGuess.add(8);
+
+            if (cardsToGuess.isEmpty()) return 2;
+            long seed = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
+            Collections.shuffle(cardsToGuess, new Random(seed));
+            Collections.shuffle(cardsToGuess, new Random(seed));
+
+            return cardsToGuess.get(0);
+        }
+
+        private void updateRememberFlags() {
+            if (GameData.PlayerList[1].isOut()) rememberedCards[1] = -1;
+            if (GameData.PlayerList[2].isOut()) rememberedCards[1] = -1;
+            if (GameData.PlayerList[3].isOut()) rememberedCards[1] = -1;
+            if (GameData.PlayerList[4].isOut()) rememberedCards[1] = -1;
+
+
+            if (rememberedCards[1] == -1 &&  rememberedCards[2] == -1 &&  rememberedCards[3] == -1 &&  rememberedCards[4] == -1) {
+                remembersCard = false;
+            }
+            if (rememberedCards[1] != 8 &&  rememberedCards[2] != 8 &&  rememberedCards[3] != 8 &&  rememberedCards[4] != 8) {
+                remembersEight = false;
+            }
+        }
+
+        private void setCardToRemember(int player, int card) {
+            if (card == 8) remembersEight = true;
+            remembersCard = true;
+            rememberedCards[player] = card;
+        }
+
+        private void forgetCard(int player) {
+            rememberedCards[player] = -1;
+            updateRememberFlags();
+        }
+
     }
 
 }

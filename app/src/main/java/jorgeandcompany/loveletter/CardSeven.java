@@ -14,7 +14,6 @@ public class CardSeven implements Card {
     @Override
     public void drawAffect(Player player) {
         player.setSeven(true);
-        return;
     }
 
     @Override
@@ -66,6 +65,7 @@ public class CardSeven implements Card {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) return false;
         if (!(o instanceof Card)) return false;
         Card other = (Card) o;
         if (getValue() == other.getValue()) return true;

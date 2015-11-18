@@ -193,7 +193,6 @@ public class CardSix implements Card {
 
     }
 
-
     private void protectedMessage(int p) {
         AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
@@ -214,5 +213,14 @@ public class CardSix implements Card {
             theAnimation.swapCard6(player, otherPlayer, thePlayer, id, 180, -180);
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof Card)) return false;
+        Card other = (Card) o;
+        if (getValue() == other.getValue()) return true;
+        else return false;
     }
 }
