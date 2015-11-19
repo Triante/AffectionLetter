@@ -11,11 +11,6 @@ import android.os.CountDownTimer;
  */
 public class CardSeven implements Card {
     private final int value = 7;
-    @Override
-    public void drawAffect(Player player) {
-        player.setSeven(true);
-        return;
-    }
 
     @Override
     public void cardEffect(final Player player) {
@@ -31,11 +26,6 @@ public class CardSeven implements Card {
             }
         });
         play.show();
-    }
-
-    @Override
-    public void discardAffect(Player player) {
-        player.setSeven(false);
     }
 
     @Override

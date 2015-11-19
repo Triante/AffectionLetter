@@ -19,11 +19,6 @@ public class CardSix implements Card {
     private final int value = 6;
 
     @Override
-    public void drawAffect(Player player) {
-        return;
-    }
-
-    @Override
     public void cardEffect(final Player player) {
         AlertDialog.Builder effect = new AlertDialog.Builder(GameData.game);
         DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
@@ -37,11 +32,6 @@ public class CardSix implements Card {
         effect.setTitle("Card 6 Effect");
         effect.setMessage("Select a player to trade cards with.");
         effect.show();
-    }
-
-    @Override
-    public void discardAffect(Player player) {
-        return;
     }
 
     @Override

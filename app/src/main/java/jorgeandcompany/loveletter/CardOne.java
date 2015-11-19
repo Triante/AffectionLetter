@@ -18,10 +18,6 @@ import java.util.List;
 public class CardOne implements Card {
 
     private final int value = 1;
-    @Override
-    public void drawAffect(Player player) {
-        return;
-    }
 
     /**
      * Name a card (other than a card that has a value of 1) and choose another player.
@@ -43,11 +39,6 @@ public class CardOne implements Card {
         effect.setTitle("Card 1 Effect");
         effect.setMessage("Select a player to guess card.");
         effect.show();
-    }
-
-    @Override
-    public void discardAffect(Player player) {
-        return;
     }
 
     @Override
