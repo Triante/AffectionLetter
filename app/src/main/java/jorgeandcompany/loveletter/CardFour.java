@@ -58,7 +58,9 @@ public class CardFour implements Card {
         if (o == null) return false;
         if (!(o instanceof Card)) return false;
         Card other = (Card) o;
-        if (getValue() == other.getValue()) return true;
+        int thisCard = getValue();
+        int otherCard = other.getValue();
+        if (thisCard == otherCard) return true;
         else return false;
     }
 }
