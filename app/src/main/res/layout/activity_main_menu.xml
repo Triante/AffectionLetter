@@ -34,7 +34,7 @@
     <Button
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:text="Multiplayer"
+        android:text="Multi Player"
         android:textAllCaps="false"
         android:textSize="17sp"
         android:id="@+id/bMainMenu2"
@@ -48,14 +48,14 @@
         android:textAllCaps="false"
         android:textSize="17sp"
         android:id="@+id/bMainMenu3"
-        android:text="Shop"
+        android:text="Options"
         android:layout_gravity="center"
         android:layout_weight="1"/>
 
     <Button
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:text="Options"
+        android:text="Quit"
         android:textAllCaps="false"
         android:textSize="17sp"
         android:id="@+id/bMainMenu4"

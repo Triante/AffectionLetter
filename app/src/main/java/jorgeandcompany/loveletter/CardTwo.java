@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -60,7 +59,7 @@ public class CardTwo implements Card {
                 select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        GameData.game.endOfTurn(thePlayer);
+                        GameData.game.endOfTurn();
                     }
                 });
                 select.setNegativeButton("No", null);
@@ -184,7 +183,7 @@ public class CardTwo implements Card {
         look.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(thePlayer);
+                GameData.game.endOfTurn();
             }
         });
         look.show();
@@ -212,9 +211,12 @@ public class CardTwo implements Card {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) return false;
         if (!(o instanceof Card)) return false;
         Card other = (Card) o;
-        if (getValue() == other.getValue()) return true;
+        int thisCard = getValue();
+        int otherCard = other.getValue();
+        if (thisCard == otherCard) return true;
         else return false;
     }
 }

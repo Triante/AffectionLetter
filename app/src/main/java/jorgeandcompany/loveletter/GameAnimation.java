@@ -325,7 +325,6 @@ public class GameAnimation {
         fourthPlayerLeft.setVisibility(fourthPlayerLeft.INVISIBLE);
     };
 
-    //currently just does animation, from back to front.
     public void flipCard(final View toFlip, final int id) {
         final int rightout, leftin;
         if (toFlip == firstPlayerLeft || toFlip == firstPlayerRight || toFlip == thirdPlayerLeft || toFlip == thirdPlayerRight) {
@@ -365,7 +364,6 @@ public class GameAnimation {
             }
         }.start();
     }
-    //front to back
     public void flipCardToBack(final View toFlip) {
         new CountDownTimer(400, 100) {
             int a = 0;
@@ -704,7 +702,7 @@ public class GameAnimation {
                         success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                GameData.game.endOfTurn(thePlayer);
+                                GameData.game.endOfTurn();
                             }
                         });
                         success.show();

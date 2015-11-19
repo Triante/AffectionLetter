@@ -34,4 +34,9 @@ public abstract class DrawDiscardDecorator implements Card {
     public int getSkinRes(int skinId) {
         return card.getSkinRes(skinId);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return card.equals(o);
+    }
 }

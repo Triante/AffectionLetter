@@ -11,9 +11,10 @@ import java.util.Random;
 public class GameData {
 
     public static Player[] PlayerList = new Player[5];
+    public static int gamesUntilWin = 1;
 
     public static Deck deck;
-    public static ArrayList<Card> discard;
+    public static DiscardPile discardPile;
     public static int TURN;
     public static Card OutCard;
     public static int remain;
@@ -36,13 +37,26 @@ public class GameData {
         skinID = 1;
     }
 
-    public static void setPlayerMode(boolean single) {
-        if (single) {
+    public static void setMode(Boolean isSingle, int players, int level) {
+        if (isSingle) {
             PlayerList[1] = new HumanPlayer(1);
-            PlayerList[2] = new ComPlayerLevelTwo(2);
-            PlayerList[3] = new ComPlayerLevelTwo(3);
-            PlayerList[4] = new ComPlayerLevelTwo(4);
+            PlayerList[2] = ComputerLevelFactory.createComputerPlayer(level, 2);
+            PlayerList[3] = ComputerLevelFactory.createComputerPlayer(level, 3);
+            PlayerList[4] = ComputerLevelFactory.createComputerPlayer(level, 4);
         }
+        else if (players == 2) {
+            PlayerList[1] = new HumanPlayer(1);
+            PlayerList[2] = new HumanPlayer(2);
+            PlayerList[3] = ComputerLevelFactory.createComputerPlayer(level, 3);
+            PlayerList[4] = ComputerLevelFactory.createComputerPlayer(level, 4);
+        }
+        else if (players == 3) {
+            PlayerList[1] = new HumanPlayer(1);
+            PlayerList[2] = new HumanPlayer(2);
+            PlayerList[3] = new HumanPlayer(3);
+            PlayerList[4] = ComputerLevelFactory.createComputerPlayer(level, 4);
+        }
+        //players == 4
         else {
             PlayerList[1] = new HumanPlayer(1);
             PlayerList[2] = new HumanPlayer(2);
@@ -50,7 +64,6 @@ public class GameData {
             PlayerList[4] = new HumanPlayer(4);
         }
     }
-
     public static void newGame() {
         Score[0] = 0;
         Score[1] = 0;
@@ -58,7 +71,7 @@ public class GameData {
         Score[3] = 0;
 
         deck = new Deck();
-        discard = new ArrayList<Card>();
+        discardPile = new DiscardPile();
         selectFirstTurnPlayer();
         OutCard = deck.draw();
         FINISH_GAME = false;
@@ -83,7 +96,7 @@ public class GameData {
         game.getButton("discard").setVisibility(View.INVISIBLE );
         game.clearTable();
         deck = new Deck();
-        discard = new ArrayList<Card>();
+        discardPile = new DiscardPile();
         TURN = firstOut;
         OutCard = deck.draw();
         FINISH_GAME = false;

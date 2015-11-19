@@ -30,8 +30,10 @@ public class Game extends ActionBarActivity {
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
     private Button bPlay, bCancel;
     private ImageView expandedCardImage, backgroundOnPaused;
-    private TextView cardDescriptionText, betaView;
+    private TextView cardDescriptionText, textOne, textTwo, textThree, textFour, betaView;
     private boolean isSingleGame;
+    private int comLevel = 0;
+    private int playerAmount = 0;
     private static Music gameMusic = null;
     private GameAnimation theAnimation = null;
 
@@ -41,7 +43,10 @@ public class Game extends ActionBarActivity {
         setContentView(R.layout.activity_game);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        isSingleGame = getIntent().getBooleanExtra("single", false);
+        isSingleGame = getIntent().getBooleanExtra("SinglePlayer", false);
+        playerAmount = getIntent().getIntExtra("MultiPlayer", 0);
+        comLevel = getIntent().getIntExtra("ComputerLevel", 1);
+
         discard = (ImageButton) findViewById(R.id.discard);
         deck = (ImageButton) findViewById(R.id.deck);
         firstPlayerLeft = (ImageButton) findViewById(R.id.player1left);
@@ -52,6 +57,10 @@ public class Game extends ActionBarActivity {
         thirdPlayerRight = (ImageButton) findViewById(R.id.player3right);
         fourthPlayerLeft = (ImageButton) findViewById(R.id.player4right);
         fourthPlayerRight = (ImageButton) findViewById(R.id.player4left);
+        textOne = (TextView) findViewById(R.id.area_text_one);
+        textTwo = (TextView) findViewById(R.id.area_text_two);
+        textThree = (TextView) findViewById(R.id.area_text_three);
+        textFour = (TextView) findViewById(R.id.area_text_four);
         outCard = (ImageButton) findViewById(R.id.outCard);
         bPlay = (Button) findViewById(R.id.bPlay);
         bCancel = (Button) findViewById(R.id.bCancel);
@@ -75,7 +84,7 @@ public class Game extends ActionBarActivity {
 
         }
         GameData.setContextMenu(this);
-        GameData.setPlayerMode(isSingleGame);
+        GameData.setMode(isSingleGame, playerAmount, comLevel);
         GameData.newGame();
         handOutCards(GameData.TURN);
 
@@ -146,19 +155,21 @@ public class Game extends ActionBarActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (on.hasLeftCard()) {
-                    theAnimation.deckToRight(1);
+                    if (on.isHuman()) theAnimation.deckToRight(1);
+                    else theAnimation.deckToRight(on.getPlayerNumber());
                 }
                 else {
-                    theAnimation.deckToLeft(1);
+                    if (on.isHuman()) theAnimation.deckToLeft(1);
+                    else theAnimation.deckToLeft(on.getPlayerNumber());
+                }
+                if (GameData.getDeckCount() == 0) {
+                    deck.setVisibility(View.INVISIBLE);
                 }
                 on.drawCard();
             }
 
             @Override
             public void onFinish() {
-                if (GameData.getDeckCount() == 0) {
-                    deck.setVisibility(View.INVISIBLE);
-                }
                 if (on.isHuman()) {
                     playerMove(on);
                 }
@@ -167,15 +178,6 @@ public class Game extends ActionBarActivity {
             }
         };
         toMove.start();
-
-
-        //player or ai does turn
-//        if (turn == 1) {  // player
-//            playerMove(on);
-//        }
-//        else { //ai
-//            playerMove(on);
-//        }
     }
     public void singlePlayerGame() {
         int turn = GameData.TURN;;
@@ -196,14 +198,14 @@ public class Game extends ActionBarActivity {
                 else {
                     theAnimation.deckToLeft(on.getPlayerNumber());
                 }
+                if (GameData.getDeckCount() == 0) {
+                    deck.setVisibility(View.INVISIBLE);
+                }
                 on.drawCard();
             }
 
             @Override
             public void onFinish() {
-                if (GameData.getDeckCount() == 0) {
-                    deck.setVisibility(View.INVISIBLE);
-                }
                 if (on.isHuman()) {
                     playerMove(on);
                     theAnimation.changeAnimatingState();
@@ -245,8 +247,9 @@ public class Game extends ActionBarActivity {
     private void computerMove(final Player on) {
         on.playCard(0);
     }
+
     //decides the end of games too
-    public void endOfTurn(final Player on) {
+    public void endOfTurn() {
         if (!theAnimation.isAnimating()) {
             theAnimation.changeAnimatingState();
         }
@@ -282,7 +285,7 @@ public class Game extends ActionBarActivity {
                        GameData.nextTurn();
                    }
                    GameData.Score[GameData.TURN - 1]++;
-                   if (GameData.Score[GameData.TURN - 1] == 7) {
+                   if (GameData.Score[GameData.TURN - 1] == GameData.gamesUntilWin) {
                        GameData.GAME_COMPLETE = true;
                    }
                    AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
@@ -297,7 +300,11 @@ public class Game extends ActionBarActivity {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
                            if (GameData.GAME_COMPLETE) {
-                               endOfGame(GameData.TURN);
+                               if (GameData.Score[0] == GameData.gamesUntilWin) endOfGame(1);
+                               else if (GameData.Score[1] == GameData.gamesUntilWin) endOfGame(2);
+                               else if (GameData.Score[2] == GameData.gamesUntilWin) endOfGame(3);
+                               else if (GameData.Score[3] == GameData.gamesUntilWin) endOfGame(4);
+                               else endOfGame(-1);
                            }
                            else {
                                GameData.newRound();
@@ -339,7 +346,7 @@ public class Game extends ActionBarActivity {
                    {
                        winners += " " + x + " and";
                        GameData.Score[x-1]++;
-                       if (GameData.Score[x - 1] == 7) {
+                       if (GameData.Score[x - 1] == GameData.gamesUntilWin) {
                            GameData.GAME_COMPLETE = true;
                        }
                    }
@@ -356,10 +363,11 @@ public class Game extends ActionBarActivity {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
                            if (GameData.GAME_COMPLETE) {
-                               if (GameData.Score[0] == 7) endOfGame(1);
-                               else if (GameData.Score[1] == 7) endOfGame(2);
-                               else if (GameData.Score[2] == 7) endOfGame(3);
-                               else endOfGame(4);
+                               if (GameData.Score[0] == GameData.gamesUntilWin) endOfGame(1);
+                               else if (GameData.Score[1] == GameData.gamesUntilWin) endOfGame(2);
+                               else if (GameData.Score[2] == GameData.gamesUntilWin) endOfGame(3);
+                               else if (GameData.Score[3] == GameData.gamesUntilWin) endOfGame(4);
+                               else endOfGame(-1);
                            }
                            else
                            {
@@ -385,14 +393,19 @@ public class Game extends ActionBarActivity {
                        }
                    }
                    else {
-                       message = "Player " + GameData.TURN + " is up.\nPlease pass to player and select OK when ready.";
+                       if (GameData.PlayerList[GameData.TURN].isHuman()) {
+                           message = "Player " + GameData.TURN + " is up.\nPlease pass to player and select OK when ready.";
+                       }
+                       else {
+                           message = "Player " + GameData.TURN + " is up.\nSelect OK when ready.";
+                       }
                    }
                    nextPlayerReady.setTitle("Next Player");
                    nextPlayerReady.setMessage(message);
                    DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
-                           if (!isSingleGame) repaint();
+                           if (GameData.PlayerList[GameData.TURN].isHuman()) repaint();
                            else repaintSingle();
                            nextTurn();
                        }
@@ -428,14 +441,6 @@ public class Game extends ActionBarActivity {
         });
         win.show();
     }
-
-
-
-
-
-
-
-
 
     //has method to play card. Ends a turn.
     private void imageZoomToOpen(final Player on, final int hand, final View toFlip) {
@@ -494,7 +499,6 @@ public class Game extends ActionBarActivity {
         bCancel.setVisibility(View.INVISIBLE);
         cardDescriptionText.setVisibility(View.INVISIBLE);
     }
-
     private void handOutCards(final int firstPlayer) {
         if (!theAnimation.isAnimating()) {
             theAnimation.changeAnimatingState();
@@ -532,11 +536,13 @@ public class Game extends ActionBarActivity {
                 AlertDialog.Builder preGame = new AlertDialog.Builder(Game.this);
                 String mes;
                 if (isSingleGame) mes = "Player " + GameData.TURN + " is up. Select OK when ready.";
-                else  mes = "Player " + GameData.TURN + " is the first to gop.\nPlease pass to player and select OK when ready.";
+                else  mes = "Player " + GameData.TURN + " is the first to go.\nPlease pass to player and select OK when ready.";
                 preGame.setMessage(mes);
                 DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (GameData.PlayerList[GameData.TURN].isHuman()) repaint();
+                        else repaintSingle();
                         nextTurn();
                     }
                 };
@@ -547,8 +553,6 @@ public class Game extends ActionBarActivity {
         }.start();
     }
 
-
-
     //other methods
     private void repaint() {
         int turn = GameData.TURN;
@@ -556,14 +560,17 @@ public class Game extends ActionBarActivity {
         if (GameData.PlayerList[turn].hasLeftCard()) {
             firstPlayerLeft.setVisibility(View.VISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
+            textOne.setText("Player " + turn);
         }
         else if (GameData.PlayerList[turn].hasRightCard()){
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.VISIBLE);
+            textOne.setText("Player " + turn);
         }
         else {
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
+            textOne.setText("");
         }
         turn++;
         if (turn == 5) {
@@ -573,14 +580,17 @@ public class Game extends ActionBarActivity {
         if (GameData.PlayerList[turn].hasLeftCard()) {
             secondPlayerLeft.setVisibility(View.VISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
+            textTwo.setText("Player " + turn);
         }
         else if (GameData.PlayerList[turn].hasRightCard()){
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.VISIBLE);
+            textTwo.setText("Player " + turn);
         }
         else {
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
+            textTwo.setText("");
         }
         turn++;
         if (turn == 5) {
@@ -590,14 +600,17 @@ public class Game extends ActionBarActivity {
         if (GameData.PlayerList[turn].hasLeftCard()) {
             thirdPlayerLeft.setVisibility(View.VISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
+            textThree.setText("Player " + turn);
         }
         else if (GameData.PlayerList[turn].hasRightCard()){
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.VISIBLE);
+            textThree.setText("Player " + turn);
         }
         else {
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
+            textThree.setText("");
         }
         turn++;
         if (turn == 5) {
@@ -607,70 +620,89 @@ public class Game extends ActionBarActivity {
         if (GameData.PlayerList[turn].hasLeftCard()) {
             fourthPlayerLeft.setVisibility(View.VISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
+            textFour.setText("Player " + turn);
         }
         else if (GameData.PlayerList[turn].hasRightCard()){
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.VISIBLE);
+            textFour.setText("Player " + turn);
         }
         else {
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
+            textFour.setText("");
         }
     }
     private void repaintSingle() {
         if (GameData.PlayerList[1].hasLeftCard()) {
             firstPlayerLeft.setVisibility(View.VISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
+            textOne.setText("Player 1");
         }
         else if (GameData.PlayerList[1].hasRightCard()){
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.VISIBLE);
+            textOne.setText("Player 1");
         }
         else {
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
+            textOne.setText("");
         }
 
         if (GameData.PlayerList[2].hasLeftCard()) {
             secondPlayerLeft.setVisibility(View.VISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
+            textTwo.setText("Player 2");
         }
         else if (GameData.PlayerList[2].hasRightCard()){
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.VISIBLE);
+            textTwo.setText("Player 2");
         }
         else {
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
+            textTwo.setText("");
         }
 
         if (GameData.PlayerList[3].hasLeftCard()) {
             thirdPlayerLeft.setVisibility(View.VISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
+            textThree.setText("Player 3");
         }
         else if (GameData.PlayerList[3].hasRightCard()){
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.VISIBLE);
+            textThree.setText("Player 3");
         }
         else {
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
+            textThree.setText("");
         }
 
         if (GameData.PlayerList[4].hasLeftCard()) {
             fourthPlayerLeft.setVisibility(View.VISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
+            textFour.setText("Player 4");
         }
         else if (GameData.PlayerList[4].hasRightCard()){
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.VISIBLE);
+            textFour.setText("Player 4");
         }
         else {
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
+            textFour.setText("");
         }
     }
     public void clearTable() {
+        textOne.setText("Player 1");
+        textTwo.setText("Player 2");
+        textThree.setText("Player 3");
+        textFour.setText("Player 4");
         firstPlayerLeft.setClickable(false);
         firstPlayerLeft.setOnClickListener(null);
         firstPlayerLeft.setVisibility(View.INVISIBLE);
@@ -696,6 +728,7 @@ public class Game extends ActionBarActivity {
         fourthPlayerRight.setOnClickListener(null);
         fourthPlayerRight.setVisibility(View.INVISIBLE);
         outCard.setVisibility(View.INVISIBLE);
+        discard.setVisibility(View.INVISIBLE);
         ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
         deckDummy.setVisibility(View.VISIBLE);
     }
@@ -810,8 +843,14 @@ public class Game extends ActionBarActivity {
             bottom = bottom + c8.getValue();
         }
 
-        String whole = "Beta Card Data" + "\nPlayer 1: " + top + "\nPlayer 2: " + middle + "\nPlayer 3: " + middle2
-                + "\nPlayer 4: " + bottom + "\nOut Card: " + GameData.OutCard.getValue() +"\nIn Deck: " +GameData.deck.getDeckCount();
+        String whole = "Beta Card Data" +
+                "\nComputer Level:  "+ comLevel + "   Player Amount: " +playerAmount+
+                "\nPlayer 1: " + top + " : " + GameData.PlayerList[1].isHuman() + " : " + GameData.PlayerList[1].isProtected() +
+                "\nPlayer 2: " + middle + " : " + GameData.PlayerList[2].isHuman() + " : " + GameData.PlayerList[2].isProtected() +
+                "\nPlayer 3: " + middle2 + " : " + GameData.PlayerList[3].isHuman() + " : " + GameData.PlayerList[3].isProtected() +
+                "\nPlayer 4: " + bottom + " : " + GameData.PlayerList[4].isHuman() + " : " + GameData.PlayerList[4].isProtected() +
+                "\nOut Card: " + GameData.OutCard.getValue() + "    In Deck: " +GameData.deck.getDeckCount() +
+                "\nDiscard Pile: " + GameData.discardPile;
         betaView.setText(whole);
     }
     public void startMusic () throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {

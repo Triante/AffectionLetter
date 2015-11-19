@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -73,7 +72,7 @@ public class CardThree implements Card {
                 select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        GameData.game.endOfTurn(thePlayer);
+                        GameData.game.endOfTurn();
                     }
                 });
                 select.setNegativeButton("No", null);
@@ -210,13 +209,13 @@ public class CardThree implements Card {
                 } else if (mainOut == 1) {
                     GameData.out(id);
                 }
-                GameData.game.endOfTurn(thePlayer);
+                GameData.game.endOfTurn();
             }
         };
         DialogInterface.OnClickListener tie = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(thePlayer);
+                GameData.game.endOfTurn();
             }
         };
         if (mainOut == 0) {
@@ -238,9 +237,12 @@ public class CardThree implements Card {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) return false;
         if (!(o instanceof Card)) return false;
         Card other = (Card) o;
-        if (getValue() == other.getValue()) return true;
+        int thisCard = getValue();
+        int otherCard = other.getValue();
+        if (thisCard == otherCard) return true;
         else return false;
     }
 }

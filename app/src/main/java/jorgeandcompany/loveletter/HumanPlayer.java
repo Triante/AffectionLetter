@@ -61,6 +61,7 @@ public class HumanPlayer implements Player {
             hasRight = false;
             rightCard.cardEffect(this);
             total += rightCard.getValue();
+            GameData.discardPile.addToDiscard(rightCard);
             rightCard = null;
         }
         //left
@@ -68,6 +69,7 @@ public class HumanPlayer implements Player {
             hasLeft = false;
             leftCard.cardEffect(this);
             total += leftCard.getValue();
+            GameData.discardPile.addToDiscard(leftCard);
             leftCard = null;
         }
     }
@@ -78,6 +80,7 @@ public class HumanPlayer implements Player {
             leftDrawDiscard = new DrawDiscard(leftCard);
             leftDrawDiscard.discardAffect(this);
             total += leftCard.getValue();
+            GameData.discardPile.addToDiscard(leftCard);
             leftCard = null;
         }
         else {
@@ -85,6 +88,7 @@ public class HumanPlayer implements Player {
             rightDrawDiscard = new DrawDiscard(rightCard);
             rightDrawDiscard.discardAffect(this);
             total += rightCard.getValue();
+            GameData.discardPile.addToDiscard(rightCard);
             rightCard = null;
         }
     }
@@ -99,12 +103,16 @@ public class HumanPlayer implements Player {
     }
     @Override
     public void out() {
+        if (hasLeftCard() || hasRightCard()) {
+            GameData.discardPile.addToDiscard(getCard());
+        }
         isOut = true;
-        leftCard = null;
-        rightCard = null;
         hasLeft = false;
         hasRight = false;
+        isProtected = false;
         hasSeven = false;
+        leftCard = null;
+        rightCard = null;
     }
 
     @Override

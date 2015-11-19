@@ -4,12 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.os.CountDownTimer;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 
 /**
@@ -76,7 +71,7 @@ public class CardSix implements Card {
                 select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        GameData.game.endOfTurn(thePlayer);
+                        GameData.game.endOfTurn();
                     }
                 });
                 select.setNegativeButton("No", null);
@@ -183,7 +178,6 @@ public class CardSix implements Card {
 
     }
 
-
     private void protectedMessage(int p) {
         AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
@@ -204,5 +198,16 @@ public class CardSix implements Card {
             theAnimation.swapCard6(player, otherPlayer, thePlayer, id, 180, -180);
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof Card)) return false;
+        Card other = (Card) o;
+        int thisCard = getValue();
+        int otherCard = other.getValue();
+        if (thisCard == otherCard) return true;
+        else return false;
     }
 }

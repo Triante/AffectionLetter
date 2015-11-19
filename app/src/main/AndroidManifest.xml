@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jorgeandcompany.loveletter" >
 
+
     <supports-screens
         android:anyDensity="true"
         android:resizeable="true" />
@@ -21,18 +22,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".Token"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
-            android:name=".Skins"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
-            android:name=".Shop"
-            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".Game"

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.os.CountDownTimer;
 
 /**
  * Created by Firemon123 on 10/1/2015.
@@ -21,7 +20,7 @@ public class CardFour implements Card {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 player.setProtected(true);
-                GameData.game.endOfTurn(player);
+                GameData.game.endOfTurn();
             }
         });
         toProtect.setCancelable(false);
@@ -56,9 +55,12 @@ public class CardFour implements Card {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) return false;
         if (!(o instanceof Card)) return false;
         Card other = (Card) o;
-        if (getValue() == other.getValue()) return true;
+        int thisCard = getValue();
+        int otherCard = other.getValue();
+        if (thisCard == otherCard) return true;
         else return false;
     }
 }

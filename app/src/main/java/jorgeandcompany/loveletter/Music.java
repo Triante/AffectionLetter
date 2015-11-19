@@ -22,6 +22,9 @@ public class Music implements Runnable{
 
     @Override
     public void run() {
+        if (isPlaying()) {
+            mp.stop();
+        }
         mp.seekTo(currentPosition);
         mp.setLooping(true);
         mp.start();

@@ -3,10 +3,6 @@ package jorgeandcompany.loveletter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 
 import java.util.Random;
@@ -89,11 +85,11 @@ public class ComPlayerLevelTwo implements Player {
             @Override
             public void onFinish() {
                 cardEffect(toPlay);
-                if (ComPlayerLevelTwo.this.getPlayerNumber() == 2) {
+                if (getPlayerNumber() == 2) {
                     GameData.game.getButton("secondPlayerLeft").setBackgroundResource(R.drawable.magi_left);
                     GameData.game.getButton("secondPlayerRight").setBackgroundResource(R.drawable.magi_left);
                 }
-                else if (ComPlayerLevelTwo.this.getPlayerNumber() == 3) {
+                else if (getPlayerNumber() == 3) {
                     GameData.game.getButton("thirdPlayerLeft").setBackgroundResource(R.drawable.magi_down);
                     GameData.game.getButton("thirdPlayerRight").setBackgroundResource(R.drawable.magi_down);
                 }
@@ -115,11 +111,13 @@ public class ComPlayerLevelTwo implements Player {
         else if (hasLeft) {
             hasLeft = false;
             total += leftCard.getValue();
+            GameData.discardPile.addToDiscard(leftCard);
             leftCard = null;
         }
         else {
             hasRight = false;
             total += rightCard.getValue();
+            GameData.discardPile.addToDiscard(rightCard);
             rightCard = null;
         }
     }
@@ -137,11 +135,16 @@ public class ComPlayerLevelTwo implements Player {
     }
     @Override
     public void out() {
+        GameData.discardPile.addToDiscard(getCard());
         isOut = true;
-        leftCard = null;
-        rightCard = null;
         hasLeft = false;
         hasRight = false;
+        isProtected = false;
+        remembers = false;
+        leftCard = null;
+        rightCard = null;
+        rememberCardNum = 0;
+        rememberPlayerNum = 0;
     }
 
     @Override
@@ -280,7 +283,8 @@ public class ComPlayerLevelTwo implements Player {
             if (hand[0] == 4) return 0;
             else return 1;
         }
-        else if ((hand[0] == 1 || hand[1]== 1) && remembers && !GameData.PlayerList[rememberPlayerNum].isProtected() && rememberCardNum != 1) {
+        else if ((hand[0] == 1 || hand[1]== 1) && remembers && !GameData.PlayerList[rememberPlayerNum].isProtected() &&
+                !GameData.PlayerList[rememberPlayerNum].isOut() && rememberCardNum != 1) {
             toPlayOne = true;
             if (hand[0] == 1) return 0;
             else return 1;
@@ -326,12 +330,14 @@ public class ComPlayerLevelTwo implements Player {
         if (hand == 0) {
             key = leftCard.getValue();
             total += leftCard.getValue();
+            GameData.discardPile.addToDiscard(leftCard);
             hasLeft = false;
             leftCard = null;
         }
         else {
             key = rightCard.getValue();
             total += rightCard.getValue();
+            GameData.discardPile.addToDiscard(rightCard);
             hasRight = false;
             rightCard = null;
         }
@@ -370,7 +376,7 @@ public class ComPlayerLevelTwo implements Player {
         String message = "";
         int chosen = selectPlayer();
         int guess;
-        if(toPlayOne && rememberCardNum == 1) {
+        if(toPlayOne && rememberCardNum != 1) {
             guess = rememberCardNum;
             toPlayOne = false;
             remembers = false;
@@ -378,7 +384,7 @@ public class ComPlayerLevelTwo implements Player {
             rememberCardNum = 0;
         }
         else {
-            int[] cards = {1,2,3,4,5,6,7,8};
+            int[] cards = {2,3,4,5,6,7,8};
             shuffleArray(cards);
             shuffleArray(cards);
             shuffleArray(cards);
@@ -408,7 +414,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -432,7 +438,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -474,7 +480,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -488,7 +494,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -529,7 +535,7 @@ public class ComPlayerLevelTwo implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                                GameData.game.endOfTurn();
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -575,7 +581,7 @@ public class ComPlayerLevelTwo implements Player {
                                 } else {
                                     GameData.PlayerList[select].drawFirstCard();
                                 }
-                                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                                GameData.game.endOfTurn();
                             }
                             else {
                                 GameData.PlayerList[select].discardCard();
@@ -617,7 +623,7 @@ public class ComPlayerLevelTwo implements Player {
                     alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                            GameData.game.endOfTurn();
                         }
                     });
                     alert.show();
@@ -633,7 +639,7 @@ public class ComPlayerLevelTwo implements Player {
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                    GameData.game.endOfTurn();
                 }
             });
             alert.show();
@@ -647,7 +653,7 @@ public class ComPlayerLevelTwo implements Player {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();
@@ -661,7 +667,7 @@ public class ComPlayerLevelTwo implements Player {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 GameData.out(playerNumber);
-                GameData.game.endOfTurn(ComPlayerLevelTwo.this);
+                GameData.game.endOfTurn();
             }
         });
         alert.show();

@@ -2,7 +2,7 @@
     <string name="app_name">Love Letter</string>
     <string name="title_activity_main_menu">MainMenu</string>
 
-    <string name="Card_One_Description">Name a card (other than a card that has a value of 1) and choose another player. If that player has that card, he or she is out of the round</string>
+    <string name="Card_One_Description">Name a card (other than a card that has a value of 1) and choose another player. If that player has that card, he or she is out of the round.</string>
     <string name="Card_Two_Description">Look at another players hand.</string>
     <string name="Card_Three_Description">You and another player secretly compare hands. The player with the lowest value is out of the round.</string>
     <string name="Card_Four_Description">Until your next turn, ignore all effects from other players cards.</string>
