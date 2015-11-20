@@ -422,11 +422,11 @@ public class ComPlayerLevelTwo implements Player {
     private void effectTwo() {
         String message = "";
         int chosen = selectPlayer();
-        remembers = true;
-        rememberPlayerNum = chosen;
-        rememberCardNum = GameData.PlayerList[chosen].getCard().getValue();
         if (chosen != 0) {
             message = "Player " + playerNumber + " used card 2. Player " + playerNumber + " now knows player " + chosen + "'s card";
+            remembers = true;
+            rememberPlayerNum = chosen;
+            rememberCardNum = GameData.PlayerList[chosen].getCard().getValue();
         }
         else {
             message = "Player " + playerNumber + " used card 2. Active players were all protected";

@@ -54,23 +54,7 @@ public class CardSix implements Card {
         } else {
             one = GameData.game.getButton("firstPlayerRight");
         }
-        one.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
-                select.setTitle("End your turn?\n");
-                select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        GameData.game.endOfTurn();
-                    }
-                });
-                select.setNegativeButton("No", null);
-                select.setCancelable(false);
-                AlertDialog alertDialogObject = select.create();
-                alertDialogObject.show();
-            }
-        });
+        boolean nonSelectbale = true;
         id++;
         if (id == 5) id = 1;
         final int id2 = id;
@@ -94,6 +78,7 @@ public class CardSix implements Card {
                     trade(id2, thePlayer, one, two);
                 }
             });
+            nonSelectbale = false;
         }
         id++;
         if (id == 5) id = 1;
@@ -118,6 +103,7 @@ public class CardSix implements Card {
                     trade(id3, thePlayer, one, three);
                 }
             });
+            nonSelectbale = false;
         }
         id++;
         if (id == 5) id = 1;
@@ -142,6 +128,20 @@ public class CardSix implements Card {
                     trade(id4, thePlayer, one, four);
                 }
             });
+            nonSelectbale = false;
+        }
+        if (nonSelectbale) {
+            AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+            select.setTitle("All players are safe.\nNo action can be taken");
+            select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    GameData.game.endOfTurn();
+                }
+            });
+            select.setCancelable(false);
+            AlertDialog alertDialogObject = select.create();
+            alertDialogObject.show();
         }
     }
 
