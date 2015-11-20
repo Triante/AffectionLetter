@@ -17,12 +17,11 @@ import android.widget.ImageButton;
  * Created by Penguins94 on 11/6/2015.
  */
 public class GameAnimation {
-    private Game thisGame;
     private ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
     private boolean isAnimating;
+
     public GameAnimation (Game aGame) {
-        thisGame = aGame;
         isAnimating = false;
         firstPlayerLeft = aGame.getButton("firstPlayerLeft");
         firstPlayerRight = aGame.getButton("firstPlayerRight");
@@ -216,116 +215,27 @@ public class GameAnimation {
 
     }
 
-    public void firstRightToDiscard() {
+    private void cardToDiscard(ImageButton buttonToDiscard, int playerNumber) {
         int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        firstPlayerRight.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-        translate.setDuration(1000);
-        firstPlayerRight.startAnimation(translate);
-        firstPlayerRight.setVisibility(firstPlayerRight.INVISIBLE);
-    };
-    public void secondRightToDiscard() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        secondPlayerRight.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation rotate = new RotateAnimation(0, -90, secondPlayerRight.getPivotX(), secondPlayerRight.getPivotY());
-        rotate.setDuration(1000);
-        android.view.animation.Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-        translateleftrigt.setDuration(1000);
-        AnimationSet rotateandmove = new AnimationSet(false);
-        rotateandmove.addAnimation(rotate);
-        rotateandmove.addAnimation(translateleftrigt);
-        secondPlayerRight.startAnimation(rotateandmove);
-        secondPlayerRight.setVisibility(secondPlayerRight.INVISIBLE);
-    };
-    public void thirdRightToDiscard() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        thirdPlayerRight.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-        android.view.animation.Animation rotate = new RotateAnimation(0, 180, thirdPlayerRight.getPivotX(), thirdPlayerRight.getPivotY());
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        AnimationSet rotateandmove = new AnimationSet(false);
-        rotateandmove.addAnimation(rotate);
-        rotateandmove.addAnimation(translate);
-        thirdPlayerRight.startAnimation(rotateandmove);
-        thirdPlayerRight.setVisibility(thirdPlayerRight.INVISIBLE);
-    };
-    public void fourthRightToDiscard() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        fourthPlayerRight.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation rotate = new RotateAnimation(0, 90, fourthPlayerRight.getPivotX(), fourthPlayerRight.getPivotY());
-        rotate.setDuration(1000);
-        android.view.animation.Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-        translateleftrigt.setDuration(1000);
-        AnimationSet rotateandmove = new AnimationSet(false);
-        rotateandmove.addAnimation(rotate);
-        rotateandmove.addAnimation(translateleftrigt);
-        fourthPlayerRight.startAnimation(rotateandmove);
-        fourthPlayerRight.setVisibility(fourthPlayerRight.INVISIBLE);
-    };
+        int[] discardcoordinates = new int[2];
+        int rotation;
 
-    public void firstLeftToDiscard() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        firstPlayerLeft.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-        translate.setDuration(1000);
-        firstPlayerLeft.startAnimation(translate);
-        firstPlayerLeft.setVisibility(firstPlayerLeft.INVISIBLE);
-    };
-    public void secondLeftToDiscard() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        secondPlayerLeft.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation rotate = new RotateAnimation(0, -90, secondPlayerLeft.getPivotX(), secondPlayerLeft.getPivotY());
+        if (playerNumber == 1) rotation = 0;
+        else if (playerNumber == 2) rotation = -90;
+        else if (playerNumber == 3) rotation = 180;
+        else rotation = 90;
+
+        discard.getLocationOnScreen(discardcoordinates);
+        buttonToDiscard.getLocationOnScreen(cardcoordinates);
+        Animation rotate = new RotateAnimation(0, rotation, buttonToDiscard.getPivotX(), buttonToDiscard.getPivotY());
         rotate.setDuration(1000);
-        android.view.animation.Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
+        Animation translateleftrigt = new TranslateAnimation(0, discardcoordinates[0] - cardcoordinates[0], 0, discardcoordinates[1] - cardcoordinates[1]);
         translateleftrigt.setDuration(1000);
         AnimationSet rotateandmove = new AnimationSet(false);
         rotateandmove.addAnimation(rotate);
         rotateandmove.addAnimation(translateleftrigt);
-        secondPlayerLeft.startAnimation(rotateandmove);
-        secondPlayerLeft.setVisibility(secondPlayerLeft.INVISIBLE);
-    };
-    public void thirdLeftToDiscard() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        thirdPlayerLeft.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation rotate = new RotateAnimation(0, 180, thirdPlayerLeft.getPivotX(), thirdPlayerLeft.getPivotY());
-        android.view.animation.Animation translate = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-        translate.setDuration(1000);
-        rotate.setDuration(1000);
-        AnimationSet rotateandmove = new AnimationSet(false);
-        rotateandmove.addAnimation(rotate);
-        rotateandmove.addAnimation(translate);
-        thirdPlayerLeft.startAnimation(rotateandmove);
-        thirdPlayerLeft.setVisibility(thirdPlayerLeft.INVISIBLE);
-    };
-    public void fourthLeftToDiscard() {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
-        discard.getLocationOnScreen(deckcoordinates);
-        fourthPlayerLeft.getLocationOnScreen(cardcoordinates);
-        android.view.animation.Animation rotate = new RotateAnimation(0, 90, fourthPlayerLeft.getPivotX(), fourthPlayerLeft.getPivotY());
-        rotate.setDuration(1000);
-        android.view.animation.Animation translateleftrigt = new TranslateAnimation(0, deckcoordinates[0] - cardcoordinates[0], 0, deckcoordinates[1] - cardcoordinates[1]);
-        translateleftrigt.setDuration(1000);
-        AnimationSet rotateandmove = new AnimationSet(false);
-        rotateandmove.addAnimation(rotate);
-        rotateandmove.addAnimation(translateleftrigt);
-        fourthPlayerLeft.startAnimation(rotateandmove);
-        fourthPlayerLeft.setVisibility(fourthPlayerLeft.INVISIBLE);
+        buttonToDiscard.startAnimation(rotateandmove);
+        buttonToDiscard.setVisibility(View.INVISIBLE);
     };
 
     public void flipCard(final View toFlip, final int id) {
@@ -335,15 +245,15 @@ public class GameAnimation {
             leftin = R.animator.flight_left_in;
         }
         else {
-            rightout = R.animator.flip_right_out;
-            leftin = R.animator.flight_left_in;
+            rightout = R.animator.flip_horizontal_right_out;
+            leftin = R.animator.flip_horizontal_left_in;
         }
         new CountDownTimer(400, 100) {
             int a = 0;
             @Override
             public void onTick(long millisUntilFinished) {
                 if (a == 0) {
-                    final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(thisGame.getApplicationContext(),
+                    final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(GameData.game.getApplicationContext(),
                             rightout);
                     setRightOut.setTarget(toFlip);
                     setRightOut.start();
@@ -351,7 +261,7 @@ public class GameAnimation {
                 }
                 else if (a == 1) {
                     toFlip.setBackgroundResource(id);
-                    final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(thisGame.getApplicationContext(),
+                    final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(GameData.game.getApplicationContext(),
                             leftin);
                     setLeftIn.setTarget(toFlip);
                     setLeftIn.start();
@@ -374,7 +284,7 @@ public class GameAnimation {
             public void onTick(long millisUntilFinished) {
                 if (a == 0) {
 
-                    final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(thisGame.getApplicationContext(),
+                    final AnimatorSet setRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(GameData.game.getApplicationContext(),
                             R.animator.flip_right_out);
                     setRightOut.setTarget(toFlip);
                     setRightOut.start();
@@ -382,7 +292,7 @@ public class GameAnimation {
                 }
                 else if (a ==1) {
                     toFlip.setBackgroundResource(SkinRes.skinRes(9,"up"));
-                    final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(thisGame.getApplicationContext(),
+                    final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(GameData.game.getApplicationContext(),
                             R.animator.flight_left_in);
                     setLeftIn.setTarget(toFlip);
                     setLeftIn.start();
@@ -397,119 +307,64 @@ public class GameAnimation {
         }.start();
     }
     public void cardToDiscardSinglePlayer(final Player on, final int hand) {
-        //left
-        int playerNum = on.getPlayerNumber();
+        final int playerNum = on.getPlayerNumber();
         final int card = on.getCard(hand).getValue();
-        if (hand == 0) {
-            if (playerNum == 1) {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(firstPlayerLeft, on.getCard(hand).getSkinRes("up"));
-                            a++;
+            new CountDownTimer(400,100) {
+                int a = 0;
+                ImageButton theButtonToDiscard = null;
+                String orientation = "";
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if (a == 0) {
+                        if (hand == 0) {
+                            if (playerNum == 1) {
+                                theButtonToDiscard = firstPlayerLeft;
+                                orientation = "up";
+                            }
+                            else if (playerNum == 2) {
+                                theButtonToDiscard = secondPlayerLeft;
+                                orientation = "left";
+                            }
+                            else if (playerNum == 3) {
+                                theButtonToDiscard = thirdPlayerLeft;
+                                orientation = "down";
+                            }
+                            else {
+                                theButtonToDiscard = fourthPlayerLeft;
+                                orientation = "right";
+                            }
                         }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                if (a == 0) {
-                                    firstLeftToDiscard();
-                                    new CountDownTimer(1000, 1000) {
-                                        @Override
-                                        public void onTick(long millisUntilFinished) {
-                                        }
-
-                                        @Override
-                                        public void onFinish() {
-                                            if (discard.getVisibility() == View.INVISIBLE) {
-                                                discard.setVisibility(View.VISIBLE);
-                                            }
-                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
-                                        }
-                                    }.start();
-                                    a++;
-                                }
+                        else {
+                            if (playerNum == 1) {
+                                theButtonToDiscard = firstPlayerRight;
+                                orientation = "up";
+                            } else if (playerNum == 2) {
+                                theButtonToDiscard = secondPlayerRight;
+                                orientation = "left";
+                            } else if (playerNum == 3) {
+                                theButtonToDiscard = thirdPlayerRight;
+                                orientation = "down";
+                            } else {
+                                theButtonToDiscard = fourthPlayerRight;
+                                orientation = "right";
                             }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-            else if (playerNum == 2) {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(secondPlayerLeft, on.getCard(hand).getSkinRes("left"));
-                            a++;
                         }
+                        flipCard(theButtonToDiscard, on.getCard(hand).getSkinRes(orientation));
+                        a++;
                     }
+                }
 
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                if (a == 0) {
-                                    secondLeftToDiscard();
-                                    new CountDownTimer(1000, 1000) {
-                                        @Override
-                                        public void onTick(long millisUntilFinished) {
-                                        }
-
-                                        @Override
-                                        public void onFinish() {
-                                            if (discard.getVisibility() == View.INVISIBLE) {
-                                                discard.setVisibility(View.VISIBLE);
-                                            }
-                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
-                                        }
-                                    }.start();
-                                    a++;
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-            else if (playerNum == 3) {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(thirdPlayerLeft, on.getCard(hand).getSkinRes("down"));
-                            a++;
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                if (a == 0) {
-                                thirdLeftToDiscard();
+                @Override
+                public void onFinish() {
+                    new CountDownTimer(2000,1000) {
+                        int a = 0;
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            if (a == 0) {
+                                cardToDiscard(theButtonToDiscard, playerNum);
                                 new CountDownTimer(1000, 1000) {
                                     @Override
-                                    public void onTick(long millisUntilFinished) {
-                                    }
+                                    public void onTick(long millisUntilFinished) {}
 
                                     @Override
                                     public void onFinish() {
@@ -521,239 +376,17 @@ public class GameAnimation {
                                 }.start();
                                 a++;
                             }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-            else {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(fourthPlayerLeft, on.getCard(hand).getSkinRes("right"));
-                            a++;
                         }
-                    }
 
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                if (a == 0) {
-                                    fourthLeftToDiscard();
-                                    new CountDownTimer(1000, 1000) {
-                                        @Override
-                                        public void onTick(long millisUntilFinished) {
-                                        }
-
-                                        @Override
-                                        public void onFinish() {
-                                            if (discard.getVisibility() == View.INVISIBLE) {
-                                                discard.setVisibility(View.VISIBLE);
-                                            }
-                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
-                                        }
-                                    }.start();
-                                    a++;
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();;
-                    }
-                }.start();
-            }
-        }
-        //right
-        else {
-            if (playerNum == 1) {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(firstPlayerRight, on.getCard(hand).getSkinRes("up"));
-                            a++;
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                               if (a == 0) {
-                                   firstRightToDiscard();
-                                   new CountDownTimer(1000, 1000) {
-                                       @Override
-                                       public void onTick(long millisUntilFinished) {
-                                       }
-
-                                       @Override
-                                       public void onFinish() {
-                                           if (discard.getVisibility() == View.INVISIBLE) {
-                                               discard.setVisibility(View.VISIBLE);
-                                           }
-                                           discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
-                                       }
-                                   }.start();
-                                   a++;
-                               }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-            else if (playerNum == 2) {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(secondPlayerRight, on.getCard(hand).getSkinRes("left"));
-                            a++;
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                if (a == 0) {
-                                    secondRightToDiscard();
-                                    new CountDownTimer(1000, 1000) {
-                                        @Override
-                                        public void onTick(long millisUntilFinished) {
-                                        }
-
-                                        @Override
-                                        public void onFinish() {
-                                            if (discard.getVisibility() == View.INVISIBLE) {
-                                                discard.setVisibility(View.VISIBLE);
-                                            }
-                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
-                                        }
-                                    }.start();
-                                    a++;
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-            else if (playerNum == 3) {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(thirdPlayerRight, on.getCard(hand).getSkinRes("down"));
-                            a++;
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                if (a == 0) {
-                                    thirdRightToDiscard();
-                                    new CountDownTimer(1000, 1000) {
-                                        @Override
-                                        public void onTick(long millisUntilFinished) {
-                                        }
-
-                                        @Override
-                                        public void onFinish() {
-                                            if (discard.getVisibility() == View.INVISIBLE) {
-                                                discard.setVisibility(View.VISIBLE);
-                                            }
-                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
-                                        }
-                                    }.start();
-                                    a++;
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-            else {
-                new CountDownTimer(400,100) {
-                    int a = 0;
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (a == 0) {
-                            flipCard(fourthPlayerRight, on.getCard(hand).getSkinRes("right"));
-                            a++;
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        new CountDownTimer(2000,1000) {
-                            int a = 0;
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                if (a == 0) {
-                                    fourthRightToDiscard();
-                                    new CountDownTimer(1000, 1000) {
-                                        @Override
-                                        public void onTick(long millisUntilFinished) {
-                                        }
-
-                                        @Override
-                                        public void onFinish() {
-                                            if (discard.getVisibility() == View.INVISIBLE) {
-                                                discard.setVisibility(View.VISIBLE);
-                                            }
-                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
-                                        }
-                                    }.start();
-                                    a++;
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-
-        }
+                        @Override
+                        public void onFinish() {}
+                    }.start();
+                }
+            }.start();
     }
     public void cardToDiscardMultiPlayer(final int hand) {
-        if (hand == 0) firstLeftToDiscard();
-        else firstRightToDiscard();
+        if (hand == 0) cardToDiscard(firstPlayerLeft, 1);
+        else cardToDiscard(firstPlayerRight, 1);
 
         new CountDownTimer(1000,1000) {
 
