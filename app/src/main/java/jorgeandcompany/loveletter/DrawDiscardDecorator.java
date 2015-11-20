@@ -31,7 +31,7 @@ public abstract class DrawDiscardDecorator implements Card {
     }
 
     @Override
-    public int getSkinRes(int skinId) {
-        return card.getSkinRes(skinId);
+    public int getSkinRes(String orientation) {
+        return card.getSkinRes(orientation);
     }
 }

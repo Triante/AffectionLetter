@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
@@ -48,7 +49,6 @@ public class GameAnimation {
             isAnimating = true;
         }
     }
-
     public void deckToOutCard() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -65,7 +65,7 @@ public class GameAnimation {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                outCard.setVisibility(firstPlayerLeft.VISIBLE);
+                outCard.setVisibility(View.VISIBLE);
             }
         }.start();
     }
@@ -103,8 +103,8 @@ public class GameAnimation {
     }
 
     private void dealCard(int rotation, ImageButton player) {
-        int[] cardcoordinates = new int[2];
-        int[] deckcoordinates = new int[2];
+        int[] cardcoordinates = new int [2];
+        int[] deckcoordinates = new int [2];
         Animation translate;
         AnimationSet set;
         Animation rotate;
@@ -118,6 +118,9 @@ public class GameAnimation {
         set.addAnimation(rotate);
         set.addAnimation(translate);
         deck.startAnimation(set);
+        if (GameData.deck.getDeckCount() <= 1) {
+            deck.setVisibility(View.INVISIBLE);
+        }
     }
     public void deckToFirstRight() {
         dealCard(0, firstPlayerRight);
@@ -378,7 +381,7 @@ public class GameAnimation {
                     a++;
                 }
                 else if (a ==1) {
-                    toFlip.setBackgroundResource(R.drawable.magi_up);
+                    toFlip.setBackgroundResource(SkinRes.skinRes(9,"up"));
                     final AnimatorSet setLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(thisGame.getApplicationContext(),
                             R.animator.flight_left_in);
                     setLeftIn.setTarget(toFlip);
@@ -393,10 +396,10 @@ public class GameAnimation {
             }
         }.start();
     }
-    public void cardToDiscardSinglePlayer(Player on, int hand) {
+    public void cardToDiscardSinglePlayer(final Player on, final int hand) {
         //left
         int playerNum = on.getPlayerNumber();
-        final int card = on.getCard(hand).getSkinRes(GameData.skinID);
+        final int card = on.getCard(hand).getValue();
         if (hand == 0) {
             if (playerNum == 1) {
                 new CountDownTimer(400,100) {
@@ -404,7 +407,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(firstPlayerLeft, R.drawable.background_trans);
+                            flipCard(firstPlayerLeft, on.getCard(hand).getSkinRes("up"));
                             a++;
                         }
                     }
@@ -412,17 +415,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
-                                firstLeftToDiscard();
+                                if (a == 0) {
+                                    firstLeftToDiscard();
+                                    new CountDownTimer(1000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            if (discard.getVisibility() == View.INVISIBLE) {
+                                                discard.setVisibility(View.VISIBLE);
+                                            }
+                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                        }
+                                    }.start();
+                                    a++;
+                                }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
-                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -434,7 +450,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(secondPlayerLeft, R.drawable.background_trans);
+                            flipCard(secondPlayerLeft, on.getCard(hand).getSkinRes("left"));
                             a++;
                         }
                     }
@@ -442,17 +458,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
-                                secondLeftToDiscard();
+                                if (a == 0) {
+                                    secondLeftToDiscard();
+                                    new CountDownTimer(1000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            if (discard.getVisibility() == View.INVISIBLE) {
+                                                discard.setVisibility(View.VISIBLE);
+                                            }
+                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                        }
+                                    }.start();
+                                    a++;
+                                }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
-                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -464,7 +493,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(thirdPlayerLeft, R.drawable.background_trans);
+                            flipCard(thirdPlayerLeft, on.getCard(hand).getSkinRes("down"));
                             a++;
                         }
                     }
@@ -472,17 +501,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
+                                if (a == 0) {
                                 thirdLeftToDiscard();
+                                new CountDownTimer(1000, 1000) {
+                                    @Override
+                                    public void onTick(long millisUntilFinished) {
+                                    }
+
+                                    @Override
+                                    public void onFinish() {
+                                        if (discard.getVisibility() == View.INVISIBLE) {
+                                            discard.setVisibility(View.VISIBLE);
+                                        }
+                                        discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                    }
+                                }.start();
+                                a++;
+                            }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
-                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -494,7 +536,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(fourthPlayerLeft, R.drawable.background_trans);
+                            flipCard(fourthPlayerLeft, on.getCard(hand).getSkinRes("right"));
                             a++;
                         }
                     }
@@ -502,16 +544,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
-                                fourthLeftToDiscard();
+                                if (a == 0) {
+                                    fourthLeftToDiscard();
+                                    new CountDownTimer(1000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            if (discard.getVisibility() == View.INVISIBLE) {
+                                                discard.setVisibility(View.VISIBLE);
+                                            }
+                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                        }
+                                    }.start();
+                                    a++;
+                                }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
                             }
                         }.start();;
                     }
@@ -526,7 +582,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(firstPlayerRight, R.drawable.background_trans);
+                            flipCard(firstPlayerRight, on.getCard(hand).getSkinRes("up"));
                             a++;
                         }
                     }
@@ -534,17 +590,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
-                               firstRightToDiscard();
+                               if (a == 0) {
+                                   firstRightToDiscard();
+                                   new CountDownTimer(1000, 1000) {
+                                       @Override
+                                       public void onTick(long millisUntilFinished) {
+                                       }
+
+                                       @Override
+                                       public void onFinish() {
+                                           if (discard.getVisibility() == View.INVISIBLE) {
+                                               discard.setVisibility(View.VISIBLE);
+                                           }
+                                           discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                       }
+                                   }.start();
+                                   a++;
+                               }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
-                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -556,7 +625,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(secondPlayerRight, R.drawable.background_trans);
+                            flipCard(secondPlayerRight, on.getCard(hand).getSkinRes("left"));
                             a++;
                         }
                     }
@@ -564,17 +633,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
-                                secondRightToDiscard();
+                                if (a == 0) {
+                                    secondRightToDiscard();
+                                    new CountDownTimer(1000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            if (discard.getVisibility() == View.INVISIBLE) {
+                                                discard.setVisibility(View.VISIBLE);
+                                            }
+                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                        }
+                                    }.start();
+                                    a++;
+                                }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
-                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -586,7 +668,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(thirdPlayerRight, R.drawable.background_trans);
+                            flipCard(thirdPlayerRight, on.getCard(hand).getSkinRes("down"));
                             a++;
                         }
                     }
@@ -594,17 +676,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
-                                thirdRightToDiscard();
+                                if (a == 0) {
+                                    thirdRightToDiscard();
+                                    new CountDownTimer(1000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            if (discard.getVisibility() == View.INVISIBLE) {
+                                                discard.setVisibility(View.VISIBLE);
+                                            }
+                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                        }
+                                    }.start();
+                                    a++;
+                                }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
-                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -616,7 +711,7 @@ public class GameAnimation {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (a == 0) {
-                            flipCard(fourthPlayerRight, R.drawable.background_trans);
+                            flipCard(fourthPlayerRight, on.getCard(hand).getSkinRes("right"));
                             a++;
                         }
                     }
@@ -624,17 +719,30 @@ public class GameAnimation {
                     @Override
                     public void onFinish() {
                         new CountDownTimer(2000,1000) {
+                            int a = 0;
                             @Override
                             public void onTick(long millisUntilFinished) {
-                                fourthRightToDiscard();
+                                if (a == 0) {
+                                    fourthRightToDiscard();
+                                    new CountDownTimer(1000, 1000) {
+                                        @Override
+                                        public void onTick(long millisUntilFinished) {
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            if (discard.getVisibility() == View.INVISIBLE) {
+                                                discard.setVisibility(View.VISIBLE);
+                                            }
+                                            discard.setBackgroundResource(SkinRes.skinRes(card, "up"));
+                                        }
+                                    }.start();
+                                    a++;
+                                }
                             }
 
                             @Override
                             public void onFinish() {
-                                if (discard.getVisibility() == View.INVISIBLE) {
-                                    discard.setVisibility(View.VISIBLE);
-                                }
-                                discard.setBackgroundResource(card);
                             }
                         }.start();
                     }
@@ -659,7 +767,7 @@ public class GameAnimation {
                 if (discard.getVisibility() == View.INVISIBLE) {
                     discard.setVisibility(View.VISIBLE);
                 }
-                discard.setBackgroundResource(GameData.PlayerList[GameData.TURN].getCard(hand).getSkinRes(GameData.skinID));
+                discard.setBackgroundResource(SkinRes.skinRes(GameData.PlayerList[GameData.TURN].getCard(hand).getValue(), "up"));
             }
         }.start();
     }
@@ -839,76 +947,144 @@ public class GameAnimation {
     }
 
     public void discardAnimation (final ImageButton button, final ImageButton leftDefault) {
-        final int[] bcoordinates = new int[2];
-        final int[] ccoordinates = new int[2];
-        final int[] acoordinates = new int[2];
-        final int[] discardcoordinates = new int [2];
-        final Animation rotateb;
-        final Animation rotatea;
-        final Animation translateb;
-        final Animation translatea;
-        final AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
-        if (GameData.deck.getDeckCount() < 2) {
-            GameData.game.getButton("outcard").getLocationOnScreen(acoordinates);
-        }
-        else {
-            GameData.game.getButton("deck").getLocationOnScreen(acoordinates);
-        }
-        GameData.game.getButton("discard").getLocationOnScreen(discardcoordinates);
-        button.getLocationOnScreen(bcoordinates);
-        leftDefault.getLocationOnScreen(ccoordinates);
-        if (button == GameData.game.getButton("firstPlayerLeft") || button == GameData.game.getButton("firstPlayerRight")) {
-            rotateb = new RotateAnimation(0, 0, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 0, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        } else if (button == GameData.game.getButton("secondPlayerLeft") || button == GameData.game.getButton("secondPlayerRight")) {
-            rotateb = new RotateAnimation(0, -90, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        } else if (button == GameData.game.getButton("thirdPlayerLeft") || button == GameData.game.getButton("thirdPlayerRight")) {
-            rotateb = new RotateAnimation(0, 180, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, 180, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        } else {
-            rotateb = new RotateAnimation(0, 90, button.getPivotX(), button.getPivotY());
-            rotatea = new RotateAnimation(0, -90, GameData.game.getButton("deck").getPivotX(), GameData.game.getButton("deck").getPivotY());
-        }
 
-        translateb = new TranslateAnimation(0, discardcoordinates[0] - bcoordinates[0], 0, discardcoordinates[1] - bcoordinates[1]);
-        translatea = new TranslateAnimation(0, ccoordinates[0] - acoordinates[0], 0, ccoordinates[1] - acoordinates[1]);
         new CountDownTimer(2000, 1000) {
+            int a = 0;
+            Card theCard;
+            int[] coordinatesout = new int[2];
+            int[] acoordinates = new int[2];
+            Animation rotatea;
+            Animation translatea;
+            AnimationSet rotateandmovea = new AnimationSet(false);
             public void onTick(long millisUntilFinished) {
-                rotatea.setDuration(1000);
-                rotateb.setDuration(1000);
-                translateb.setDuration(1000);
-                translatea.setDuration(1000);
-                rotateandmovea.addAnimation(rotatea);
-                rotateandmovea.addAnimation(translatea);
-                rotateandmoveb.addAnimation(rotateb);
-                rotateandmoveb.addAnimation(translateb);
-                button.startAnimation(rotateandmoveb);
-                button.setVisibility(View.INVISIBLE);
+                if (a == 0) {
+                    if (button == GameData.game.getButton("firstPlayerLeft")) {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[1], 0);
+                        theCard = GameData.PlayerList[1].getCard(0);
+                    } else if (button == GameData.game.getButton("firstPlayerRight")) {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[1], 1);
+                        theCard = GameData.PlayerList[1].getCard(1);
+                    } else if (button == GameData.game.getButton("secondPlayerLeft")) {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[2], 0);
+                        theCard = GameData.PlayerList[2].getCard(0);
+                    } else if (button == GameData.game.getButton("secondPlayerRight")) {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[2], 1);
+                        theCard = GameData.PlayerList[2].getCard(1);
+                    } else if (button == GameData.game.getButton("thirdPlayerLeft")) {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[3], 0);
+                        theCard = GameData.PlayerList[3].getCard(0);
+                    } else if (button == GameData.game.getButton("thirdPlayerRight")) {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[3], 1);
+                        theCard = GameData.PlayerList[3].getCard(1);
+                    } else if (button == GameData.game.getButton("fourthPlayerLeft")) {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[4], 0);
+                        theCard = GameData.PlayerList[4].getCard(0);
+                    } else {
+                        cardToDiscardSinglePlayer(GameData.PlayerList[4], 1);
+                        theCard = GameData.PlayerList[4].getCard(1);
+                    }
+                    a++;
+                }
             }
 
             public void onFinish() {
-                new CountDownTimer(2000, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        GameData.game.getButton("deck").startAnimation(rotateandmovea);
-                        new CountDownTimer(1000, 1000) {
-                            public void onTick(long millisUntilFinished) {
+                if (theCard.getValue() != 8) {
+                    new CountDownTimer(2000, 1000) {
+                        int a = 0;
 
-                            }
-
-                            public void onFinish() {
-                                leftDefault.setVisibility(View.VISIBLE);
-                                if (GameData.deck.getDeckCount() == 0) {
-                                    GameData.game.getButton("deck").setVisibility(View.INVISIBLE);
+                        public void onTick(long millisUntilFinished) {
+                            if (a == 0) {
+                                if (leftDefault == GameData.game.getButton("firstPlayerLeft")) {
+                                    if (GameData.deck.getDeckCount() <= 1) {
+                                        outCard.getLocationOnScreen(coordinatesout);
+                                        leftDefault.getLocationOnScreen(acoordinates);
+                                        rotatea = new RotateAnimation(0, 0, outCard.getPivotX(), outCard.getPivotY());
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        rotatea.setDuration(1000);
+                                        translatea.setDuration(1000);
+                                        rotateandmovea.addAnimation(rotatea);
+                                        rotateandmovea.addAnimation(translatea);
+                                        outCard.startAnimation(rotateandmovea);
+                                        outCard.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        deckToFirstLeft();
+                                    }
+                                    leftDefault.setBackgroundResource(SkinRes.skinRes(9, "up"));
+                                    button.setBackgroundResource(SkinRes.skinRes(9, "up"));
+                                } else if (leftDefault == GameData.game.getButton("secondPlayerLeft")) {
+                                    if (GameData.deck.getDeckCount() <= 1) {
+                                        outCard.getLocationOnScreen(coordinatesout);
+                                        leftDefault.getLocationOnScreen(acoordinates);
+                                        rotatea = new RotateAnimation(0, 90, outCard.getPivotX(), outCard.getPivotY());
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        rotatea.setDuration(1000);
+                                        translatea.setDuration(1000);
+                                        rotateandmovea.addAnimation(rotatea);
+                                        rotateandmovea.addAnimation(translatea);
+                                        outCard.startAnimation(rotateandmovea);
+                                        outCard.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        deckToSecondLeft();
+                                    }
+                                    leftDefault.setBackgroundResource(SkinRes.skinRes(9, "left"));
+                                    button.setBackgroundResource(SkinRes.skinRes(9, "left"));
+                                } else if (leftDefault == GameData.game.getButton("thirdPlayerLeft")) {
+                                    if (GameData.deck.getDeckCount() <= 1) {
+                                        outCard.getLocationOnScreen(coordinatesout);
+                                        leftDefault.getLocationOnScreen(acoordinates);
+                                        rotatea = new RotateAnimation(0, 180, outCard.getPivotX(), outCard.getPivotY());
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        rotatea.setDuration(1000);
+                                        translatea.setDuration(1000);
+                                        rotateandmovea.addAnimation(rotatea);
+                                        rotateandmovea.addAnimation(translatea);
+                                        outCard.startAnimation(rotateandmovea);
+                                        outCard.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        deckToThirdLeft();
+                                    }
+                                    leftDefault.setBackgroundResource(SkinRes.skinRes(9, "down"));
+                                    button.setBackgroundResource(SkinRes.skinRes(9, "down"));
+                                } else {
+                                    if (GameData.deck.getDeckCount() <= 1) {
+                                        outCard.getLocationOnScreen(coordinatesout);
+                                        leftDefault.getLocationOnScreen(acoordinates);
+                                        rotatea = new RotateAnimation(0, -90, outCard.getPivotX(), outCard.getPivotY());
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        rotatea.setDuration(1000);
+                                        translatea.setDuration(1000);
+                                        rotateandmovea.addAnimation(rotatea);
+                                        rotateandmovea.addAnimation(translatea);
+                                        outCard.startAnimation(rotateandmovea);
+                                        outCard.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        deckToFourthLeft();
+                                    }
+                                    leftDefault.setBackgroundResource(SkinRes.skinRes(9, "right"));
+                                    button.setBackgroundResource(SkinRes.skinRes(9, "right"));
                                 }
+                                new CountDownTimer(1000, 1000) {
+                                    public void onTick(long millisUntilFinished) {
+
+                                    }
+
+                                    public void onFinish() {
+                                        discard.setBackgroundResource(SkinRes.skinRes(theCard.getValue(), "up"));
+                                        leftDefault.setVisibility(View.VISIBLE);
+                                        if (GameData.deck.getDeckCount() <= 1) {
+                                            GameData.game.getButton("deck").setVisibility(View.INVISIBLE);
+                                        }
+
+                                    }
+                                }.start();
                             }
-                        }.start();
-                    }
+                            a++;
+                        }
 
-                    public void onFinish() {
-                    }
-                }.start();
-
+                        public void onFinish() {
+                        }
+                    }.start();
+                }
             }
         }.start();
     }

@@ -42,17 +42,8 @@ public class CardSix implements Card {
     }
 
     @Override
-    public int getSkinRes(int skinId) {
-        switch (skinId) {
-            case 1:
-                return R.drawable.sinbadver;
-            case 2:
-                return R.drawable.banever;
-            case 3:
-                return R.drawable.thorver;
-            default:
-                return R.drawable.sinbadver;
-        }
+    public int getSkinRes(String orientation) {
+        return SkinRes.skinRes(6, orientation);
     }
 
     private void setButtonListeners(final Player thePlayer) {

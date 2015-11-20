@@ -178,7 +178,7 @@ public class CardTwo implements Card {
         look.setCancelable(false);
         look.setTitle("Card: " + GameData.PlayerList[id].getCard().getValue());
         ImageView image = new ImageView(GameData.game);
-        image.setImageResource(GameData.PlayerList[id].getCard().getSkinRes(GameData.skinID));
+        image.setImageResource(GameData.PlayerList[id].getCard().getSkinRes("up"));
         look.setView(image);
         look.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -196,17 +196,8 @@ public class CardTwo implements Card {
     }
 
     @Override
-    public int getSkinRes(int skinId) {
-        switch (skinId) {
-            case 1:
-                return R.drawable.alibabaver;
-            case 2:
-                return R.drawable.twofacever;
-            case 3:
-                return R.drawable.quicksilverver;
-            default:
-                return R.drawable.alibabaver;
-        }
+    public int getSkinRes(String orientation) {
+        return SkinRes.skinRes(2, orientation);
     }
 
     @Override

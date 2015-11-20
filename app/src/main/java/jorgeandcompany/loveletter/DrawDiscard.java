@@ -41,4 +41,9 @@ public class DrawDiscard extends DrawDiscardDecorator {
                 gameOver.show();
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return card.equals(o);
+    }
 }

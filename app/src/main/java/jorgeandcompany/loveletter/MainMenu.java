@@ -10,9 +10,40 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.app.ActionBar;
+import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Environment;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StreamCorruptedException;
+import java.util.ArrayList;
 
 
-public class MainMenu extends ActionBarActivity implements View.OnClickListener{
+public class MainMenu extends ActionBarActivity implements View.OnClickListener {
 
     private Button bMainMenu1, bMainMenu2, bMainMenu3, bMainMenu4;
     private boolean COMPUTER_FLAG = false;
@@ -24,13 +55,15 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
     public static int returnState = 0;
     public static int otherState = 0;
     private Thread newThread;
+    private static UserData theData;
+    private static File userFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        readFile();
         bMainMenu1 = (Button) findViewById(R.id.bMainMenu1);
         bMainMenu2 = (Button) findViewById(R.id.bMainMenu2);
         bMainMenu3 = (Button) findViewById(R.id.bMainMenu3);
@@ -40,12 +73,55 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
         bMainMenu2.setOnClickListener(this);
         bMainMenu3.setOnClickListener(this);
         bMainMenu4.setOnClickListener(this);
-        newThread = null;
-        if (theMusic == null) {
-            theMusic = new Music (new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
-            Runnable musicRunnable = theMusic;
-            newThread = new Thread (musicRunnable);
-            newThread.start();
+    }
+
+    public void readFile() {
+        try {
+            userFile = new File(Environment.getExternalStorageDirectory(), "User.ser");
+            if (userFile.exists()) {
+                try {
+                    FileInputStream newReader = new FileInputStream(userFile.getPath());
+                    ObjectInputStream reader = new ObjectInputStream(newReader);
+                    theData = (UserData) reader.readObject();
+                    reader.close();
+                    if (theData.isMusicOn()) {
+                        theMusic = new Music(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
+                        Runnable musicRunnable = theMusic;
+                        newThread = new Thread(musicRunnable);
+                        newThread.start();
+                    } else {
+                        theMusic = new Music(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
+                        theMusic.setVolume(0, 0);
+                        theMusic.changeMuteStatus();
+                        Runnable musicRunnable = theMusic;
+                        newThread = new Thread(musicRunnable);
+                        newThread.start();
+                    }
+                    theData.setActiveSkin(theData.getActiveSkin());
+                    SkinRes.skinNames = theData.getSkinsAvailable();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                theData = new UserData();
+                theData.setActiveSkin("Fire Emblem Skin");
+                ArrayList<String> skins = new ArrayList<>();
+                skins.add("Avengers Skin");
+                skins.add("Magi Skin");
+                skins.add("Fire Emblem Skin");
+                theData.setSkinsAvailable(skins);
+                SkinRes.skinNames.add("Avengers Skin");
+                SkinRes.skinNames.add("Magi Skin");
+                SkinRes.skinNames.add("Fire Emblem Skin");
+                theData.setMusicStatus(true);
+                saveData();
+                theMusic = new Music(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
+                Runnable musicRunnable = theMusic;
+                newThread = new Thread(musicRunnable);
+                newThread.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -132,8 +208,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
                         bMainMenu3.setText("4 Player Mode");
                         bMainMenu4.setText("Back");
                         COMPUTER_FLAG = false;
-                    }
-                    else {
+                    } else {
                         bMainMenu1.setText("Single Player");
                         bMainMenu2.setText("Multi Player");
                         bMainMenu3.setText("Options");
@@ -185,28 +260,28 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
         game.putExtra("ComputerLevel", COMPUTER_LEVEL);
         startActivity(game);
         returnState = 0;
-        theMusic .stop();
+        theMusic.stop();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-            if (newThread != null && !theMusic.isPlaying()) {
-                theMusic.stop();
-                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
-                theMusic.restartPosition();
-                newThread = new Thread(theMusic);
-                if (theMusic.isMute()) {
-                    theMusic.setVolume(0,0);
-                }
-                newThread.start();
-                return;
+        if (newThread != null && !theMusic.isPlaying()) {
+            theMusic.stop();
+            theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
+            theMusic.restartPosition();
+            newThread = new Thread(theMusic);
+            if (theMusic.isMute()) {
+                theMusic.setVolume(0, 0);
             }
-            if (returnState == otherState && newThread != null) {
-                theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
-                theMusic.run();
-            }
+            newThread.start();
+            return;
+        }
+        if (returnState == otherState && newThread != null) {
+            theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
+            theMusic.run();
+        }
     }
 
     @Override
@@ -226,23 +301,40 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener{
             moveTaskToBack(true);
             otherState = returnState;
             return true;
-        }
-        else if ((keyCode == KeyEvent.KEYCODE_POWER)) {
+        } else if ((keyCode == KeyEvent.KEYCODE_POWER)) {
             returnState = theMusic.getCurrentPosition();
             theMusic.pause();
             moveTaskToBack(true);
             otherState = returnState;
             return true;
-        }
-        else if ((keyCode == KeyEvent.KEYCODE_WINDOW)) {
+        } else if ((keyCode == KeyEvent.KEYCODE_WINDOW)) {
             returnState = theMusic.getCurrentPosition();
             theMusic.pause();
             moveTaskToBack(true);
             otherState = returnState;
             return true;
-        }
-        else {
+        } else {
             return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    public static void saveData() {
+        try {
+            if (!theData.getActiveSkin().equalsIgnoreCase(SkinRes.activeSkin)) {
+                theData.setActiveSkin(SkinRes.activeSkin);
+            }
+            if (theMusic.isMute()) {
+                theData.setMusicStatus(false);
+            } else {
+                theData.setMusicStatus(true);
+            }
+            OutputStream file = new FileOutputStream(userFile.getPath());
+            OutputStream buffer = new BufferedOutputStream(file);
+            ObjectOutput opstream = new ObjectOutputStream(buffer);
+            opstream.writeObject(theData);
+            opstream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

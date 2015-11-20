@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -27,7 +28,7 @@ import java.util.TimerTask;
 
 public class Game extends ActionBarActivity {
     private ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
-            secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
+            secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard, deckDummy;
     private Button bPlay, bCancel;
     private ImageView expandedCardImage, backgroundOnPaused;
     private TextView cardDescriptionText, textOne, textTwo, textThree, textFour, betaView;
@@ -46,7 +47,8 @@ public class Game extends ActionBarActivity {
         isSingleGame = getIntent().getBooleanExtra("SinglePlayer", false);
         playerAmount = getIntent().getIntExtra("MultiPlayer", 0);
         comLevel = getIntent().getIntExtra("ComputerLevel", 1);
-
+        deckDummy = (ImageButton) findViewById(R.id.deckDummy);
+        deckDummy.setBackgroundResource(SkinRes.skinRes(9,"up"));
         discard = (ImageButton) findViewById(R.id.discard);
         deck = (ImageButton) findViewById(R.id.deck);
         firstPlayerLeft = (ImageButton) findViewById(R.id.player1left);
@@ -57,11 +59,21 @@ public class Game extends ActionBarActivity {
         thirdPlayerRight = (ImageButton) findViewById(R.id.player3right);
         fourthPlayerLeft = (ImageButton) findViewById(R.id.player4right);
         fourthPlayerRight = (ImageButton) findViewById(R.id.player4left);
+        deck.setBackgroundResource(SkinRes.skinRes(9,"up"));
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"up"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"left"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"right"));
         textOne = (TextView) findViewById(R.id.area_text_one);
         textTwo = (TextView) findViewById(R.id.area_text_two);
         textThree = (TextView) findViewById(R.id.area_text_three);
         textFour = (TextView) findViewById(R.id.area_text_four);
         outCard = (ImageButton) findViewById(R.id.outCard);
+        outCard.setBackgroundResource(SkinRes.skinRes(9,"up"));
         bPlay = (Button) findViewById(R.id.bPlay);
         bCancel = (Button) findViewById(R.id.bCancel);
         cardDescriptionText = (TextView) findViewById(R.id.card_description_text);
@@ -103,7 +115,6 @@ public class Game extends ActionBarActivity {
             }
         }, 0, 200);
     }
-
     public ImageButton getButton (String imageType) {
         if (imageType.equalsIgnoreCase("firstplayerleft")) {
             return firstPlayerLeft;
@@ -224,8 +235,8 @@ public class Game extends ActionBarActivity {
     }
     private void playerMove(final Player on) {
         final ImageButton left = firstPlayerLeft;
-        final int drawable1 = on.getCard(0).getSkinRes(GameData.skinID);
-        final int drawable2 = on.getCard(1).getSkinRes(GameData.skinID);
+        final int drawable1 = on.getCard(0).getSkinRes("up");
+        final int drawable2 = on.getCard(1).getSkinRes("up");
         theAnimation.flipCard(left, drawable1);
         final ImageButton right = firstPlayerRight;
         left.setClickable(true);
@@ -449,7 +460,7 @@ public class Game extends ActionBarActivity {
         Animation zoomOutImage2 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         Animation zoomOutImage3 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         backgroundOnPaused.setVisibility(View.VISIBLE);
-        expandedCardImage.setImageResource(on.getCard(hand).getSkinRes(GameData.skinID));
+        expandedCardImage.setImageResource(on.getCard(hand).getSkinRes("up"));
         expandedCardImage.startAnimation(zoomOutImage);
         bPlay.startAnimation(zoomOutImage1);
         bCancel.startAnimation(zoomOutImage2);
@@ -766,8 +777,8 @@ public class Game extends ActionBarActivity {
                     @Override
                     public void onFinish() {
                         on.playCard(hand);
-                        firstPlayerLeft.setBackgroundResource(R.drawable.magi_up);
-                        firstPlayerRight.setBackgroundResource(R.drawable.magi_up);
+                        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
+                        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
                     }
                 };
                 t.start();

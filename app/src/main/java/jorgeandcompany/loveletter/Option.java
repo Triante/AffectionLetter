@@ -11,12 +11,17 @@ import android.widget.Toast;
 
 public class Option extends ActionBarActivity {
     private static Music theMusic = null;
+    private static SkinRes theSkins = new SkinRes();
+    private static boolean saveActive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
         final Button skinset = (Button) findViewById(R.id.skinset);
         final Switch mute = (Switch) findViewById(R.id.musicmute);
+        final Button back = (Button) findViewById(R.id.backButtonOptions);
+        final Button instruction = (Button) findViewById(R.id.instructionsButton);
+        saveActive = false;
         mute.setTextOff("Off");
         mute.setTextOn("On");
         mute.setText ("Music");
@@ -27,18 +32,22 @@ public class Option extends ActionBarActivity {
             mute.setChecked(true);
         }
 
-        skinset.setText(GameData.skinNames.get(GameData.skinID - 1));
+        skinset.setText(SkinRes.activeSkin);
 
         skinset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (GameData.skinID == 3) {
-                    GameData.skinID = 1;
+                if (skinset.getText().toString().equalsIgnoreCase("Avengers Skin") && SkinRes.skinNames.size() > 1) {
+                    SkinRes.activeSkin = SkinRes.skinNames.get(1);
+                } else if (skinset.getText().toString().equalsIgnoreCase("Magi Skin") && SkinRes.skinNames.size() > 2){
+                    SkinRes.activeSkin = SkinRes.skinNames.get(2);
                 }
-                else {
-                    GameData.skinID++;
+                else if (skinset.getText().toString().equalsIgnoreCase("Fire Emblem Skin")) {
+                    SkinRes.activeSkin = SkinRes.skinNames.get(0);
                 }
-                skinset.setText(GameData.skinNames.get(GameData.skinID - 1));
+                skinset.setText(SkinRes.activeSkin);
+                MainMenu.saveData();
+                saveActive = true;
             }
         });
 
@@ -53,14 +62,35 @@ public class Option extends ActionBarActivity {
                     theMusic.setVolume(0, 0);
                     theMusic.changeMuteStatus();
                 }
+                MainMenu.saveData();
+                saveActive = true;
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                MainMenu.otherState++;
+                if (saveActive) {
+                    Toast.makeText(getApplicationContext(), "Save Complete!", Toast.LENGTH_SHORT).show();
+                }
+                finish();
+            }
+        });
+
+        instruction.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
 
     @Override
     public void onBackPressed() {
-        MainMenu.otherState++;
-        finish();
+
     }
 
     public void setMusic (Music piece) {

@@ -40,17 +40,8 @@ public class CardSeven implements Card {
     }
 
     @Override
-    public int getSkinRes(int skinId) {
-        switch (skinId) {
-            case 1:
-                return R.drawable.yunanver;
-            case 2:
-                return R.drawable.harleyquinnver;
-            case 3:
-                return R.drawable.captainamericaver;
-            default:
-                return R.drawable.yunanver;
-        }
+    public int getSkinRes(String orientation) {
+        return SkinRes.skinRes(7, orientation);
     }
 
     @Override

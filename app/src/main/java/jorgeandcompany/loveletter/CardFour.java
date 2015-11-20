@@ -40,17 +40,8 @@ public class CardFour implements Card {
     }
 
     @Override
-    public int getSkinRes(int skinId) {
-        switch (skinId) {
-            case 1:
-                return R.drawable.morgianacardver;
-            case 2:
-                return R.drawable.robinver;
-            case 3:
-                return R.drawable.blackwidowver;
-            default:
-                return R.drawable.morgianacardver;
-        }
+    public int getSkinRes(String orientation) {
+        return SkinRes.skinRes(4, orientation);
     }
 
     @Override

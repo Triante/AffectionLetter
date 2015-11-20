@@ -225,17 +225,8 @@ public class CardOne implements Card {
 
 
     @Override
-    public int getSkinRes(int skinId) {
-        switch (skinId) {
-            case 1:
-                return R.drawable.aladdinver;
-            case 2:
-                return R.drawable.batmanver;
-            case 3:
-                return R.drawable.wintersoldierver;
-            default:
-                return R.drawable.aladdinver;
-        }
+    public int getSkinRes(String orientation) {
+        return SkinRes.skinRes(1, orientation);
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface Card {
 
     String getDescription(Context c);
 
-    int getSkinRes(int skinId);
+    int getSkinRes(String orientation);
 
     boolean equals(Object o);
 

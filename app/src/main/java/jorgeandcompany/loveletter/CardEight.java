@@ -40,17 +40,8 @@ public class CardEight implements Card {
     }
 
     @Override
-    public int getSkinRes(int skinId) {
-        switch (skinId) {
-            case 1:
-                return R.drawable.judarver;
-            case 2:
-                return R.drawable.jokerver;
-            case 3:
-                return R.drawable.hulkver;
-            default:
-                return R.drawable.judarver;
-        }
+    public int getSkinRes(String orientation) {
+        return SkinRes.skinRes(8, orientation);
     }
 
     @Override

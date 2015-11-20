@@ -172,7 +172,16 @@ public class CardFive implements Card {
     }
     private void toDiscardAction(final int id, final Player thePlayer, final ImageButton button, final ImageButton button2) {
         if (GameData.PlayerList[id].getCard().getValue() == 8) {
-            GameData.PlayerList[id].discardCard();
+            GameAnimation animation = GameData.game.provideAnimations();
+            animation.discardAnimation(button, button2);
+            new CountDownTimer(4000, 1000) {
+                public void onTick (long time) {
+
+                }
+                public void onFinish () {
+                    GameData.PlayerList[id].discardCard();
+                }
+            }.start();
         }
         else {
             GameAnimation animation = GameData.game.provideAnimations();
@@ -213,17 +222,8 @@ public class CardFive implements Card {
     }
 
     @Override
-    public int getSkinRes(int skinId) {
-        switch (skinId) {
-            case 1:
-                return R.drawable.hakuryuuver;
-            case 2:
-                return R.drawable.poisonivyver;
-            case 3:
-                return R.drawable.ironmanver;
-            default:
-                return R.drawable.hakuryuuver;
-        }
+    public int getSkinRes(String orientation) {
+        return SkinRes.skinRes(5, orientation);
     }
 
     @Override

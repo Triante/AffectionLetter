@@ -86,16 +86,16 @@ public class ComPlayerLevelTwo implements Player {
             public void onFinish() {
                 cardEffect(toPlay);
                 if (getPlayerNumber() == 2) {
-                    GameData.game.getButton("secondPlayerLeft").setBackgroundResource(R.drawable.magi_left);
-                    GameData.game.getButton("secondPlayerRight").setBackgroundResource(R.drawable.magi_left);
+                    GameData.game.getButton("secondPlayerLeft").setBackgroundResource(SkinRes.skinRes(9,"left"));
+                    GameData.game.getButton("secondPlayerRight").setBackgroundResource(SkinRes.skinRes(9,"left"));
                 }
                 else if (getPlayerNumber() == 3) {
-                    GameData.game.getButton("thirdPlayerLeft").setBackgroundResource(R.drawable.magi_down);
-                    GameData.game.getButton("thirdPlayerRight").setBackgroundResource(R.drawable.magi_down);
+                    GameData.game.getButton("thirdPlayerLeft").setBackgroundResource(SkinRes.skinRes(9,"down"));
+                    GameData.game.getButton("thirdPlayerRight").setBackgroundResource(SkinRes.skinRes(9,"down"));
                 }
                 else {
-                    GameData.game.getButton("fourthPlayerLeft").setBackgroundResource(R.drawable.magi_right);
-                    GameData.game.getButton("fourthPlayerRight").setBackgroundResource(R.drawable.magi_right);
+                    GameData.game.getButton("fourthPlayerLeft").setBackgroundResource(SkinRes.skinRes(9,"right"));
+                    GameData.game.getButton("fourthPlayerRight").setBackgroundResource(SkinRes.skinRes(9,"right"));
                 }
                 //reset card background for non re-flipped card.
             }
@@ -504,15 +504,24 @@ public class ComPlayerLevelTwo implements Player {
         if (chosen != 0) {
             new CountDownTimer(4000,1000) {
                 String message = "Player " + playerNumber + " used card 5. Player " + playerNumber + " chose player " + chosen + " to discard his or her card and draw a new one";
+                int a = 0;
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    if (millisUntilFinished >= 3000 && millisUntilFinished <= 4000) {
+                    if (a == 0) {
                         int select;
                         if (chosen == 0) select = playerNumber;
                         else select = chosen;
-                        GameAnimation animation = GameData.game.provideAnimations();
-                        final ImageButton[] set = chooseCardButton(select);
-                        animation.discardAnimation(set[0], set[1]);
+                        if (GameData.PlayerList[select].getCard().getValue() != 8) {
+                            GameAnimation animation = GameData.game.provideAnimations();
+                            final ImageButton[] set = chooseCardButton(select);
+                            animation.discardAnimation(set[0], set[1]);
+                        }
+                        else {
+                            GameAnimation animation = GameData.game.provideAnimations();
+                            final ImageButton[] set = chooseCardButton(select);
+                            animation.discardAnimation(set[0], set[1]);
+                        }
+                        a++;
                     }
                 }
 
@@ -550,15 +559,16 @@ public class ComPlayerLevelTwo implements Player {
         else {
             new CountDownTimer(4000,1000) {
                 String message = "Player " + playerNumber + " used card 5. Player " + playerNumber + " discarded his or her own card";
+                int a = 0;
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    if(millisUntilFinished >= 3000 && millisUntilFinished <= 4000) {
+                    if(a == 0) {
                         int select;
                         if (chosen == 0) select = playerNumber;
                         else select = chosen;
                         GameAnimation animation = GameData.game.provideAnimations();
                         final ImageButton[] set = chooseCardButton(select);
-                        animation.discardAnimation(set[0], set[1]);
+                        a++;
                     }
                 }
 

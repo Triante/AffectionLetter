@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jorgeandcompany.loveletter" >
 
-
     <supports-screens
         android:anyDensity="true"
         android:resizeable="true" />
@@ -32,5 +31,5 @@
             android:screenOrientation="landscape">
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>
