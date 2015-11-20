@@ -34,4 +34,9 @@ public abstract class DrawDiscardDecorator implements Card {
     public int getSkinRes(String orientation) {
         return card.getSkinRes(orientation);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return card.equals(o);
+    }
 }

@@ -335,8 +335,8 @@ public class GameAnimation {
             leftin = R.animator.flight_left_in;
         }
         else {
-            rightout = R.animator.flip_horizontal_right_out;
-            leftin = R.animator.flip_horizontal_left_in;
+            rightout = R.animator.flip_right_out;
+            leftin = R.animator.flight_left_in;
         }
         new CountDownTimer(400, 100) {
             int a = 0;
