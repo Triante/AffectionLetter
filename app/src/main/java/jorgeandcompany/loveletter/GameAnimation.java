@@ -21,19 +21,19 @@ public class GameAnimation {
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
     private boolean isAnimating;
 
-    public GameAnimation (Game aGame) {
+    public GameAnimation () {
         isAnimating = false;
-        firstPlayerLeft = aGame.getButton("firstPlayerLeft");
-        firstPlayerRight = aGame.getButton("firstPlayerRight");
-        secondPlayerLeft = aGame.getButton("secondPlayerLeft");
-        secondPlayerRight = aGame.getButton("secondPlayerRight");
-        thirdPlayerLeft = aGame.getButton("thirdPlayerLeft");
-        thirdPlayerRight = aGame.getButton("thirdPlayerRight");
-        fourthPlayerLeft = aGame.getButton("fourthPlayerLeft");
-        fourthPlayerRight = aGame.getButton("fourthPlayerRight");
-        deck = aGame.getButton("deck");
-        discard = aGame.getButton("discard");
-        outCard = aGame.getButton("outcard");
+        firstPlayerLeft = GameData.game.getButton("firstPlayerLeft");
+        firstPlayerRight = GameData.game.getButton("firstPlayerRight");
+        secondPlayerLeft = GameData.game.getButton("secondPlayerLeft");
+        secondPlayerRight = GameData.game.getButton("secondPlayerRight");
+        thirdPlayerLeft = GameData.game.getButton("thirdPlayerLeft");
+        thirdPlayerRight = GameData.game.getButton("thirdPlayerRight");
+        fourthPlayerLeft = GameData.game.getButton("fourthPlayerLeft");
+        fourthPlayerRight = GameData.game.getButton("fourthPlayerRight");
+        deck = GameData.game.getButton("deck");
+        discard = GameData.game.getButton("discard");
+        outCard = GameData.game.getButton("outcard");
     }
 
     public boolean isAnimating () {
