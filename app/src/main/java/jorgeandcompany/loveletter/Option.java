@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 public class Option extends ActionBarActivity {
     private static Music theMusic = null;
-    private static SkinRes theSkins = new SkinRes();
     private static boolean saveActive;
+    private static Observer saveObserver = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +46,7 @@ public class Option extends ActionBarActivity {
                     SkinRes.activeSkin = SkinRes.skinNames.get(0);
                 }
                 skinset.setText(SkinRes.activeSkin);
-                MainMenu.saveData();
+                saveObserver.updateSave();
                 saveActive = true;
             }
         });
@@ -62,7 +62,7 @@ public class Option extends ActionBarActivity {
                     theMusic.setVolume(0, 0);
                     theMusic.changeMuteStatus();
                 }
-                MainMenu.saveData();
+                saveObserver.updateSave();
                 saveActive = true;
             }
         });
@@ -95,5 +95,9 @@ public class Option extends ActionBarActivity {
 
     public void setMusic (Music piece) {
         theMusic = piece;
+    }
+
+    public void setSaveObserver (Observer anObserver) {
+        saveObserver = anObserver;
     }
 }

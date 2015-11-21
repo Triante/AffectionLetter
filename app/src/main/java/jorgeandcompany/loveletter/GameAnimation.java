@@ -22,7 +22,7 @@ public class GameAnimation {
     private boolean isAnimating;
 
     public GameAnimation () {
-        isAnimating = false;
+        isAnimating = true;
         firstPlayerLeft = GameData.game.getButton("firstPlayerLeft");
         firstPlayerRight = GameData.game.getButton("firstPlayerRight");
         secondPlayerLeft = GameData.game.getButton("secondPlayerLeft");
@@ -39,7 +39,6 @@ public class GameAnimation {
     public boolean isAnimating () {
         return isAnimating;
     }
-
     public void changeAnimatingState () {
         if (isAnimating) {
             isAnimating = false;
@@ -100,7 +99,6 @@ public class GameAnimation {
                 break;
         }
     }
-
     private void dealCard(int rotation, ImageButton player) {
         int[] cardcoordinates = new int [2];
         int[] deckcoordinates = new int [2];
@@ -169,7 +167,6 @@ public class GameAnimation {
         }.start();
 
     }
-
     public void deckToFirstLeft() {
         dealCard(0, firstPlayerLeft);
         new CountDownTimer(1000, 1000) {
@@ -216,7 +213,6 @@ public class GameAnimation {
         }.start();
 
     }
-
     private void cardToDiscard(ImageButton buttonToDiscard, int playerNumber) {
         int[] cardcoordinates = new int[2];
         int[] discardcoordinates = new int[2];
@@ -241,7 +237,6 @@ public class GameAnimation {
         buttonToDiscard.startAnimation(rotateandmove);
         buttonToDiscard.setVisibility(View.INVISIBLE);
     };
-
     public void flipCard(final View toFlip, final int id) {
         final int rightout, leftin;
         if (toFlip == firstPlayerLeft || toFlip == firstPlayerRight || toFlip == thirdPlayerLeft || toFlip == thirdPlayerRight) {
@@ -274,11 +269,7 @@ public class GameAnimation {
             }
 
             @Override
-            public void onFinish() {
-                if (isAnimating()) {
-                    changeAnimatingState();
-               }
-            }
+            public void onFinish() {}
         }.start();
     }
     public void flipCardToBack(final View toFlip) {
@@ -408,7 +399,6 @@ public class GameAnimation {
             }
         }.start();
     }
-
     public void swapCard6(final ImageButton a, final ImageButton b, final Player thePlayer, final int id, final int swap1, final int swap2) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -461,7 +451,6 @@ public class GameAnimation {
             }
         }.start();
     }
-
     public void swapSingle6 (int playerNumber, int chosen) {
         ImageButton temp1 = null;
         ImageButton temp2 = null;
@@ -590,7 +579,6 @@ public class GameAnimation {
             }
         }.start();
     }
-
     public void discardAnimation (final ImageButton button, final ImageButton leftDefault) {
 
         new CountDownTimer(2000, 1000) {

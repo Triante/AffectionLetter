@@ -48,7 +48,6 @@ public class Game extends ActionBarActivity {
         playerAmount = getIntent().getIntExtra("MultiPlayer", 0);
         comLevel = getIntent().getIntExtra("ComputerLevel", 1);
         deckDummy = (ImageButton) findViewById(R.id.deckDummy);
-        deckDummy.setBackgroundResource(SkinRes.skinRes(9,"up"));
         discard = (ImageButton) findViewById(R.id.discard);
         deck = (ImageButton) findViewById(R.id.deck);
         firstPlayerLeft = (ImageButton) findViewById(R.id.player1left);
@@ -59,21 +58,11 @@ public class Game extends ActionBarActivity {
         thirdPlayerRight = (ImageButton) findViewById(R.id.player3right);
         fourthPlayerLeft = (ImageButton) findViewById(R.id.player4right);
         fourthPlayerRight = (ImageButton) findViewById(R.id.player4left);
-        deck.setBackgroundResource(SkinRes.skinRes(9,"up"));
-        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"up"));
-        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"up"));
-        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"left"));
-        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"left"));
-        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"down"));
-        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"down"));
-        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"right"));
-        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"right"));
         textOne = (TextView) findViewById(R.id.area_text_one);
         textTwo = (TextView) findViewById(R.id.area_text_two);
         textThree = (TextView) findViewById(R.id.area_text_three);
         textFour = (TextView) findViewById(R.id.area_text_four);
         outCard = (ImageButton) findViewById(R.id.outCard);
-        outCard.setBackgroundResource(SkinRes.skinRes(9,"up"));
         bPlay = (Button) findViewById(R.id.bPlay);
         bCancel = (Button) findViewById(R.id.bCancel);
         cardDescriptionText = (TextView) findViewById(R.id.card_description_text);
@@ -88,7 +77,7 @@ public class Game extends ActionBarActivity {
 
         //beta view
         betaView = (TextView) findViewById(R.id.beta_card_data);
-
+        setBackSkins();
         try{
             startMusic();
         }
@@ -115,6 +104,20 @@ public class Game extends ActionBarActivity {
                 Game.this.runOnUiThread(beta);
             }
         }, 0, 200);
+    }
+
+    public void setBackSkins () {
+        deckDummy.setBackgroundResource(SkinRes.skinRes(9,"up"));
+        deck.setBackgroundResource(SkinRes.skinRes(9,"up"));
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"up"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"left"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9,"right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"right"));
+        outCard.setBackgroundResource(SkinRes.skinRes(9,"up"));
     }
     public ImageButton getButton (String imageType) {
         if (imageType.equalsIgnoreCase("firstplayerleft")) {
@@ -160,9 +163,6 @@ public class Game extends ActionBarActivity {
         if (on.isProtected()) {
             on.setProtected(false);
         }
-        if (!theAnimation.isAnimating()) {
-            theAnimation.changeAnimatingState();
-        }
         CountDownTimer toMove = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -198,9 +198,6 @@ public class Game extends ActionBarActivity {
         if (on.isProtected()) {
             on.setProtected(false);
         }
-        if (!theAnimation.isAnimating()) {
-            theAnimation.changeAnimatingState();
-        }
         CountDownTimer toMove = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -220,7 +217,6 @@ public class Game extends ActionBarActivity {
             public void onFinish() {
                 if (on.isHuman()) {
                     playerMove(on);
-                    theAnimation.changeAnimatingState();
                 }
                 else computerMove(on);
 
@@ -255,6 +251,17 @@ public class Game extends ActionBarActivity {
                 imageZoomToOpen(on, 1, right);
             }
         });
+        new CountDownTimer(400,100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+            @Override
+            public void onFinish() {
+                if (theAnimation.isAnimating()) {
+                    theAnimation.changeAnimatingState();
+                }
+            }
+        }.start();
     }
     private void computerMove(final Player on) {
         on.playCard(0);
@@ -262,9 +269,6 @@ public class Game extends ActionBarActivity {
 
     //decides the end of games too
     public void endOfTurn() {
-        if (!theAnimation.isAnimating()) {
-            theAnimation.changeAnimatingState();
-        }
         CountDownTimer toEnd = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -475,16 +479,11 @@ public class Game extends ActionBarActivity {
                 if (on.hasSeven()) {
                     if (on.getCard(hand).getValue() == 5 || on.getCard(hand).getValue() == 6) {
                         cardSevenError();
-                    }
-                    else {
+                    } else {
                         playCard(on, hand);
                     }
-                }
-                else {
+                } else {
                     playCard(on, hand);
-                    if (!theAnimation.isAnimating()) {
-                        theAnimation.changeAnimatingState();
-                    }
                 }
             }
         });
@@ -512,9 +511,6 @@ public class Game extends ActionBarActivity {
         cardDescriptionText.setVisibility(View.INVISIBLE);
     }
     private void handOutCards(final int firstPlayer) {
-        if (!theAnimation.isAnimating()) {
-            theAnimation.changeAnimatingState();
-        }
         new CountDownTimer(7000, 1000) {
             int a = -1;
             public void onTick(long millisUntilFinished) {
@@ -752,6 +748,9 @@ public class Game extends ActionBarActivity {
         play.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (!theAnimation.isAnimating()) {
+                    theAnimation.changeAnimatingState();
+                }
                 firstPlayerLeft.setClickable(false);
                 firstPlayerRight.setClickable(false);
                 imageZoomToClose();

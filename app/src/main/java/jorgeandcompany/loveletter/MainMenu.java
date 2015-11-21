@@ -114,7 +114,6 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
                 SkinRes.skinNames.add("Magi Skin");
                 SkinRes.skinNames.add("Fire Emblem Skin");
                 theData.setMusicStatus(true);
-                saveData();
                 theMusic = new Music(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
                 Runnable musicRunnable = theMusic;
                 newThread = new Thread(musicRunnable);
@@ -180,6 +179,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
                 if (!COMPUTER_FLAG && !MULTIPLAYER_FLAG) {
                     Option optionClass = new Option();
                     optionClass.setMusic(theMusic);
+                    optionClass.setSaveObserver(new dataObserver(theMusic,theData,userFile));
                     Intent option = new Intent(this, optionClass.getClass());
                     startActivity(option);
                 }
@@ -318,23 +318,5 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
         }
     }
 
-    public static void saveData() {
-        try {
-            if (!theData.getActiveSkin().equalsIgnoreCase(SkinRes.activeSkin)) {
-                theData.setActiveSkin(SkinRes.activeSkin);
-            }
-            if (theMusic.isMute()) {
-                theData.setMusicStatus(false);
-            } else {
-                theData.setMusicStatus(true);
-            }
-            OutputStream file = new FileOutputStream(userFile.getPath());
-            OutputStream buffer = new BufferedOutputStream(file);
-            ObjectOutput opstream = new ObjectOutputStream(buffer);
-            opstream.writeObject(theData);
-            opstream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 }
