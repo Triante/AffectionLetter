@@ -4,7 +4,8 @@
     android:paddingRight="@dimen/game_horizontal_margin"
     android:paddingTop="@dimen/game_vertical_margin"
     android:paddingBottom="@dimen/game_vertical_margin" tools:context=".Game"
-    android:id="@+id/container">
+    android:id="@+id/container"
+    android:background="@drawable/table_top_background">
 
     <ImageButton
         android:layout_width="50dp"
@@ -51,6 +52,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Player 1"
+        android:textColor="#FBFBFB"
+        android:shadowColor="#000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
         android:id="@+id/area_text_one"
         android:layout_above="@+id/player1right"
         android:layout_centerHorizontal= "true" />
@@ -60,6 +66,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Player 3"
+        android:textColor="#FBFBFB"
+        android:shadowColor="#000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
         android:id="@+id/area_text_three"
         android:layout_below="@+id/player3left"
         android:layout_centerHorizontal= "true" />
@@ -69,18 +80,30 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Player 2"
+        android:textColor="#FBFBFB"
+        android:shadowColor="#000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
         android:id="@+id/area_text_two"
         android:layout_above="@+id/player2right"
-        android:layout_alignStart="@+id/player2right" />
+        android:layout_alignStart="@+id/player2right"
+        android:layout_alignLeft="@+id/player2right"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Player 4"
+        android:textColor="#FBFBFB"
+        android:shadowColor="#000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
         android:id="@+id/area_text_four"
         android:layout_above="@+id/player4left"
-        android:layout_alignStart="@+id/player4left" />
+        android:layout_alignStart="@+id/player4left"
+        android:layout_alignLeft="@+id/player4left"/>
 
 
     <ImageButton
@@ -163,6 +186,7 @@
         android:background="@drawable/magi_left"
         android:clickable="false"
         android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
         android:layout_marginLeft="16dp" />
 
     <ImageButton
