@@ -109,8 +109,10 @@ public class GameAnimation {
         Animation rotate;
         player.getLocationOnScreen(cardcoordinates);
         deck.getLocationOnScreen(deckcoordinates);
-        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0], 0, cardcoordinates[1] - deckcoordinates[1]);
-        rotate = new RotateAnimation(0, rotation, deck.getPivotX(), deck.getPivotY());
+        float y = player.getPivotY() - deck.getPivotY();
+        float x = player.getPivotX() - deck.getPivotX();
+        translate = new TranslateAnimation(0, cardcoordinates[0] - deckcoordinates[0] + x, 0, cardcoordinates[1] - deckcoordinates[1] + y);
+        rotate = new RotateAnimation(0, rotation, deck.getPivotX(),deck.getPivotY());
         translate.setDuration(1000);
         rotate.setDuration(1000);
         set = new AnimationSet(true);
@@ -227,9 +229,11 @@ public class GameAnimation {
 
         discard.getLocationOnScreen(discardcoordinates);
         buttonToDiscard.getLocationOnScreen(cardcoordinates);
+        float x = discard.getPivotX() - buttonToDiscard.getPivotX();
+        float y =  discard.getPivotY() - buttonToDiscard.getPivotY();
         Animation rotate = new RotateAnimation(0, rotation, buttonToDiscard.getPivotX(), buttonToDiscard.getPivotY());
         rotate.setDuration(1000);
-        Animation translateleftrigt = new TranslateAnimation(0, discardcoordinates[0] - cardcoordinates[0], 0, discardcoordinates[1] - cardcoordinates[1]);
+        Animation translateleftrigt = new TranslateAnimation(0, discardcoordinates[0] - cardcoordinates[0] + x, 0, discardcoordinates[1] - cardcoordinates[1] + y);
         translateleftrigt.setDuration(1000);
         AnimationSet rotateandmove = new AnimationSet(false);
         rotateandmove.addAnimation(rotate);
@@ -412,12 +416,16 @@ public class GameAnimation {
                 int[] acoordinates = new int[2];
                 a.getLocationOnScreen(acoordinates);
                 b.getLocationOnScreen(bcoordinates);
+                float aX = b.getPivotX() - a.getPivotX();
+                float bX = a.getPivotX() - b.getPivotX();
+                float aY = b.getPivotY() - a.getPivotY();
+                float bY = a.getPivotY() - b.getPivotY();
                 Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
                 Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
                 rotatea.setDuration(1000);
                 rotateb.setDuration(1000);
-                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
-                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0] + bX, 0, acoordinates[1] - bcoordinates[1] + bY);
+                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0] + aX, 0, bcoordinates[1] - acoordinates[1] + aY);
                 translateb.setDuration(1000);
                 translatea.setDuration(1000);
                 AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
@@ -548,12 +556,16 @@ public class GameAnimation {
                 int[] acoordinates = new int[2];
                 a.getLocationOnScreen(acoordinates);
                 b.getLocationOnScreen(bcoordinates);
+                float aX = b.getPivotX() - a.getPivotX();
+                float bX = a.getPivotX() - b.getPivotX();
+                float aY = b.getPivotY() - a.getPivotY();
+                float bY = a.getPivotY() - b.getPivotY();
                 Animation rotateb = new RotateAnimation(0, swap1, b.getPivotX(), b.getPivotY());
                 Animation rotatea = new RotateAnimation(0, swap2, a.getPivotX(), a.getPivotY());
                 rotatea.setDuration(1000);
                 rotateb.setDuration(1000);
-                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0], 0, acoordinates[1] - bcoordinates[1]);
-                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0], 0, bcoordinates[1] - acoordinates[1]);
+                Animation translateb = new TranslateAnimation(0, acoordinates[0] - bcoordinates[0] + bX, 0, acoordinates[1] - bcoordinates[1] + bY);
+                Animation translatea = new TranslateAnimation(0, bcoordinates[0] - acoordinates[0] + aX, 0, bcoordinates[1] - acoordinates[1] + aY);
                 translateb.setDuration(1000);
                 translatea.setDuration(1000);
                 AnimationSet rotateandmovea = new AnimationSet(false), rotateandmoveb = new AnimationSet(false);
@@ -631,8 +643,10 @@ public class GameAnimation {
                                     if (GameData.deck.getDeckCount() <= 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
+                                        float x = leftDefault.getPivotX() - outCard.getPivotX();
+                                        float y = leftDefault.getPivotY() - outCard.getPivotY();
                                         rotatea = new RotateAnimation(0, 0, outCard.getPivotX(), outCard.getPivotY());
-                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0] + x, 0, acoordinates[1] - coordinatesout[1] + y);
                                         rotatea.setDuration(1000);
                                         translatea.setDuration(1000);
                                         rotateandmovea.addAnimation(rotatea);
@@ -648,8 +662,10 @@ public class GameAnimation {
                                     if (GameData.deck.getDeckCount() <= 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
+                                        float x = leftDefault.getPivotX() - outCard.getPivotX();
+                                        float y = leftDefault.getPivotY() - outCard.getPivotY();
                                         rotatea = new RotateAnimation(0, 90, outCard.getPivotX(), outCard.getPivotY());
-                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0] + x, 0, acoordinates[1] - coordinatesout[1] + y);
                                         rotatea.setDuration(1000);
                                         translatea.setDuration(1000);
                                         rotateandmovea.addAnimation(rotatea);
@@ -665,8 +681,10 @@ public class GameAnimation {
                                     if (GameData.deck.getDeckCount() <= 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
+                                        float x = leftDefault.getPivotX() - outCard.getPivotX();
+                                        float y = leftDefault.getPivotY() - outCard.getPivotY();
                                         rotatea = new RotateAnimation(0, 180, outCard.getPivotX(), outCard.getPivotY());
-                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0] + x, 0, acoordinates[1] - coordinatesout[1] + y);
                                         rotatea.setDuration(1000);
                                         translatea.setDuration(1000);
                                         rotateandmovea.addAnimation(rotatea);
@@ -682,8 +700,10 @@ public class GameAnimation {
                                     if (GameData.deck.getDeckCount() <= 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
+                                        float x = leftDefault.getPivotX() - outCard.getPivotX();
+                                        float y = leftDefault.getPivotY() - outCard.getPivotY();
                                         rotatea = new RotateAnimation(0, -90, outCard.getPivotX(), outCard.getPivotY());
-                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0], 0, acoordinates[1] - coordinatesout[1]);
+                                        translatea = new TranslateAnimation(0, acoordinates[0] - coordinatesout[0] + x, 0, acoordinates[1] - coordinatesout[1] + y);
                                         rotatea.setDuration(1000);
                                         translatea.setDuration(1000);
                                         rotateandmovea.addAnimation(rotatea);

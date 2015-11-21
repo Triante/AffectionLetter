@@ -206,10 +206,11 @@
         android:scaleType="fitXY"
         android:visibility="invisible"
         android:layout_alignTop="@+id/player3left"
-        android:layout_toRightOf="@+id/deck"
         android:layout_alignBottom="@+id/player1right"
-        android:layout_alignRight="@+id/player4left"
-        android:layout_alignEnd="@+id/player4left" />
+        android:layout_alignRight="@+id/area_text_four"
+        android:layout_alignEnd="@+id/area_text_four"
+        android:layout_alignLeft="@+id/discard"
+        android:layout_alignStart="@+id/discard" />
 
     <TextView
         android:layout_width="wrap_content"

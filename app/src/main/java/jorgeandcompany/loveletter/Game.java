@@ -85,7 +85,7 @@ public class Game extends ActionBarActivity {
             }
         });
         backgroundOnPaused = (ImageView) findViewById(R.id.backGround);
-        theAnimation = new GameAnimation();
+
         //beta view
         betaView = (TextView) findViewById(R.id.beta_card_data);
 
@@ -98,6 +98,7 @@ public class Game extends ActionBarActivity {
         GameData.setContextMenu(this);
         GameData.setMode(isSingleGame, playerAmount, comLevel);
         GameData.newGame();
+        theAnimation = new GameAnimation();
         handOutCards(GameData.TURN);
 
 
