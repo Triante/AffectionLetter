@@ -286,11 +286,10 @@ public class ComPlayerLevelThree implements Player {
     private void effectOne() {
         String message = "";
         int chosen = ai.selectPlayer(1);
-        int guess = ai.guessCard(chosen);
-
         if (chosen != 0) {
-            message = "Player " + playerNumber + " used card 1.\n" +
-                    "Player " + playerNumber + " guessed if player " + chosen + " had card "+ guess + "." ;
+            int guess = ai.guessCard(chosen);
+            message = "Player " + playerNumber + " used card [1].\n" +
+                    "Player " + playerNumber + " guessed if player " + chosen + " had card ["+ guess + "].\n" ;
             if (GameData.PlayerList[chosen].getCard().getValue() == guess) {
                 message += "\nPlayer " + playerNumber + " guessed correctly.\n" +
                         "Player "+ chosen + " is out.";
@@ -302,7 +301,7 @@ public class ComPlayerLevelThree implements Player {
             }
         }
         else {
-            message = "Player " + playerNumber + " used card 1. Active players were all protected";
+            message = "Player " + playerNumber + " used card [1]. Active players were all protected and no action was taken.";
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -319,13 +318,13 @@ public class ComPlayerLevelThree implements Player {
     private void effectTwo() {
         String message = "";
         int chosen = ai.selectPlayer(2);
-        int chosenCard = GameData.PlayerList[chosen].getCard().getValue();
-        ai.setCardToRemember(chosen, chosenCard);
         if (chosen != 0) {
-            message = "Player " + playerNumber + " used card 2. Player " + playerNumber + " now knows player " + chosen + "'s card";
+            int chosenCard = GameData.PlayerList[chosen].getCard().getValue();
+            ai.setCardToRemember(chosen, chosenCard);
+            message = "Player " + playerNumber + " used card [2]. Player " + playerNumber + " now knows player " + chosen + "'s card.";
         }
         else {
-            message = "Player " + playerNumber + " used card 2. Active players were all protected";
+            message = "Player " + playerNumber + " used card 2. Active players were all protected and no action was taken.";
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -367,7 +366,7 @@ public class ComPlayerLevelThree implements Player {
 
         }
         else {
-            message = "Player " + playerNumber + " used card 3. Active players were all protected";
+            message = "Player " + playerNumber + " used card 3. Active players were all protected and no action was taken.";
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -540,7 +539,7 @@ public class ComPlayerLevelThree implements Player {
             }.start();
         }
         else {
-            message = "Player " + playerNumber + " used card 6. Active players were all protected.";
+            message = "Player " + playerNumber + " used card 6. Active players were all protected and no action was taken.";
             AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
             alert.setCancelable(false);
             alert.setTitle("Card 6 Effect");

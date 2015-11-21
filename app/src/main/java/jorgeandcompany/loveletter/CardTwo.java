@@ -44,30 +44,7 @@ public class CardTwo implements Card {
 
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
-        ImageButton one;
-        if (GameData.PlayerList[id].hasLeftCard()) {
-            one = GameData.game.getButton("firstPlayerLeft");
-        }
-        else {
-            one = GameData.game.getButton("firstPlayerRight");
-        }
-        one.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
-                select.setTitle("End your turn?\n");
-                select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        GameData.game.endOfTurn();
-                    }
-                });
-                select.setNegativeButton("No", null);
-                select.setCancelable(false);
-                AlertDialog alertDialogObject = select.create();
-                alertDialogObject.show();
-            }
-        });
+        boolean noneSelectable = true;
         id++;
         if (id == 5) id = 1;
         final int id2 = id;
@@ -93,6 +70,7 @@ public class CardTwo implements Card {
                     lookAtCard(id2, thePlayer);
                 }
             });
+            noneSelectable = false;
         }
         id++;
         if (id == 5) id = 1;
@@ -119,6 +97,7 @@ public class CardTwo implements Card {
                     lookAtCard(id3, thePlayer);
                 }
             });
+            noneSelectable = false;
         }
         id++;
         if (id == 5) id = 1;
@@ -145,6 +124,20 @@ public class CardTwo implements Card {
                     lookAtCard(id4, thePlayer);
                 }
             });
+            noneSelectable = false;
+        }
+        if (noneSelectable) {
+            AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+            select.setTitle("All players are safe.\nNo action can be taken");
+            select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    GameData.game.endOfTurn();
+                }
+            });
+            select.setCancelable(false);
+            AlertDialog alertDialogObject = select.create();
+            alertDialogObject.show();
         }
     }
     private void lookAtCard(final int id, final Player thePlayer) {

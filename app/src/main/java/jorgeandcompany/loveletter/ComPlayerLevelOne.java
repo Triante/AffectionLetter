@@ -347,7 +347,7 @@ public class ComPlayerLevelOne implements Player {
             }
         }
         else {
-            message = "Player " + playerNumber + " used card 1. Active players were all protected";
+            message = "Player " + playerNumber + " used card 1. Active players were all protected and no action was taken.";
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -365,10 +365,10 @@ public class ComPlayerLevelOne implements Player {
         String message = "";
         int chosen = selectPlayer();
         if (chosen != 0) {
-            message = "Player " + playerNumber + " used card 2. Player " + playerNumber + " now knows player " + chosen + "'s card";
+            message = "Player " + playerNumber + " used card 2. Player " + playerNumber + " now knows player " + chosen + "'s card.";
         }
         else {
-            message = "Player " + playerNumber + " used card 2. Active players were all protected";
+            message = "Player " + playerNumber + " used card 2. Active players were all protected and no action was taken.";
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -410,7 +410,7 @@ public class ComPlayerLevelOne implements Player {
 
         }
         else {
-            message = "Player " + playerNumber + " used card 3. Active players were all protected";
+            message = "Player " + playerNumber + " used card 3. Active players were all protected and no action was taken.";
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -580,7 +580,7 @@ public class ComPlayerLevelOne implements Player {
             }.start();
         }
         else {
-            message = "Player " + playerNumber + " used card 6. Active players were all protected.";
+            message = "Player " + playerNumber + " used card 6. Active players were all protected  and no action was taken.";
             AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
             alert.setCancelable(false);
             alert.setTitle("Card 6 Effect");

@@ -74,6 +74,7 @@ public class Game extends ActionBarActivity {
             }
         });
         backgroundOnPaused = (ImageView) findViewById(R.id.backGround);
+
         //beta view
         betaView = (TextView) findViewById(R.id.beta_card_data);
         setBackSkins();
