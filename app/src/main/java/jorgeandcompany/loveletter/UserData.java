@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Created by Penguins94 on 11/13/2015.
  */
-public class UserData implements Serializable{
+public class UserData implements Serializable {
     private ArrayList<String> skinNames;
     private String activeSkin;
     private boolean musicOn;
