@@ -65,9 +65,13 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         readFile();
         bMainMenu1 = (Button) findViewById(R.id.bMainMenu1);
+        bMainMenu1.setBackgroundResource(SkinRes.getButtonTheme());
         bMainMenu2 = (Button) findViewById(R.id.bMainMenu2);
+        bMainMenu2.setBackgroundResource(SkinRes.getButtonTheme());
         bMainMenu3 = (Button) findViewById(R.id.bMainMenu3);
+        bMainMenu3.setBackgroundResource(SkinRes.getButtonTheme());
         bMainMenu4 = (Button) findViewById(R.id.bMainMenu4);
+        bMainMenu4.setBackgroundResource(SkinRes.getButtonTheme());
 
         bMainMenu1.setOnClickListener(this);
         bMainMenu2.setOnClickListener(this);
@@ -179,7 +183,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
                 if (!COMPUTER_FLAG && !MULTIPLAYER_FLAG) {
                     Option optionClass = new Option();
                     optionClass.setMusic(theMusic);
-                    optionClass.setSaveObserver(new dataObserver(theMusic,theData,userFile));
+                    optionClass.setSaveObserver(new dataObserver(theMusic, theData, userFile));
                     Intent option = new Intent(this, optionClass.getClass());
                     startActivity(option);
                 }
@@ -231,7 +235,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
     }
 
     private void readyMessage() {
-        AlertDialog.Builder ready = new AlertDialog.Builder(this);
+        ThemedDialog.Builder ready = new ThemedDialog.Builder(this);
         ready.setTitle("READY?");
         String message;
         if (SINGLE_PLAYER) message = "Single Player Mode\n" +
@@ -282,6 +286,10 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
             theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
             theMusic.run();
         }
+        bMainMenu1.setBackgroundResource(SkinRes.getButtonTheme());
+        bMainMenu2.setBackgroundResource(SkinRes.getButtonTheme());
+        bMainMenu3.setBackgroundResource(SkinRes.getButtonTheme());
+        bMainMenu4.setBackgroundResource(SkinRes.getButtonTheme());
     }
 
     @Override
@@ -317,6 +325,8 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
             return super.onKeyDown(keyCode, event);
         }
     }
+
+
 
 
 }

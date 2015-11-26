@@ -4,8 +4,7 @@
     android:paddingRight="@dimen/game_horizontal_margin"
     android:paddingTop="@dimen/game_vertical_margin"
     android:paddingBottom="@dimen/game_vertical_margin" tools:context=".Game"
-    android:id="@+id/container"
-    android:background="@drawable/table_top_background">
+    android:id="@+id/gameLayout">
 
     <ImageButton
         android:layout_width="50dp"
@@ -247,9 +246,11 @@
         android:layout_toLeftOf="@+id/dummy"
         android:layout_toStartOf="@+id/dummy"
         android:layout_alignTop="@+id/player3right"
-        android:background="@drawable/background_trans"
         android:gravity="center"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:textColor="#000"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"/>
 
     <Button
         android:layout_width="100dp"
@@ -259,7 +260,8 @@
         android:layout_below="@+id/player2left"
         android:layout_alignLeft="@+id/player2left"
         android:layout_alignStart="@+id/player2left"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:textColor="#000"/>
 
     <Button
         android:layout_width="100dp"
@@ -269,7 +271,8 @@
         android:layout_alignTop="@+id/bCancel"
         android:layout_alignRight="@+id/card_description_text"
         android:layout_alignEnd="@+id/card_description_text"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:textColor="#000"/>
 
     <TextView
         android:layout_width="wrap_content"

@@ -235,7 +235,7 @@ public class ComPlayerLevelTwo implements Player {
         }
     }
     private int selectPlayer() {
-        if (toPlayOne) {
+        if (toPlayOne && !GameData.PlayerList[rememberPlayerNum].isProtected() && !GameData.PlayerList[rememberPlayerNum].isOut()) {
             return rememberPlayerNum;
         }
         int[] selectablePlayers = new int[3];

@@ -16,6 +16,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +33,7 @@ public class Game extends ActionBarActivity {
     private Button bPlay, bCancel;
     private ImageView expandedCardImage, backgroundOnPaused;
     private TextView cardDescriptionText, textOne, textTwo, textThree, textFour, betaView;
+    RelativeLayout gameLayout;
     private boolean isSingleGame;
     private int comLevel = 0;
     private int playerAmount = 0;
@@ -64,8 +66,11 @@ public class Game extends ActionBarActivity {
         textFour = (TextView) findViewById(R.id.area_text_four);
         outCard = (ImageButton) findViewById(R.id.outCard);
         bPlay = (Button) findViewById(R.id.bPlay);
+        bPlay.setBackgroundResource(SkinRes.getButtonTheme());
         bCancel = (Button) findViewById(R.id.bCancel);
+        bCancel.setBackgroundResource(SkinRes.getButtonTheme());
         cardDescriptionText = (TextView) findViewById(R.id.card_description_text);
+        cardDescriptionText.setBackgroundResource(SkinRes.getButtonTheme());
         expandedCardImage = (ImageView) findViewById(R.id.expanded_image);
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +79,8 @@ public class Game extends ActionBarActivity {
             }
         });
         backgroundOnPaused = (ImageView) findViewById(R.id.backGround);
+        gameLayout = (RelativeLayout) findViewById(R.id.gameLayout);
+        gameLayout.setBackgroundResource(SkinRes.getTableTheme());
 
         //beta view
         betaView = (TextView) findViewById(R.id.beta_card_data);
@@ -578,7 +585,7 @@ public class Game extends ActionBarActivity {
         else {
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
-            textOne.setText("");
+            textOne.setVisibility(View.INVISIBLE);
         }
         turn++;
         if (turn == 5) {
@@ -598,7 +605,7 @@ public class Game extends ActionBarActivity {
         else {
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
-            textTwo.setText("");
+            textTwo.setVisibility(View.INVISIBLE);
         }
         turn++;
         if (turn == 5) {
@@ -618,7 +625,7 @@ public class Game extends ActionBarActivity {
         else {
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
-            textThree.setText("");
+            textThree.setVisibility(View.INVISIBLE);
         }
         turn++;
         if (turn == 5) {
@@ -638,7 +645,7 @@ public class Game extends ActionBarActivity {
         else {
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
-            textFour.setText("");
+            textFour.setVisibility(View.INVISIBLE);
         }
     }
     private void repaintSingle() {
@@ -655,7 +662,7 @@ public class Game extends ActionBarActivity {
         else {
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
-            textOne.setText("");
+            textOne.setVisibility(View.INVISIBLE);
         }
 
         if (GameData.PlayerList[2].hasLeftCard()) {
@@ -671,7 +678,7 @@ public class Game extends ActionBarActivity {
         else {
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
-            textTwo.setText("");
+            textTwo.setVisibility(View.INVISIBLE);
         }
 
         if (GameData.PlayerList[3].hasLeftCard()) {
@@ -687,7 +694,7 @@ public class Game extends ActionBarActivity {
         else {
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
-            textThree.setText("");
+            textThree.setVisibility(View.INVISIBLE);
         }
 
         if (GameData.PlayerList[4].hasLeftCard()) {
@@ -703,7 +710,7 @@ public class Game extends ActionBarActivity {
         else {
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
-            textFour.setText("");
+            textFour.setVisibility(View.INVISIBLE);
         }
     }
     public void clearTable() {

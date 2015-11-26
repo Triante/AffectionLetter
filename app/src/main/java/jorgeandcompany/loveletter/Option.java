@@ -18,9 +18,12 @@ public class Option extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
         final Button skinset = (Button) findViewById(R.id.skinset);
+        skinset.setBackgroundResource(SkinRes.getButtonTheme());
         final Switch mute = (Switch) findViewById(R.id.musicmute);
         final Button back = (Button) findViewById(R.id.backButtonOptions);
+        back.setBackgroundResource(SkinRes.getButtonTheme());
         final Button instruction = (Button) findViewById(R.id.instructionsButton);
+        instruction.setBackgroundResource(SkinRes.getButtonTheme());
         saveActive = false;
         mute.setTextOff("Off");
         mute.setTextOn("On");
@@ -48,6 +51,9 @@ public class Option extends ActionBarActivity {
                 skinset.setText(SkinRes.activeSkin);
                 saveObserver.updateSave();
                 saveActive = true;
+                skinset.setBackgroundResource(SkinRes.getButtonTheme());
+                back.setBackgroundResource(SkinRes.getButtonTheme());
+                instruction.setBackgroundResource(SkinRes.getButtonTheme());
             }
         });
 
