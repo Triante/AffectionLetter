@@ -279,6 +279,7 @@
         android:layout_height="wrap_content"
         android:text="Beta Card Data:"
         android:textSize="10sp"
+        android:textColor="#000"
         android:id="@+id/beta_card_data"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"

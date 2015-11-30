@@ -16,7 +16,7 @@ public class CardFive implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        AlertDialog.Builder effect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
         effect.setCancelable(false);
         effect.setTitle("Card 5 Effect");
         effect.setMessage("Choose a player to discard their hand");
@@ -55,7 +55,7 @@ public class CardFive implements Card {
         one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+                ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
                 select.setTitle("Card 5 Effect?\n");
                 select.setMessage("Discard your own hand?");
                 select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -66,8 +66,7 @@ public class CardFive implements Card {
                 });
                 select.setNegativeButton("No", null);
                 select.setCancelable(false);
-                AlertDialog alertDialogObject = select.create();
-                alertDialogObject.show();
+                select.show();
             }
         });
         id++;
@@ -90,7 +89,7 @@ public class CardFive implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -118,7 +117,7 @@ public class CardFive implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -146,7 +145,7 @@ public class CardFive implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -156,7 +155,7 @@ public class CardFive implements Card {
         }
     }
     private void toDiscard(final int id, final Player thePlayer, final ImageButton button, final ImageButton button2) {
-        AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
         select.setTitle("Card 5 Effect?\n");
         select.setMessage("Discard player " + id + "'s hand?");
         select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -167,13 +166,12 @@ public class CardFive implements Card {
         });
         select.setNegativeButton("No", null);
         select.setCancelable(false);
-        AlertDialog alertDialogObject = select.create();
-        alertDialogObject.show();
+        select.show();
     }
     private void toDiscardAction(final int id, final Player thePlayer, final ImageButton button, final ImageButton button2) {
         if (GameData.PlayerList[id].getCard().getValue() == 8) {
             GameAnimation animation = GameData.game.provideAnimations();
-            animation.discardAnimation(button, button2);
+            animation.discardAnimation(button, button2, id);
             new CountDownTimer(4000, 1000) {
                 public void onTick (long time) {
 
@@ -185,13 +183,13 @@ public class CardFive implements Card {
         }
         else {
             GameAnimation animation = GameData.game.provideAnimations();
-            animation.discardAnimation(button, button2);
+            animation.discardAnimation(button, button2, id);
             new CountDownTimer(4000, 1000) {
                 public void onTick (long time) {
 
                 }
                 public void onFinish () {
-                    AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+                    ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
                     select.setTitle("Card 5 Effect?\n");
                     select.setMessage("Player " + id + "'s discarded card [" + GameData.PlayerList[id].getCard().getValue() +"] and drew a new card.");
                     select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -207,17 +205,17 @@ public class CardFive implements Card {
                         }
                     });
                     select.setCancelable(false);
-                    AlertDialog alertDialogObject = select.create();
-                    alertDialogObject.show();
+                    select.show();
                 }
             }.start();
 
         }
     }
     private void protectedMessage(int p) {
-        AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
         protect.setPositiveButton("OK", null);
+        protect.setCancelable(false);
         protect.show();
     }
 

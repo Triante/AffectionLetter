@@ -13,7 +13,7 @@ public class CardSeven implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        AlertDialog.Builder play = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder play = new ThemedDialog.Builder(GameData.game);
         play.setCancelable(false);
         play.setTitle("Card 7 Effect");
         play.setMessage("Player" + player.getPlayerNumber() + " played card 7.");

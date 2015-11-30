@@ -453,12 +453,12 @@ public class ComPlayerLevelOne implements Player {
                         if (GameData.PlayerList[select].getCard().getValue() != 8) {
                             GameAnimation animation = GameData.game.provideAnimations();
                             final ImageButton[] set = chooseCardButton(select);
-                            animation.discardAnimation(set[0], set[1]);
+                            animation.discardAnimation(set[0], set[1], select);
                         }
                         else {
                             GameAnimation animation = GameData.game.provideAnimations();
                             final ImageButton[] set = chooseCardButton(select);
-                            animation.discardAnimation(set[0], set[1]);
+                            animation.discardAnimation(set[0], set[1], select);
                         }
                         a++;
                     }

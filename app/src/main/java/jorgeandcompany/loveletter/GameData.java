@@ -11,7 +11,7 @@ import java.util.Random;
 public class GameData {
 
     public static Player[] PlayerList = new Player[5];
-    public static int gamesUntilWin = 1;
+    public static int gamesUntilWin = 5;
 
     public static Deck deck;
     public static DiscardPile discardPile;
@@ -22,6 +22,7 @@ public class GameData {
     public static boolean FINISH_GAME;
     public static boolean noOut;
     public static boolean GAME_COMPLETE;
+    public static boolean SINGLE_MODE;
 
 
     public static Game game;
@@ -38,6 +39,7 @@ public class GameData {
     }
 
     public static void setMode(Boolean isSingle, int players, int level) {
+        SINGLE_MODE = isSingle;
         if (isSingle) {
             PlayerList[1] = new HumanPlayer(1);
             PlayerList[2] = ComputerLevelFactory.createComputerPlayer(level, 2);

@@ -15,7 +15,7 @@ public class CardSix implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        AlertDialog.Builder effect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
         DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -71,7 +71,7 @@ public class CardSix implements Card {
                     protectedMessage(id2);
                 }
             });
-        } else {
+        } else if (!GameData.PlayerList[id].isOut()) {
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -96,7 +96,7 @@ public class CardSix implements Card {
                     protectedMessage(id3);
                 }
             });
-        } else {
+        } else if (!GameData.PlayerList[id].isOut()) {
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -121,7 +121,7 @@ public class CardSix implements Card {
                     protectedMessage(id4);
                 }
             });
-        } else {
+        } else if (!GameData.PlayerList[id].isOut()) {
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -131,7 +131,7 @@ public class CardSix implements Card {
             nonSelectbale = false;
         }
         if (nonSelectbale) {
-            AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+            ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
             select.setTitle("All players are safe.\nNo action can be taken");
             select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -140,13 +140,12 @@ public class CardSix implements Card {
                 }
             });
             select.setCancelable(false);
-            AlertDialog alertDialogObject = select.create();
-            alertDialogObject.show();
+            select.show();
         }
     }
 
     private void trade(final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
-        AlertDialog.Builder toTrade = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder toTrade = new ThemedDialog.Builder(GameData.game);
         toTrade.setCancelable(false);
         toTrade.setTitle("Card 6 Effect");
         toTrade.setMessage("Trade with player " + id + "?");
@@ -163,6 +162,10 @@ public class CardSix implements Card {
     private void tradeAction(final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
         Card card1 = thePlayer.getCard();
         Card card2 = GameData.PlayerList[id].getCard();
+        boolean thisHasSeven = thePlayer.hasSeven();
+        boolean thatHasSeven = GameData.PlayerList[id].hasSeven();
+        thePlayer.setSeven(thatHasSeven);
+        GameData.PlayerList[id].setSeven(thisHasSeven);
         thePlayer.setCard(card2);
         GameData.PlayerList[id].setCard(card1);
         performAnimation(id, thePlayer, player, otherPlayer);
@@ -170,9 +173,10 @@ public class CardSix implements Card {
     }
 
     private void protectedMessage(int p) {
-        AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
         protect.setPositiveButton("OK", null);
+        protect.setCancelable(false);
         protect.show();
     }
 

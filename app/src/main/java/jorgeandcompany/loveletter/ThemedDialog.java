@@ -3,7 +3,9 @@ package jorgeandcompany.loveletter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -15,55 +17,58 @@ import android.widget.TextView;
  */
 public class ThemedDialog extends Dialog {
 
-    private int theme;
-
     public ThemedDialog(Context context, int theme) {
         super(context, theme);
     }
 
+    public ThemedDialog(Context context) {
+        super(context);
+    }
+
     public static class Builder {
         private Context context;
-        private String title;
-        private String message;
+        private View mainLayout;
+        private String title = "";
+        private String message = "";
         private String positiveButtonText;
         private String negativeButtonText;
         private View contentView;
+        private Button positiveButton, negativeButton;
+        private TextView messageTextView, titleTextView;
         private DialogInterface.OnClickListener
                 positiveButtonClickListener,
                 negativeButtonClickListener;
         private ThemedDialog dialog;
+        private LinearLayout imageListView;
 
         public Builder(Context context) {
             this.context = context;
-            create();
+            dialog = new ThemedDialog(context,R.style.Dialog);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mainLayout = inflater.inflate(R.layout.theme_dialog_layout, null);
+            dialog.addContentView(mainLayout, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            imageListView = (LinearLayout) mainLayout.findViewById(R.id.theme_icon_list);
         }
-
         public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-
         public Builder setMessage(int message) {
             this.message = (String) context.getText(message);
             return this;
         }
-
-
         public Builder setTitle(int title) {
             this.title = (String) context.getText(title);
             return this;
         }
-
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
-
         public Builder setContentView(View v) {
             this.contentView = v;
             return this;
         }
-
         public Builder setPositiveButton(int positiveButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.positiveButtonText = (String) context
@@ -71,14 +76,12 @@ public class ThemedDialog extends Dialog {
             this.positiveButtonClickListener = listener;
             return this;
         }
-
         public Builder setPositiveButton(String positiveButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.positiveButtonText = positiveButtonText;
             this.positiveButtonClickListener = listener;
             return this;
         }
-
         public Builder setNegativeButton(int negativeButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.negativeButtonText = (String) context
@@ -86,7 +89,6 @@ public class ThemedDialog extends Dialog {
             this.negativeButtonClickListener = listener;
             return this;
         }
-
         public Builder setNegativeButton(String negativeButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.negativeButtonText = negativeButtonText;
@@ -98,72 +100,57 @@ public class ThemedDialog extends Dialog {
          * Create the custom dialog
          */
         public ThemedDialog create() {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            // instantiate the dialog with the custom Theme
-            dialog = new ThemedDialog(context,
-                    R.style.Dialog);
-            View layout = inflater.inflate(R.layout.theme_dialog_layout, null);
-            dialog.addContentView(layout, new LayoutParams(
-                    LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            // set background
-            ((LinearLayout) layout.findViewById(R.id.theme_layout)).setBackgroundResource(SkinRes.getButtonTheme());
-            // set the dialog title
-            ((TextView) layout.findViewById(R.id.theme_title)).setText(title);
-            // set the confirm button
+            positiveButton = (Button) mainLayout.findViewById(R.id.theme_positiveButton);
+            negativeButton = (Button) mainLayout.findViewById(R.id.theme_negativeButton);
+            messageTextView = (TextView) mainLayout.findViewById(R.id.theme_message);
+            titleTextView = (TextView) mainLayout.findViewById(R.id.theme_title);
+            mainLayout.findViewById(R.id.theme_layout).setBackgroundResource(SkinRes.getButtonTheme());
+            titleTextView.setText(title);
             if (positiveButtonText != null) {
-                ((Button) layout.findViewById(R.id.theme_positiveButton))
-                        .setText(positiveButtonText);
+                positiveButton.setText(positiveButtonText);
                 if (positiveButtonClickListener != null) {
-                    ((Button) layout.findViewById(R.id.theme_positiveButton))
-                            .setOnClickListener(new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    positiveButtonClickListener.onClick(
-                                            dialog,
-                                            DialogInterface.BUTTON_POSITIVE);
-                                }
-                            });
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            positiveButtonClickListener.onClick(
+                                    dialog,
+                                    DialogInterface.BUTTON_POSITIVE);
+                            dismiss();
+                        }
+                    });
                 }
             } else {
-                // if no confirm button just set the visibility to GONE
-                layout.findViewById(R.id.theme_positiveButton).setVisibility(
-                        View.INVISIBLE);
+                positiveButton.setVisibility(View.GONE);
             }
-            // set the cancel button
             if (negativeButtonText != null) {
-                ((Button) layout.findViewById(R.id.theme_negativeButton))
-                        .setText(negativeButtonText);
+                negativeButton.setText(negativeButtonText);
                 if (negativeButtonClickListener != null) {
-                    ((Button) layout.findViewById(R.id.theme_negativeButton))
-                            .setOnClickListener(new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    negativeButtonClickListener.onClick(
-                                            dialog,
-                                            DialogInterface.BUTTON_NEGATIVE);
-                                }
-                            });
+                    negativeButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            negativeButtonClickListener.onClick(
+                                    dialog, DialogInterface.BUTTON_NEGATIVE);
+                            dismiss();
+                        }
+                    });
+
                 }
             } else {
-                // if no confirm button just set the visibility to GONE
-                layout.findViewById(R.id.theme_negativeButton).setVisibility(
-                        View.INVISIBLE);
+                negativeButton.setVisibility(View.GONE);
             }
             // set the content message
             if (message != null) {
-                ((TextView) layout.findViewById(
-                        R.id.theme_message)).setText(message);
+                messageTextView.setText(message);
             } else if (contentView != null) {
                 // if no message set
                 // add the contentView to the dialog body
-                ((LinearLayout) layout.findViewById(R.id.theme_content))
+                ((LinearLayout) mainLayout.findViewById(R.id.theme_content))
                         .removeAllViews();
-                ((LinearLayout) layout.findViewById(R.id.theme_content))
+                ((LinearLayout) mainLayout.findViewById(R.id.theme_content))
                         .addView(contentView,
                                 new LayoutParams(
                                         LayoutParams.WRAP_CONTENT,
                                         LayoutParams.WRAP_CONTENT));
             }
-            dialog.setContentView(layout);
+            dialog.setContentView(mainLayout);
             return dialog;
         }
 
@@ -191,6 +178,9 @@ public class ThemedDialog extends Dialog {
             return listener;
         }
 
+        public void setView(View view) {
+            imageListView.addView(view);
+        }
 
     }
 

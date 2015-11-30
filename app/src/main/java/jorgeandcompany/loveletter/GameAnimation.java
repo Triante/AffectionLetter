@@ -302,7 +302,21 @@ public class GameAnimation {
         }.start();
     }
     public void cardToDiscardSinglePlayer(final Player on, final int hand) {
-        final int playerNum = on.getPlayerNumber();
+        int position;
+        if (GameData.SINGLE_MODE) position = on.getPlayerNumber();
+        else {
+            position = 1;
+            int player = on.getPlayerNumber();
+            while (player != GameData.TURN) {
+                position--;
+                player++;
+                if (player == 5) player = 1;
+                if (position == 0) position = 4;
+            }
+
+
+        }
+        final int playerNum = position;
         final int card = on.getCard(hand).getValue();
             new CountDownTimer(400,100) {
                 int a = 0;
@@ -579,7 +593,7 @@ public class GameAnimation {
             }
         }.start();
     }
-    public void discardAnimation (final ImageButton button, final ImageButton leftDefault) {
+    public void discardAnimation (final ImageButton button, final ImageButton leftDefault, final int playerSelected) {
 
         new CountDownTimer(2000, 1000) {
             int a = 0;
@@ -592,29 +606,29 @@ public class GameAnimation {
             public void onTick(long millisUntilFinished) {
                 if (a == 0) {
                     if (button == GameData.game.getButton("firstPlayerLeft")) {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[1], 0);
-                        theCard = GameData.PlayerList[1].getCard(0);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 0);
+                        theCard = GameData.PlayerList[playerSelected].getCard(0);
                     } else if (button == GameData.game.getButton("firstPlayerRight")) {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[1], 1);
-                        theCard = GameData.PlayerList[1].getCard(1);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 1);
+                        theCard = GameData.PlayerList[playerSelected].getCard(1);
                     } else if (button == GameData.game.getButton("secondPlayerLeft")) {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[2], 0);
-                        theCard = GameData.PlayerList[2].getCard(0);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 0);
+                        theCard = GameData.PlayerList[playerSelected].getCard(0);
                     } else if (button == GameData.game.getButton("secondPlayerRight")) {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[2], 1);
-                        theCard = GameData.PlayerList[2].getCard(1);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 1);
+                        theCard = GameData.PlayerList[playerSelected].getCard(1);
                     } else if (button == GameData.game.getButton("thirdPlayerLeft")) {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[3], 0);
-                        theCard = GameData.PlayerList[3].getCard(0);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 0);
+                        theCard = GameData.PlayerList[playerSelected].getCard(0);
                     } else if (button == GameData.game.getButton("thirdPlayerRight")) {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[3], 1);
-                        theCard = GameData.PlayerList[3].getCard(1);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 1);
+                        theCard = GameData.PlayerList[playerSelected].getCard(1);
                     } else if (button == GameData.game.getButton("fourthPlayerLeft")) {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[4], 0);
-                        theCard = GameData.PlayerList[4].getCard(0);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 0);
+                        theCard = GameData.PlayerList[playerSelected].getCard(0);
                     } else {
-                        cardToDiscardSinglePlayer(GameData.PlayerList[4], 1);
-                        theCard = GameData.PlayerList[4].getCard(1);
+                        cardToDiscardSinglePlayer(GameData.PlayerList[playerSelected], 1);
+                        theCard = GameData.PlayerList[playerSelected].getCard(1);
                     }
                     a++;
                 }

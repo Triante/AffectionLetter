@@ -13,7 +13,7 @@ public class CardEight implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        AlertDialog.Builder gameOver= new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder gameOver= new ThemedDialog.Builder(GameData.game);
         gameOver.setCancelable(false);
         gameOver.setTitle("Card 8 Effect");
         gameOver.setMessage("Player " + player.getPlayerNumber() + " lost card 8. Player " + player.getPlayerNumber() + " is out!");

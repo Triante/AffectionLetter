@@ -311,7 +311,7 @@ public class Game extends ActionBarActivity {
                    if (GameData.Score[GameData.TURN - 1] == GameData.gamesUntilWin) {
                        GameData.GAME_COMPLETE = true;
                    }
-                   AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
+                   ThemedDialog.Builder nextPlayerReady = new ThemedDialog.Builder(Game.this);
                    nextPlayerReady.setTitle("END");
                    nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!\n" +
                            "Current Score:\n" +
@@ -374,7 +374,7 @@ public class Game extends ActionBarActivity {
                        }
                    }
                    winners = winners.substring(0, winners.length() - 4);
-                   AlertDialog.Builder end = new AlertDialog.Builder(Game.this);
+                   ThemedDialog.Builder end = new ThemedDialog.Builder(Game.this);
                    end.setTitle("Game");
                    end.setMessage("Deck out of cards. Game is over. Player(s)" + winners + " win!\n" + "Current Score:\n" +
                            "Player 1: " + GameData.Score[0]+ "\n" +
@@ -405,7 +405,7 @@ public class Game extends ActionBarActivity {
                    while (GameData.PlayerList[GameData.TURN].isOut()) {
                        GameData.nextTurn();
                    }
-                   AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
+                   ThemedDialog.Builder nextPlayerReady = new ThemedDialog.Builder(Game.this);
                    String message;
                    if (isSingleGame) {
                        if (GameData.TURN == 1) {
@@ -442,7 +442,7 @@ public class Game extends ActionBarActivity {
         toEnd.start();
      }
     private void endOfGame(int winner) {
-        AlertDialog.Builder win = new AlertDialog.Builder(this);
+        ThemedDialog.Builder win = new ThemedDialog.Builder(this);
         win.setCancelable(false);
         win.setTitle("Game Over");
         win.setMessage("The winner is player " + winner + "!\n" +
@@ -548,7 +548,7 @@ public class Game extends ActionBarActivity {
             }
 
             public void onFinish() {
-                AlertDialog.Builder preGame = new AlertDialog.Builder(Game.this);
+                ThemedDialog.Builder preGame = new ThemedDialog.Builder(Game.this);
                 String mes;
                 if (isSingleGame) mes = "Player " + GameData.TURN + " is up. Select OK when ready.";
                 else  mes = "Player " + GameData.TURN + " is the first to go.\nPlease pass to player and select OK when ready.";
@@ -570,6 +570,14 @@ public class Game extends ActionBarActivity {
 
     //other methods
     private void repaint() {
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
         int turn = GameData.TURN;
         //person who turn is now is set to main view. Scenario: turn = 1 therefore redraw player 1 to center.
         if (GameData.PlayerList[turn].hasLeftCard()) {
@@ -649,6 +657,14 @@ public class Game extends ActionBarActivity {
         }
     }
     private void repaintSingle() {
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
         if (GameData.PlayerList[1].hasLeftCard()) {
             firstPlayerLeft.setVisibility(View.VISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
@@ -746,9 +762,17 @@ public class Game extends ActionBarActivity {
         discard.setVisibility(View.INVISIBLE);
         ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
         deckDummy.setVisibility(View.VISIBLE);
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
     }
     private void playCard(final Player on, final int hand) {
-        AlertDialog.Builder play = new AlertDialog.Builder(this);
+        ThemedDialog.Builder play = new ThemedDialog.Builder(this);
         play.setCancelable(false);
         play.setMessage("Play card " + on.getCard(hand).getValue() + "?");
         play.setNegativeButton("No", null);
@@ -794,7 +818,7 @@ public class Game extends ActionBarActivity {
         play.show();
     }
     private void cardSevenError() {
-        AlertDialog.Builder no = new AlertDialog.Builder(this);
+        ThemedDialog.Builder no = new ThemedDialog.Builder(this);
         no.setCancelable(false);
         no.setTitle("Card 7 Effect");
         no.setMessage("This card can't be played. Please play card 7.");
@@ -887,7 +911,7 @@ public class Game extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         if (!theAnimation.isAnimating()) {
-            AlertDialog.Builder back = new AlertDialog.Builder(this);
+            ThemedDialog.Builder back = new ThemedDialog.Builder(this);
             back.setCancelable(false);
             back.setTitle("Quit");
             back.setMessage("Are you sure?");
