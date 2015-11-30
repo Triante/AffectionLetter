@@ -288,4 +288,28 @@ public class SkinRes {
             }
         }
     }
+
+    public static int getButtonTheme() {
+        if (activeSkin.equalsIgnoreCase("Magi Skin")) {
+            return R.drawable.button_back_magi;
+        }
+        else if (activeSkin.equalsIgnoreCase("Avengers Skin")){
+            return R.drawable.button_back_avenger;
+        }
+        else {
+            return R.drawable.button_back_fe;
+        }
+    }
+
+    public static int getTableTheme() {
+        if (activeSkin.equalsIgnoreCase("Magi Skin")) {
+            return R.drawable.table_top_magi;
+        }
+        else if (activeSkin.equalsIgnoreCase("Avengers Skin")){
+            return R.drawable.table_top_avenger;
+        }
+        else {
+            return R.drawable.table_top_fe;
+        }
+    }
 }

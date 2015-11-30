@@ -25,7 +25,7 @@ public class CardOne implements Card {
     @Override
     public void cardEffect(final Player player) {
 
-        AlertDialog.Builder effect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
         DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -72,7 +72,7 @@ public class CardOne implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()){
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -99,7 +99,7 @@ public class CardOne implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()){
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -126,7 +126,7 @@ public class CardOne implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()){
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -136,7 +136,7 @@ public class CardOne implements Card {
             noneSelectable = false;
         }
         if (noneSelectable) {
-            AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+            ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
             select.setTitle("All players are safe.\nNo action can be taken");
             select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -145,14 +145,14 @@ public class CardOne implements Card {
                 }
             });
             select.setCancelable(false);
-            AlertDialog alertDialogObject = select.create();
-            alertDialogObject.show();
+            select.show();
         }
 
     }
 
     private void success(final int player, int guess, final Player thePlayer) {
-        AlertDialog.Builder s = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder s = new ThemedDialog.Builder(GameData.game);
+        s.setCancelable(false);
         s.setTitle("Card 1 Effect");
         s.setMessage("Congrats!\n" +
                 "You guessed that player " + player + " had card " + guess +
@@ -164,11 +164,11 @@ public class CardOne implements Card {
                 GameData.game.endOfTurn();
             }
         });
-        AlertDialog alertDialogObject = s.create();
-        alertDialogObject.show();
+        s.show();
     }
     private void failure(int player, int guess, final Player thePlayer) {
-        AlertDialog.Builder f = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder f = new ThemedDialog.Builder(GameData.game);
+        f.setCancelable(false);
         f.setTitle("Card 1 Effect");
         f.setMessage("Failed!\n" +
                 "Player " + player + " does not have card " + guess +
@@ -179,8 +179,7 @@ public class CardOne implements Card {
                 GameData.game.endOfTurn();
             }
         });
-        AlertDialog alertDialogObject = f.create();
-        alertDialogObject.show();
+        f.show();
     }
     private void guess(int p, final Player player) {
         List<String> players = new ArrayList<String>();
@@ -211,9 +210,10 @@ public class CardOne implements Card {
         alertDialogObject.show();
     }
     private void protectedMessage(int p) {
-        AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
         protect.setPositiveButton("OK", null);
+        protect.setCancelable(false);
         protect.show();
     }
 

@@ -349,7 +349,7 @@ public class ComPlayerLevelOne implements Player {
         else {
             message = "Player " + playerNumber + " used card 1. Active players were all protected and no action was taken.";
         }
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
         alert.setTitle("Card 1 Effect");
         alert.setMessage(message);
@@ -370,7 +370,7 @@ public class ComPlayerLevelOne implements Player {
         else {
             message = "Player " + playerNumber + " used card 2. Active players were all protected and no action was taken.";
         }
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
         alert.setTitle("Card 2 Effect");
         alert.setMessage(message);
@@ -412,7 +412,7 @@ public class ComPlayerLevelOne implements Player {
         else {
             message = "Player " + playerNumber + " used card 3. Active players were all protected and no action was taken.";
         }
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
         alert.setTitle("Card 3 Effect");
         alert.setMessage(message);
@@ -426,7 +426,7 @@ public class ComPlayerLevelOne implements Player {
     }
     private void effectFour() {
         isProtected = true;
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
         alert.setTitle("Card 4 Effect");
         alert.setMessage("Player " + playerNumber + " used card 4. Player " + playerNumber + " is now protected.");
@@ -453,12 +453,12 @@ public class ComPlayerLevelOne implements Player {
                         if (GameData.PlayerList[select].getCard().getValue() != 8) {
                             GameAnimation animation = GameData.game.provideAnimations();
                             final ImageButton[] set = chooseCardButton(select);
-                            animation.discardAnimation(set[0], set[1]);
+                            animation.discardAnimation(set[0], set[1], select);
                         }
                         else {
                             GameAnimation animation = GameData.game.provideAnimations();
                             final ImageButton[] set = chooseCardButton(select);
-                            animation.discardAnimation(set[0], set[1]);
+                            animation.discardAnimation(set[0], set[1], select);
                         }
                         a++;
                     }
@@ -466,7 +466,7 @@ public class ComPlayerLevelOne implements Player {
 
                 @Override
                 public void onFinish() {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+                    ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
                     alert.setCancelable(false);
                     alert.setTitle("Card 5 Effect");
                     alert.setMessage(message);
@@ -513,7 +513,7 @@ public class ComPlayerLevelOne implements Player {
 
                 @Override
                 public void onFinish() {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+                    ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
                     alert.setCancelable(false);
                     alert.setTitle("Card 5 Effect");
                     alert.setMessage(message);
@@ -565,7 +565,7 @@ public class ComPlayerLevelOne implements Player {
                     String message = "";
                     message = "Player " + playerNumber + " used card 6.\n" +
                             "Player " + playerNumber + " traded cards with player " + chosen;
-                    AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+                    ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
                     alert.setCancelable(false);
                     alert.setTitle("Card 6 Effect");
                     alert.setMessage(message);
@@ -581,7 +581,7 @@ public class ComPlayerLevelOne implements Player {
         }
         else {
             message = "Player " + playerNumber + " used card 6. Active players were all protected  and no action was taken.";
-            AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+            ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
             alert.setCancelable(false);
             alert.setTitle("Card 6 Effect");
             alert.setMessage(message);
@@ -595,7 +595,7 @@ public class ComPlayerLevelOne implements Player {
         }
     }
     private void effectSeven() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
         alert.setTitle("Card 7 Effect");
         alert.setMessage("Player " + playerNumber + " played card 7.");
@@ -608,7 +608,7 @@ public class ComPlayerLevelOne implements Player {
         alert.show();
     }
     private void effectEight() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
         alert.setTitle("Card 8 Effect");
         alert.setMessage("Player " + playerNumber + " lost card 8. Player " + playerNumber + " is now out.");

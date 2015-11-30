@@ -13,7 +13,7 @@ public class CardFour implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        AlertDialog.Builder toProtect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder toProtect = new ThemedDialog.Builder(GameData.game);
         toProtect.setTitle("Card 4 Effect");
         toProtect.setMessage("Player " + player.getPlayerNumber() + " is now protected.");
         toProtect.setPositiveButton("OK", new DialogInterface.OnClickListener() {

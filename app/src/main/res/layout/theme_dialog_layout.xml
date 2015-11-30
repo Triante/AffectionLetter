@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:minWidth="350dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/theme_layout"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <TextView
+            style="@style/DialogTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/theme_title"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/theme_icon_list">
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/theme_content"
+        android:layout_weight="1">
+        <TextView
+            style="@style/DialogText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:id="@+id/theme_message"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            style="@style/DialogButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:id="@+id/theme_positiveButton"
+            android:background="@android:color/transparent" />
+        <Button
+            style="@style/DialogButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:id="@+id/theme_negativeButton"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
+
+</LinearLayout>

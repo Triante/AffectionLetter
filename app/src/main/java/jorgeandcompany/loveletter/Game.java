@@ -16,6 +16,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +33,7 @@ public class Game extends ActionBarActivity {
     private Button bPlay, bCancel;
     private ImageView expandedCardImage, backgroundOnPaused;
     private TextView cardDescriptionText, textOne, textTwo, textThree, textFour, betaView;
+    RelativeLayout gameLayout;
     private boolean isSingleGame;
     private int comLevel = 0;
     private int playerAmount = 0;
@@ -64,8 +66,11 @@ public class Game extends ActionBarActivity {
         textFour = (TextView) findViewById(R.id.area_text_four);
         outCard = (ImageButton) findViewById(R.id.outCard);
         bPlay = (Button) findViewById(R.id.bPlay);
+        bPlay.setBackgroundResource(SkinRes.getButtonTheme());
         bCancel = (Button) findViewById(R.id.bCancel);
+        bCancel.setBackgroundResource(SkinRes.getButtonTheme());
         cardDescriptionText = (TextView) findViewById(R.id.card_description_text);
+        cardDescriptionText.setBackgroundResource(SkinRes.getButtonTheme());
         expandedCardImage = (ImageView) findViewById(R.id.expanded_image);
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +79,8 @@ public class Game extends ActionBarActivity {
             }
         });
         backgroundOnPaused = (ImageView) findViewById(R.id.backGround);
+        gameLayout = (RelativeLayout) findViewById(R.id.gameLayout);
+        gameLayout.setBackgroundResource(SkinRes.getTableTheme());
 
         //beta view
         betaView = (TextView) findViewById(R.id.beta_card_data);
@@ -304,7 +311,7 @@ public class Game extends ActionBarActivity {
                    if (GameData.Score[GameData.TURN - 1] == GameData.gamesUntilWin) {
                        GameData.GAME_COMPLETE = true;
                    }
-                   AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
+                   ThemedDialog.Builder nextPlayerReady = new ThemedDialog.Builder(Game.this);
                    nextPlayerReady.setTitle("END");
                    nextPlayerReady.setMessage("Player " + GameData.TURN + " has won!\n" +
                            "Current Score:\n" +
@@ -367,7 +374,7 @@ public class Game extends ActionBarActivity {
                        }
                    }
                    winners = winners.substring(0, winners.length() - 4);
-                   AlertDialog.Builder end = new AlertDialog.Builder(Game.this);
+                   ThemedDialog.Builder end = new ThemedDialog.Builder(Game.this);
                    end.setTitle("Game");
                    end.setMessage("Deck out of cards. Game is over. Player(s)" + winners + " win!\n" + "Current Score:\n" +
                            "Player 1: " + GameData.Score[0]+ "\n" +
@@ -398,7 +405,7 @@ public class Game extends ActionBarActivity {
                    while (GameData.PlayerList[GameData.TURN].isOut()) {
                        GameData.nextTurn();
                    }
-                   AlertDialog.Builder nextPlayerReady = new AlertDialog.Builder(Game.this);
+                   ThemedDialog.Builder nextPlayerReady = new ThemedDialog.Builder(Game.this);
                    String message;
                    if (isSingleGame) {
                        if (GameData.TURN == 1) {
@@ -435,7 +442,7 @@ public class Game extends ActionBarActivity {
         toEnd.start();
      }
     private void endOfGame(int winner) {
-        AlertDialog.Builder win = new AlertDialog.Builder(this);
+        ThemedDialog.Builder win = new ThemedDialog.Builder(this);
         win.setCancelable(false);
         win.setTitle("Game Over");
         win.setMessage("The winner is player " + winner + "!\n" +
@@ -541,7 +548,7 @@ public class Game extends ActionBarActivity {
             }
 
             public void onFinish() {
-                AlertDialog.Builder preGame = new AlertDialog.Builder(Game.this);
+                ThemedDialog.Builder preGame = new ThemedDialog.Builder(Game.this);
                 String mes;
                 if (isSingleGame) mes = "Player " + GameData.TURN + " is up. Select OK when ready.";
                 else  mes = "Player " + GameData.TURN + " is the first to go.\nPlease pass to player and select OK when ready.";
@@ -563,6 +570,14 @@ public class Game extends ActionBarActivity {
 
     //other methods
     private void repaint() {
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
         int turn = GameData.TURN;
         //person who turn is now is set to main view. Scenario: turn = 1 therefore redraw player 1 to center.
         if (GameData.PlayerList[turn].hasLeftCard()) {
@@ -578,7 +593,7 @@ public class Game extends ActionBarActivity {
         else {
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
-            textOne.setText("");
+            textOne.setVisibility(View.INVISIBLE);
         }
         turn++;
         if (turn == 5) {
@@ -598,7 +613,7 @@ public class Game extends ActionBarActivity {
         else {
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
-            textTwo.setText("");
+            textTwo.setVisibility(View.INVISIBLE);
         }
         turn++;
         if (turn == 5) {
@@ -618,7 +633,7 @@ public class Game extends ActionBarActivity {
         else {
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
-            textThree.setText("");
+            textThree.setVisibility(View.INVISIBLE);
         }
         turn++;
         if (turn == 5) {
@@ -638,10 +653,18 @@ public class Game extends ActionBarActivity {
         else {
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
-            textFour.setText("");
+            textFour.setVisibility(View.INVISIBLE);
         }
     }
     private void repaintSingle() {
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
         if (GameData.PlayerList[1].hasLeftCard()) {
             firstPlayerLeft.setVisibility(View.VISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
@@ -655,7 +678,7 @@ public class Game extends ActionBarActivity {
         else {
             firstPlayerLeft.setVisibility(View.INVISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
-            textOne.setText("");
+            textOne.setVisibility(View.INVISIBLE);
         }
 
         if (GameData.PlayerList[2].hasLeftCard()) {
@@ -671,7 +694,7 @@ public class Game extends ActionBarActivity {
         else {
             secondPlayerLeft.setVisibility(View.INVISIBLE);
             secondPlayerRight.setVisibility(View.INVISIBLE);
-            textTwo.setText("");
+            textTwo.setVisibility(View.INVISIBLE);
         }
 
         if (GameData.PlayerList[3].hasLeftCard()) {
@@ -687,7 +710,7 @@ public class Game extends ActionBarActivity {
         else {
             thirdPlayerLeft.setVisibility(View.INVISIBLE);
             thirdPlayerRight.setVisibility(View.INVISIBLE);
-            textThree.setText("");
+            textThree.setVisibility(View.INVISIBLE);
         }
 
         if (GameData.PlayerList[4].hasLeftCard()) {
@@ -703,7 +726,7 @@ public class Game extends ActionBarActivity {
         else {
             fourthPlayerLeft.setVisibility(View.INVISIBLE);
             fourthPlayerRight.setVisibility(View.INVISIBLE);
-            textFour.setText("");
+            textFour.setVisibility(View.INVISIBLE);
         }
     }
     public void clearTable() {
@@ -739,9 +762,17 @@ public class Game extends ActionBarActivity {
         discard.setVisibility(View.INVISIBLE);
         ImageButton deckDummy = (ImageButton) findViewById(R.id.deckDummy);
         deckDummy.setVisibility(View.VISIBLE);
+        firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
+        secondPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        secondPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "left"));
+        thirdPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "down"));
+        fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
+        fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
     }
     private void playCard(final Player on, final int hand) {
-        AlertDialog.Builder play = new AlertDialog.Builder(this);
+        ThemedDialog.Builder play = new ThemedDialog.Builder(this);
         play.setCancelable(false);
         play.setMessage("Play card " + on.getCard(hand).getValue() + "?");
         play.setNegativeButton("No", null);
@@ -787,7 +818,7 @@ public class Game extends ActionBarActivity {
         play.show();
     }
     private void cardSevenError() {
-        AlertDialog.Builder no = new AlertDialog.Builder(this);
+        ThemedDialog.Builder no = new ThemedDialog.Builder(this);
         no.setCancelable(false);
         no.setTitle("Card 7 Effect");
         no.setMessage("This card can't be played. Please play card 7.");
@@ -880,7 +911,7 @@ public class Game extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         if (!theAnimation.isAnimating()) {
-            AlertDialog.Builder back = new AlertDialog.Builder(this);
+            ThemedDialog.Builder back = new ThemedDialog.Builder(this);
             back.setCancelable(false);
             back.setTitle("Quit");
             back.setMessage("Are you sure?");

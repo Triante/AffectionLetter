@@ -17,7 +17,7 @@ public class CardTwo implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        AlertDialog.Builder effect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
         effect.setCancelable(false);
         effect.setTitle("Card 2 Effect");
         effect.setMessage("Select a player to view his or her hand");
@@ -63,7 +63,7 @@ public class CardTwo implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,7 +90,7 @@ public class CardTwo implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -117,7 +117,7 @@ public class CardTwo implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()){
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -127,7 +127,7 @@ public class CardTwo implements Card {
             noneSelectable = false;
         }
         if (noneSelectable) {
-            AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+            ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
             select.setTitle("All players are safe.\nNo action can be taken");
             select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -136,12 +136,11 @@ public class CardTwo implements Card {
                 }
             });
             select.setCancelable(false);
-            AlertDialog alertDialogObject = select.create();
-            alertDialogObject.show();
+           select.show();
         }
     }
     private void lookAtCard(final int id, final Player thePlayer) {
-        AlertDialog.Builder look = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
         look.setCancelable(false);
         look.setMessage("Look at Player " + id + "'s hand?");
         look.setNegativeButton("No", null);
@@ -154,7 +153,7 @@ public class CardTwo implements Card {
         look.show();
     }
     private void lookAtCardWarning(final int id, final Player thePlayer) {
-        AlertDialog.Builder look = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
         look.setCancelable(false);
         look.setMessage("You are about to view Player " + id + "'s hand.\n" +
                 "Keep screen to self and continue to proceed.");
@@ -167,9 +166,9 @@ public class CardTwo implements Card {
         look.show();
     }
     private void lookAtCardAction(final int id, final Player thePlayer) {
-        AlertDialog.Builder look = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
         look.setCancelable(false);
-        look.setTitle("Card: " + GameData.PlayerList[id].getCard().getValue());
+        look.setTitle("Player " + id + "'s card.");
         ImageView image = new ImageView(GameData.game);
         image.setImageResource(GameData.PlayerList[id].getCard().getSkinRes("up"));
         look.setView(image);
@@ -182,7 +181,8 @@ public class CardTwo implements Card {
         look.show();
     }
     private void protectedMessage(int p) {
-        AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
+        protect.setCancelable(false);
         protect.setMessage("Player " + p + " is protected. Select another player");
         protect.setPositiveButton("OK", null);
         protect.show();

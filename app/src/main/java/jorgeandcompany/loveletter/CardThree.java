@@ -15,7 +15,7 @@ public class CardThree implements Card {
 
     @Override
     public void cardEffect(final Player player) {
-        AlertDialog.Builder effect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
         DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -68,7 +68,7 @@ public class CardThree implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,7 +95,7 @@ public class CardThree implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -122,7 +122,7 @@ public class CardThree implements Card {
                 }
             });
         }
-        else {
+        else if (!GameData.PlayerList[id].isOut()) {
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -132,7 +132,7 @@ public class CardThree implements Card {
             nonSelectable = false;
         }
         if (nonSelectable) {
-            AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+            ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
             select.setTitle("All players are safe.\nNo action can be taken");
             select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -141,13 +141,12 @@ public class CardThree implements Card {
                 }
             });
             select.setCancelable(false);
-            AlertDialog alertDialogObject = select.create();
-            alertDialogObject.show();
+            select.show();
         }
     }
 
     private void toCompare(final int id, final Player thePlayer) {
-        AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
         select.setTitle("Card 3 Effect\n");
         select.setMessage("Compare cards player " + id + "?");
         select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -158,8 +157,7 @@ public class CardThree implements Card {
         });
         select.setNegativeButton("No", null);
         select.setCancelable(false);
-        AlertDialog alertDialogObject = select.create();
-        alertDialogObject.show();
+        select.show();
     }
     private void toCompareAction(final int id, final Player thePlayer) {
         int mainPlayerCard = thePlayer.getCard().getValue();
@@ -183,7 +181,7 @@ public class CardThree implements Card {
                     " had the same card value. No one is out.";
         }
 
-        AlertDialog.Builder select = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
         select.setTitle("Card 3 Effect\n");
         select.setMessage(winner);
         DialogInterface.OnClickListener winOrLose = new DialogInterface.OnClickListener() {
@@ -210,13 +208,13 @@ public class CardThree implements Card {
             select.setPositiveButton("OK", winOrLose);
         }
         select.setCancelable(false);
-        AlertDialog alertDialogObject = select.create();
-        alertDialogObject.show();
+        select.show();
     }
     private void protectedMessage(int p) {
-        AlertDialog.Builder protect = new AlertDialog.Builder(GameData.game);
+        ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
         protect.setPositiveButton("OK", null);
+        protect.setCancelable(false);
         protect.show();
     }
 
