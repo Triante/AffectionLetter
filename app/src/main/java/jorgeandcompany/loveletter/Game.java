@@ -84,6 +84,7 @@ public class Game extends ActionBarActivity {
 
         //beta view
         betaView = (TextView) findViewById(R.id.beta_card_data);
+        betaView.setVisibility(View.INVISIBLE);
         setBackSkins();
         try{
             startMusic();
@@ -97,20 +98,23 @@ public class Game extends ActionBarActivity {
         theAnimation = new GameAnimation();
         handOutCards(GameData.TURN);
 
+        if (GameData.debug) {
+            betaView.setVisibility(View.VISIBLE);
+            Timer toChangeBeta = new Timer();
+            toChangeBeta.schedule(new TimerTask() {
+                Runnable beta = new Runnable() {
+                    @Override
+                    public void run() {
+                        setBetaStuff();
+                    }
+                };
 
-        Timer toChangeBeta = new Timer();
-        toChangeBeta.schedule(new TimerTask() {
-            Runnable beta = new Runnable() {
                 @Override
                 public void run() {
-                    setBetaStuff();
+                    Game.this.runOnUiThread(beta);
                 }
-            };
-            @Override
-            public void run() {
-                Game.this.runOnUiThread(beta);
-            }
-        }, 0, 200);
+            }, 0, 200);
+        }
     }
 
     public void setBackSkins () {
@@ -189,9 +193,7 @@ public class Game extends ActionBarActivity {
 
             @Override
             public void onFinish() {
-                if (on.isHuman()) {
-                    playerMove(on);
-                }
+                if (on.isHuman()) playerMove(on);
                 else computerMove(on);
 
             }
@@ -579,6 +581,10 @@ public class Game extends ActionBarActivity {
         fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
         fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
         int turn = GameData.TURN;
+        textOne.setVisibility(View.VISIBLE);
+        textTwo.setVisibility(View.VISIBLE);
+        textThree.setVisibility(View.VISIBLE);
+        textFour.setVisibility(View.VISIBLE);
         //person who turn is now is set to main view. Scenario: turn = 1 therefore redraw player 1 to center.
         if (GameData.PlayerList[turn].hasLeftCard()) {
             firstPlayerLeft.setVisibility(View.VISIBLE);
@@ -665,6 +671,10 @@ public class Game extends ActionBarActivity {
         thirdPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "down"));
         fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
         fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
+        textOne.setVisibility(View.VISIBLE);
+        textTwo.setVisibility(View.VISIBLE);
+        textThree.setVisibility(View.VISIBLE);
+        textFour.setVisibility(View.VISIBLE);
         if (GameData.PlayerList[1].hasLeftCard()) {
             firstPlayerLeft.setVisibility(View.VISIBLE);
             firstPlayerRight.setVisibility(View.INVISIBLE);
