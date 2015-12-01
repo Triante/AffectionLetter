@@ -23,6 +23,7 @@ public class GameData {
     public static boolean noOut;
     public static boolean GAME_COMPLETE;
     public static boolean SINGLE_MODE;
+    public static boolean debug = false;
 
 
     public static Game game;

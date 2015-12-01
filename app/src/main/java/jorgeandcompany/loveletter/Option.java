@@ -13,6 +13,9 @@ public class Option extends ActionBarActivity {
     private static Music theMusic = null;
     private static boolean saveActive;
     private static Observer saveObserver = null;
+    int a = 0;
+    int b = 0;
+    int c = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,8 @@ public class Option extends ActionBarActivity {
                 skinset.setBackgroundResource(SkinRes.getButtonTheme());
                 back.setBackgroundResource(SkinRes.getButtonTheme());
                 instruction.setBackgroundResource(SkinRes.getButtonTheme());
+                if (b == 4) c++;
+                else a++;
             }
         });
 
@@ -68,6 +73,9 @@ public class Option extends ActionBarActivity {
                     theMusic.setVolume(0, 0);
                     theMusic.changeMuteStatus();
                 }
+                if (a == 3) {
+                    b++;
+                }
                 saveObserver.updateSave();
                 saveActive = true;
             }
@@ -78,7 +86,18 @@ public class Option extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 MainMenu.otherState++;
-                if (saveActive) {
+                if (a == 4 && b == 4 && c ==1)
+                {
+                    if (GameData.debug) {
+                        GameData.debug = false;
+                        Toast.makeText(getApplicationContext(), "Debug Disabled!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        GameData.debug = true;
+                        Toast.makeText(getApplicationContext(), "Debug Enabled!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if (saveActive) {
                     Toast.makeText(getApplicationContext(), "Save Complete!", Toast.LENGTH_SHORT).show();
                 }
                 finish();
@@ -86,8 +105,7 @@ public class Option extends ActionBarActivity {
         });
 
         instruction.setOnClickListener(new View.OnClickListener() {
-
-            @Override
+                        @Override
             public void onClick(View v) {
 
             }
@@ -96,7 +114,7 @@ public class Option extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-
+        if (c == 1) a++;
     }
 
     public void setMusic (Music piece) {

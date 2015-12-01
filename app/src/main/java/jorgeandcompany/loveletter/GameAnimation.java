@@ -303,7 +303,7 @@ public class GameAnimation {
     }
     public void cardToDiscardSinglePlayer(final Player on, final int hand) {
         int position;
-        if (GameData.SINGLE_MODE) position = on.getPlayerNumber();
+        if (GameData.SINGLE_MODE || !GameData.PlayerList[GameData.TURN].isHuman()) position = on.getPlayerNumber();
         else {
             position = 1;
             int player = on.getPlayerNumber();
@@ -313,8 +313,6 @@ public class GameAnimation {
                 if (player == 5) player = 1;
                 if (position == 0) position = 4;
             }
-
-
         }
         final int playerNum = position;
         final int card = on.getCard(hand).getValue();
@@ -448,7 +446,7 @@ public class GameAnimation {
                     }
 
                     public void onFinish() {
-                        AlertDialog.Builder success = new AlertDialog.Builder(GameData.game);
+                        ThemedDialog.Builder success = new ThemedDialog.Builder(GameData.game);
                         success.setCancelable(false);
                         success.setTitle("Card 6 Effect");
                         success.setMessage("Player " + thePlayer.getPlayerNumber() + " traded cards with player " + id + ".");
