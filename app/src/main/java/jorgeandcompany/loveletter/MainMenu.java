@@ -167,7 +167,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
                 if (!COMPUTER_FLAG && !MULTIPLAYER_FLAG) {
                     Option optionClass = new Option();
                     optionClass.setMusic(theMusic);
-                    optionClass.setSaveObserver(new ConcreteObserver(theMusic, theData, userFile));
+                    optionClass.setSaveObserver(new DataObserver(theMusic, theData, userFile));
                     Intent option = new Intent(this, optionClass.getClass());
                     gameNotStart = true;
                     startActivity(option);

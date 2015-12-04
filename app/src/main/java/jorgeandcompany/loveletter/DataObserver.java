@@ -10,12 +10,12 @@ import java.io.OutputStream;
 /**
  * Created by Penguins94 on 11/20/2015.
  */
-public class ConcreteObserver implements Observer {
+public class DataObserver implements Observer {
     private Music theMusic;
     private UserData theData;
     private File userFile;
     
-    public ConcreteObserver(Music music, UserData data, File file) {
+    public DataObserver(Music music, UserData data, File file) {
         theMusic = music;
         theData = data;
         userFile = file;
