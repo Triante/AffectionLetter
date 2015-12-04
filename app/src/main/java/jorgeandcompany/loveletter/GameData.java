@@ -40,24 +40,25 @@ public class GameData {
     }
 
     public static void setMode(Boolean isSingle, int players, int level) {
+        ComputerLevelFactory theAIs = new ConcreteComputerLevelFactory();
         SINGLE_MODE = isSingle;
         if (isSingle) {
             PlayerList[1] = new HumanPlayer(1);
-            PlayerList[2] = ComputerLevelFactory.createComputerPlayer(level, 2);
-            PlayerList[3] = ComputerLevelFactory.createComputerPlayer(level, 3);
-            PlayerList[4] = ComputerLevelFactory.createComputerPlayer(level, 4);
+            PlayerList[2] = theAIs.createComputerPlayer(level, 2);
+            PlayerList[3] = theAIs.createComputerPlayer(level, 3);
+            PlayerList[4] = theAIs.createComputerPlayer(level, 4);
         }
         else if (players == 2) {
             PlayerList[1] = new HumanPlayer(1);
             PlayerList[2] = new HumanPlayer(2);
-            PlayerList[3] = ComputerLevelFactory.createComputerPlayer(level, 3);
-            PlayerList[4] = ComputerLevelFactory.createComputerPlayer(level, 4);
+            PlayerList[3] = theAIs.createComputerPlayer(level, 3);
+            PlayerList[4] = theAIs.createComputerPlayer(level, 4);
         }
         else if (players == 3) {
             PlayerList[1] = new HumanPlayer(1);
             PlayerList[2] = new HumanPlayer(2);
             PlayerList[3] = new HumanPlayer(3);
-            PlayerList[4] = ComputerLevelFactory.createComputerPlayer(level, 4);
+            PlayerList[4] = theAIs.createComputerPlayer(level, 4);
         }
         //players == 4
         else {

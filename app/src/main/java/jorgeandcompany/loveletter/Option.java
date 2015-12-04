@@ -1,5 +1,6 @@
 package jorgeandcompany.loveletter;
 
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -100,6 +101,7 @@ public class Option extends ActionBarActivity {
                 else if (saveActive) {
                     Toast.makeText(getApplicationContext(), "Save Complete!", Toast.LENGTH_SHORT).show();
                 }
+                MainMenu.gameNotStart = false;
                 finish();
             }
         });
@@ -123,5 +125,19 @@ public class Option extends ActionBarActivity {
 
     public void setSaveObserver (Observer anObserver) {
         saveObserver = anObserver;
+    }
+
+    @Override
+    public void onPause () {
+        super.onPause();
+        theMusic.setVolume(0, 0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!theMusic.isMute()) {
+            theMusic.setVolume(1, 1);
+        }
     }
 }

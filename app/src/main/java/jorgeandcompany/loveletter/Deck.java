@@ -20,6 +20,7 @@ public class Deck {
 	}
 
 	private void shuffle() {
+		CardFactory aCardFactory = new ConcreteCardFactory();
 		deck = new Stack();
 		int[] preDeck = {1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8};
 		//int[] preDeck = {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6};
@@ -28,7 +29,7 @@ public class Deck {
 		shuffleArray(preDeck);
 		shuffleArray(preDeck);
 		for (int loc = 0; loc < preDeck.length; loc++) {
-			Card toAdd =  CardFactory.createCard(preDeck[loc]);
+			Card toAdd =  aCardFactory.createCard(preDeck[loc]);
 			deck.push(toAdd);
 		}
 
