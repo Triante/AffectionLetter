@@ -10,7 +10,7 @@ import java.io.OutputStream;
 /**
  * Created by Penguins94 on 11/20/2015.
  */
-public class dataObserver implements Observer {
+public class DataObserver implements Observer {
     Music theMusic;
     UserData theData;
     File userFile;
