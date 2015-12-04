@@ -14,7 +14,7 @@ public class DataObserver implements Observer {
     Music theMusic;
     UserData theData;
     File userFile;
-    public dataObserver (Music music, UserData data, File file) {
+    public DataObserver (Music music, UserData data, File file) {
         theMusic = music;
         theData = data;
         userFile = file;
