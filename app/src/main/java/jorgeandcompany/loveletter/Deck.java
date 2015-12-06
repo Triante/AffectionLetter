@@ -27,6 +27,7 @@ public class Deck {
 	 * Creates a new deck and shuffles it using Fisher–Yates algorithm.
 	 */
 	private void createDeck() {
+		CardFactory aCardFactory = new ConcreteCardFactory();
 		deck = new Stack();
 		int[] preDeck = {1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8};
 		//int[] preDeck = {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6};

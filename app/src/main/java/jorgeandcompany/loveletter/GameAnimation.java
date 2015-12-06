@@ -411,7 +411,8 @@ public class GameAnimation {
             }
         }.start();
     }
-    public void swapCard6(final ImageButton a, final ImageButton b, final Player thePlayer, final int id, final int swap1, final int swap2) {
+    public void swapCard6(final ImageButton a, final ImageButton b, final Player thePlayer,
+                          final int id, final int swap1, final int swap2) {
         new CountDownTimer(2000, 1000) {
             public void onTick(long millisUntilFinished) {
                 int[] bcoordinates = new int[2];

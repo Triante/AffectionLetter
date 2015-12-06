@@ -1,45 +1,18 @@
 package jorgeandcompany.loveletter;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.app.ActionBar;
-import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 
 
@@ -57,6 +30,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
     private Thread newThread;
     private static UserData theData;
     private static File userFile;
+    public static boolean gameNotStart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,17 +63,9 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
                     theData = (UserData) reader.readObject();
                     reader.close();
                     if (theData.isMusicOn()) {
-                        theMusic = new Music(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
-                        Runnable musicRunnable = theMusic;
-                        newThread = new Thread(musicRunnable);
-                        newThread.start();
+                        startMusic(1,1);
                     } else {
-                        theMusic = new Music(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
-                        theMusic.setVolume(0, 0);
-                        theMusic.changeMuteStatus();
-                        Runnable musicRunnable = theMusic;
-                        newThread = new Thread(musicRunnable);
-                        newThread.start();
+                        startMusic (0,0);
                     }
                     theData.setActiveSkin(theData.getActiveSkin());
                     SkinRes.skinNames = theData.getSkinsAvailable();
@@ -126,6 +92,24 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void startMusic (int vol1, int vol2) {
+        if (vol1 == 0) {
+            if (!theMusic.isMute()) {
+                theMusic.changeMuteStatus();
+            }
+        }
+        else {
+            if (theMusic.isMute()) {
+                theMusic.changeMuteStatus();
+            }
+        }
+        theMusic = new Music(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
+        theMusic.setVolume(vol1, vol2);
+        Runnable musicRunnable = theMusic;
+        newThread = new Thread(musicRunnable);
+        newThread.start();
     }
 
     @Override
@@ -183,8 +167,9 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
                 if (!COMPUTER_FLAG && !MULTIPLAYER_FLAG) {
                     Option optionClass = new Option();
                     optionClass.setMusic(theMusic);
-                    optionClass.setSaveObserver(new dataObserver(theMusic, theData, userFile));
+                    optionClass.setSaveObserver(new DataObserver(theMusic, theData, userFile));
                     Intent option = new Intent(this, optionClass.getClass());
+                    gameNotStart = true;
                     startActivity(option);
                 }
                 //Level 3 Computers
@@ -202,7 +187,8 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
             case R.id.bMainMenu4:
                 //Quit
                 if (!COMPUTER_FLAG && !MULTIPLAYER_FLAG) {
-                    onBackPressed();
+                    int pid = android.os.Process.myPid();
+                    android.os.Process.killProcess(pid);
                 }
                 //Back
                 else if (COMPUTER_FLAG) {
@@ -282,10 +268,10 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
             newThread.start();
             return;
         }
-        if (returnState == otherState && newThread != null) {
-            theMusic.setPlayer(new MediaPlayer().create(getApplicationContext(), R.raw.classical_open));
-            theMusic.run();
+        if (!gameNotStart && !theMusic.isMute()) {
+            theMusic.setVolume(1,1);
         }
+
         bMainMenu1.setBackgroundResource(SkinRes.getButtonTheme());
         bMainMenu2.setBackgroundResource(SkinRes.getButtonTheme());
         bMainMenu3.setBackgroundResource(SkinRes.getButtonTheme());
@@ -295,34 +281,13 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        returnState = theMusic.getCurrentPosition();
-        theMusic.pause();
-        moveTaskToBack(true);
-        otherState = returnState;
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
-            returnState = theMusic.getCurrentPosition();
-            theMusic.pause();
-            moveTaskToBack(true);
-            otherState = returnState;
-            return true;
-        } else if ((keyCode == KeyEvent.KEYCODE_POWER)) {
-            returnState = theMusic.getCurrentPosition();
-            theMusic.pause();
-            moveTaskToBack(true);
-            otherState = returnState;
-            return true;
-        } else if ((keyCode == KeyEvent.KEYCODE_WINDOW)) {
-            returnState = theMusic.getCurrentPosition();
-            theMusic.pause();
-            moveTaskToBack(true);
-            otherState = returnState;
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
+    public void onPause() {
+        super.onPause();
+        if (!gameNotStart) {
+            theMusic.setVolume(0,0);
         }
     }
 

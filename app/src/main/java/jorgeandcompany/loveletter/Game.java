@@ -1030,6 +1030,10 @@ public class Game extends ActionBarActivity {
         gameMusic = piece;
     }
 
+    public GameAnimation provideAnimations () {
+        return theAnimation;
+    }
+    
     /**
      * Creates a dialog warning the player they a are quiting the game.
      */
@@ -1053,6 +1057,11 @@ public class Game extends ActionBarActivity {
         }
     }
 
+
+    @Override
+    public void onPause () {
+        super.onPause();
+        gameMusic.setVolume(0, 0);
     /**
      * Returns the GameAnimation class that the game uses.
      * @return the GameAnimation class that the game uses.
@@ -1060,4 +1069,13 @@ public class Game extends ActionBarActivity {
     public GameAnimation provideAnimations () {
         return theAnimation;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!gameMusic.isMute()) {
+            gameMusic.setVolume(1, 1);
+        }
+    }
+
 }
