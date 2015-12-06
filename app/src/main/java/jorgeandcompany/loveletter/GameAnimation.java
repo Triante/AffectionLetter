@@ -641,7 +641,7 @@ public class GameAnimation {
                         public void onTick(long millisUntilFinished) {
                             if (a == 0) {
                                 if (leftDefault == GameData.game.getButton("firstPlayerLeft")) {
-                                    if (GameData.deck.getDeckCount() <= 1) {
+                                    if (GameData.deck.getDeckCount() < 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
                                         float x = leftDefault.getPivotX() - outCard.getPivotX();
@@ -660,7 +660,7 @@ public class GameAnimation {
                                     leftDefault.setBackgroundResource(SkinRes.skinRes(9, "up"));
                                     button.setBackgroundResource(SkinRes.skinRes(9, "up"));
                                 } else if (leftDefault == GameData.game.getButton("secondPlayerLeft")) {
-                                    if (GameData.deck.getDeckCount() <= 1) {
+                                    if (GameData.deck.getDeckCount() < 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
                                         float x = leftDefault.getPivotX() - outCard.getPivotX();
@@ -679,7 +679,7 @@ public class GameAnimation {
                                     leftDefault.setBackgroundResource(SkinRes.skinRes(9, "left"));
                                     button.setBackgroundResource(SkinRes.skinRes(9, "left"));
                                 } else if (leftDefault == GameData.game.getButton("thirdPlayerLeft")) {
-                                    if (GameData.deck.getDeckCount() <= 1) {
+                                    if (GameData.deck.getDeckCount() < 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
                                         float x = leftDefault.getPivotX() - outCard.getPivotX();
@@ -698,7 +698,7 @@ public class GameAnimation {
                                     leftDefault.setBackgroundResource(SkinRes.skinRes(9, "down"));
                                     button.setBackgroundResource(SkinRes.skinRes(9, "down"));
                                 } else {
-                                    if (GameData.deck.getDeckCount() <= 1) {
+                                    if (GameData.deck.getDeckCount() < 1) {
                                         outCard.getLocationOnScreen(coordinatesout);
                                         leftDefault.getLocationOnScreen(acoordinates);
                                         float x = leftDefault.getPivotX() - outCard.getPivotX();

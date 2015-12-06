@@ -1,6 +1,5 @@
 package jorgeandcompany.loveletter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -195,12 +194,19 @@ public class CardFive implements Card {
                     select.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            GameData.PlayerList[id].discardCard();
-                            if (GameData.getDeckCount() == 0) {
-                                GameData.PlayerList[id].drawOutCard();
-                            } else {
-                                GameData.PlayerList[id].drawFirstCard();
+                            GameData.buf = new Buffer();
+                            GameData.p = new Producer(GameData.PlayerList[id], GameData.buf);
+                            Thread t1 = new Thread(GameData.p);
+                            GameData.c = new Consumer(GameData.PlayerList[id], GameData.buf);
+                            Thread t2 = new Thread(GameData.c);
+                            t1.start();
+                            t2.start();
+                            try
+                            {
+                                t1.join();
+                                t2.join();
                             }
+                            catch(InterruptedException e) {return; }
                             GameData.game.endOfTurn();
                         }
                     });

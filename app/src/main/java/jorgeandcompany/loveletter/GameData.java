@@ -24,6 +24,9 @@ public class GameData {
     public static boolean GAME_COMPLETE;
     public static boolean SINGLE_MODE;
     public static boolean debug = false;
+    public static Buffer buf;
+    public static Producer p;
+    public static Consumer c;
 
 
     public static Game game;
