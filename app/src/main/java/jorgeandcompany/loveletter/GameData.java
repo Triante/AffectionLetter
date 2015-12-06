@@ -149,7 +149,7 @@ public class GameData {
     }
 
     /**
-     * Shuffles an array using Fisher–Yates algorithm.
+     * Shuffles an array using Fisher Yates algorithm.
      * @param ar array to be shuffled.
      */
     private static void shuffleArray(int[] ar) {

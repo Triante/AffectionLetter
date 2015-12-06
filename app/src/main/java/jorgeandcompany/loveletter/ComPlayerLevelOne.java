@@ -224,7 +224,7 @@ public class ComPlayerLevelOne implements Player {
     }
 
     /**
-     * Shuffles an array using Fisher–Yates algorithm.
+     * Shuffles an array using Fisher Yates algorithm.
      * @param ar array to be shuffled.
      */
     private void shuffleArray(int[] ar) {

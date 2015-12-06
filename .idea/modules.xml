@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AffectionLetter.iml" filepath="$PROJECT_DIR$/AffectionLetter.iml" />
       <module fileurl="file://$PROJECT_DIR$/LoveLetter.iml" filepath="$PROJECT_DIR$/LoveLetter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

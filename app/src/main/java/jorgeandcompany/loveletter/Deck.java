@@ -24,7 +24,7 @@ public class Deck {
 	}
 
 	/**
-	 * Creates a new deck and shuffles it using Fisher–Yates algorithm.
+	 * Creates a new deck and shuffles it using Fisher Yates algorithm.
 	 */
 	private void createDeck() {
 		CardFactory aCardFactory = new ConcreteCardFactory();
@@ -36,14 +36,14 @@ public class Deck {
 		shuffleArray(preDeck);
 		shuffleArray(preDeck);
 		for (int loc = 0; loc < preDeck.length; loc++) {
-			Card toAdd =  CardFactory.createCard(preDeck[loc]);
+			Card toAdd =  aCardFactory.createCard(preDeck[loc]);
 			deck.push(toAdd);
 		}
 
 	}
 
 	/**
-	 * Shuffles an array using Fisher–Yates algorithm.
+	 * Shuffles an array using Fisher Yates algorithm.
 	 * @param ar array to be shuffled.
 	 */
 	private void shuffleArray(int[] ar) {

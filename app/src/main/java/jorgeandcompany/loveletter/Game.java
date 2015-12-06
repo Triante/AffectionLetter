@@ -1029,10 +1029,6 @@ public class Game extends ActionBarActivity {
     public void setMusic (Music piece) {
         gameMusic = piece;
     }
-
-    public GameAnimation provideAnimations () {
-        return theAnimation;
-    }
     
     /**
      * Creates a dialog warning the player they a are quiting the game.
@@ -1062,6 +1058,7 @@ public class Game extends ActionBarActivity {
     public void onPause () {
         super.onPause();
         gameMusic.setVolume(0, 0);
+    }
     /**
      * Returns the GameAnimation class that the game uses.
      * @return the GameAnimation class that the game uses.
