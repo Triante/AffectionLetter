@@ -13,11 +13,19 @@ public class DrawDiscard extends DrawDiscardDecorator {
         super(c);
     }
 
+    /**
+     * Plays the affect of a card when its drawn.
+     * @param player the Player that drew the card.
+     */
     public void drawAffect(Player player)
     {
         if(card.getValue() == 7) player.setSeven(true);
     }
 
+    /**
+     * Plays the affect of the card when its discarded
+     * @param player the Player that discarded the card
+     */
     public void discardAffect(final Player player) {
         if (card.getValue() == 7) player.setSeven(false);
         else if (card.getValue() == 8) {
@@ -37,6 +45,7 @@ public class DrawDiscard extends DrawDiscardDecorator {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object o) {
         return card.equals(o);

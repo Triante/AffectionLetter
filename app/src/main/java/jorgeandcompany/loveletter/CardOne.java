@@ -18,9 +18,7 @@ public class CardOne implements Card {
     private final int value = 1;
 
     /**
-     * Name a card (other than a card that has a value of 1) and choose another player.
-     * If that player has that card, he or she is out of the round
-     * @param player
+     * @param player the player whose card was selected
      */
     @Override
     public void cardEffect(final Player player) {
@@ -39,11 +37,18 @@ public class CardOne implements Card {
         effect.show();
     }
 
+    /**
+     * @return value of Card
+     */
     @Override
     public int getValue() {
         return value;
     }
 
+    /**
+     * @param c the Context of the current application
+     * @return Returns the description of the card as a string
+     */
     @Override
     public String getDescription(Context c) {
         Resources res = c.getResources();
@@ -51,6 +56,10 @@ public class CardOne implements Card {
         return string;
     }
 
+    /**
+     * Sets the listeners for the buttons for the player to choose.
+     * @param thePlayer the player who is currently its turn.
+     */
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
         boolean noneSelectable = true;
@@ -76,7 +85,7 @@ public class CardOne implements Card {
             two.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    guess(id2, thePlayer);
+                    guess(id2);
                 }
             });
             noneSelectable = false;
@@ -103,7 +112,7 @@ public class CardOne implements Card {
             three.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    guess(id3, thePlayer);
+                    guess(id3);
                 }
             });
             noneSelectable = false;
@@ -130,7 +139,7 @@ public class CardOne implements Card {
             four.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    guess(id4, thePlayer);
+                    guess(id4);
                 }
             });
             noneSelectable = false;
@@ -150,7 +159,13 @@ public class CardOne implements Card {
 
     }
 
-    private void success(final int player, int guess, final Player thePlayer) {
+    /**
+     * Creates a dialog announcing the player guessed the other players card correctly.
+     * This method gets the the player who was chosen out and ends the turn.
+     * @param player the player who was chosen
+     * @param guess the guess value
+     */
+    private void success(final int player, int guess) {
         ThemedDialog.Builder s = new ThemedDialog.Builder(GameData.game);
         s.setCancelable(false);
         s.setTitle("Card 1 Effect");
@@ -166,7 +181,14 @@ public class CardOne implements Card {
         });
         s.show();
     }
-    private void failure(int player, int guess, final Player thePlayer) {
+
+    /**
+     * Creates a dialog announcing the player guessed the other players card incorrectly.
+     * This method ends the turn.
+     * @param player the player who was chosen
+     * @param guess the guess value
+     */
+    private void failure(int player, int guess) {
         ThemedDialog.Builder f = new ThemedDialog.Builder(GameData.game);
         f.setCancelable(false);
         f.setTitle("Card 1 Effect");
@@ -181,7 +203,12 @@ public class CardOne implements Card {
         });
         f.show();
     }
-    private void guess(int p, final Player player) {
+
+    /**
+     * Creates a dialog for the person to guess the card of the player who was selected.
+     * @param p the id of the player who was selected
+     */
+    private void guess(int p) {
         List<String> players = new ArrayList<String>();
         players.add("Card 2");
         players.add("Card 3");
@@ -200,15 +227,20 @@ public class CardOne implements Card {
                 int theGuess = guess + 2;
                 Card card = CardFactory.createCard(theGuess);
                 if (GameData.PlayerList[toCheck].getCard().equals(card)) {
-                    success(toCheck, theGuess, player);
+                    success(toCheck, theGuess);
                 } else {
-                    failure(toCheck, theGuess, player);
+                    failure(toCheck, theGuess);
                 }
             }
         });
         AlertDialog alertDialogObject = select.create();
         alertDialogObject.show();
     }
+
+    /**
+     * Creates a dialog to tell the current player that the selected player is protected.
+     * @param p the id of the player that was chosen
+     */
     private void protectedMessage(int p) {
         ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
@@ -217,12 +249,19 @@ public class CardOne implements Card {
         protect.show();
     }
 
-
+    /**
+     * @param orientation a String passed for the orientation
+     * @return returns the R.drawable int of the card
+     */
     @Override
     public int getSkinRes(String orientation) {
         return SkinRes.skinRes(1, orientation);
     }
 
+    /**
+     * @param o The object to compare this Card against
+     * @return true if the given object represents a Card equivalent to this cards value, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;

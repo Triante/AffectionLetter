@@ -13,6 +13,9 @@ import android.widget.ImageButton;
 public class CardSix implements Card {
     private final int value = 6;
 
+    /**
+     * @param player the player whose card was selected
+     */
     @Override
     public void cardEffect(final Player player) {
         ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
@@ -28,24 +31,35 @@ public class CardSix implements Card {
         effect.setMessage("Select a player to trade cards with.");
         effect.show();
     }
-
+    /**
+     * @return value of Card
+     */
     @Override
     public int getValue() {
         return value;
     }
-
+    /**
+     * @param c the Context of the current application
+     * @return Returns the description of the card as a string
+     */
     @Override
     public String getDescription(Context c) {
         Resources res = c.getResources();
         String string = res.getString(R.string.Card_Six_Description);
         return string;
     }
-
+    /**
+     * @param orientation a String passed for the orientation
+     * @return returns the R.drawable int of the card
+     */
     @Override
     public int getSkinRes(String orientation) {
         return SkinRes.skinRes(6, orientation);
     }
-
+    /**
+     * Sets the listeners for the buttons for the player to choose.
+     * @param thePlayer the player who is currently its turn.
+     */
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
         final ImageButton one;
@@ -143,7 +157,13 @@ public class CardSix implements Card {
             select.show();
         }
     }
-
+    /**
+     * Creates the dialog for confirmation when the player chooses another player.
+     * @param id the id of the player that was chosen
+     * @param thePlayer the player who is currently its turn.
+     * @param player the button of the currents player other card
+     * @param otherPlayer the button of the chosen player's card
+     */
     private void trade(final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
         ThemedDialog.Builder toTrade = new ThemedDialog.Builder(GameData.game);
         toTrade.setCancelable(false);
@@ -158,7 +178,13 @@ public class CardSix implements Card {
         });
         toTrade.show();
     }
-
+    /**
+     * Trades cards with the current player and the chosen player
+     * @param id the id of the player that was chosen
+     * @param thePlayer the player who is currently its turn.
+     * @param player the button of the currents player other card
+     * @param otherPlayer the button of the chosen player's card
+     */
     private void tradeAction(final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
         Card card1 = thePlayer.getCard();
         Card card2 = GameData.PlayerList[id].getCard();
@@ -171,7 +197,10 @@ public class CardSix implements Card {
         performAnimation(id, thePlayer, player, otherPlayer);
 
     }
-
+    /**
+     * Creates a dialog to tell the current player that the selected player is protected.
+     * @param p the id of the player that was chosen
+     */
     private void protectedMessage(int p) {
         ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
@@ -179,7 +208,13 @@ public class CardSix implements Card {
         protect.setCancelable(false);
         protect.show();
     }
-
+    /**
+     * Calls the Animation class to do animation for card 6 and end the current turn
+     * @param id the id of the player that was chosen
+     * @param thePlayer the player who is currently its turn.
+     * @param player the button of the currents player other card
+     * @param otherPlayer the button of the chosen player's card
+     */
     private void performAnimation(final int id, final Player thePlayer, final ImageButton player, final ImageButton otherPlayer) {
         int number1 = thePlayer.getPlayerNumber();
         GameAnimation theAnimation = GameData.game.provideAnimations();
@@ -194,7 +229,10 @@ public class CardSix implements Card {
         }
 
     }
-
+    /**
+     * @param o The object to compare this Card against
+     * @return true if the given object represents a Card equivalent to this cards value, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;

@@ -15,6 +15,9 @@ public class CardTwo implements Card {
 
     private final int value = 2;
 
+    /**
+     * @param player the player whose card was selected
+     */
     @Override
     public void cardEffect(final Player player) {
         ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
@@ -30,11 +33,18 @@ public class CardTwo implements Card {
         effect.show();
     }
 
+    /**
+     * @return value of Card
+     */
     @Override
     public int getValue() {
         return value;
     }
 
+    /**
+     * @param c the Context of the current application
+     * @return Returns the description of the card as a string
+     */
     @Override
     public String getDescription(Context c) {
         Resources res = c.getResources();
@@ -42,6 +52,11 @@ public class CardTwo implements Card {
         return string;
     }
 
+
+    /**
+     * Sets the listeners for the buttons for the player to choose.
+     * @param thePlayer the player who is currently its turn.
+     */
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
         boolean noneSelectable = true;
@@ -139,6 +154,12 @@ public class CardTwo implements Card {
            select.show();
         }
     }
+
+    /**
+     * Creates the dialog for confirmation when the player chooses another player.
+     * @param id the id of the player that was chosen
+     * @param thePlayer the player who is currently its turn.
+     */
     private void lookAtCard(final int id, final Player thePlayer) {
         ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
         look.setCancelable(false);
@@ -152,6 +173,12 @@ public class CardTwo implements Card {
         });
         look.show();
     }
+
+    /**
+     * Creates a dialog to warn the player that he or she is going look at another players card
+     * @param id the id of the player that was chosen
+     * @param thePlayer the player who is currently its turn.
+     */
     private void lookAtCardWarning(final int id, final Player thePlayer) {
         ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
         look.setCancelable(false);
@@ -165,6 +192,13 @@ public class CardTwo implements Card {
         });
         look.show();
     }
+
+    /**
+     * Creates a dialog with the image of the Card who the player selected. This method also ends
+     * the current turn.
+     * @param id the id of the player that was chosen
+     * @param thePlayer the player who is currently its turn.
+     */
     private void lookAtCardAction(final int id, final Player thePlayer) {
         ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
         look.setCancelable(false);
@@ -180,6 +214,11 @@ public class CardTwo implements Card {
         });
         look.show();
     }
+
+    /**
+     * Creates a dialog to tell the current player that the selected player is protected.
+     * @param p the id of the player that was chosen
+     */
     private void protectedMessage(int p) {
         ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setCancelable(false);
@@ -188,11 +227,19 @@ public class CardTwo implements Card {
         protect.show();
     }
 
+    /**
+     * @param orientation a String passed for the orientation
+     * @return returns the R.drawable int of the card
+     */
     @Override
     public int getSkinRes(String orientation) {
         return SkinRes.skinRes(2, orientation);
     }
 
+    /**
+     * @param o The object to compare this Card against
+     * @return true if the given object represents a Card equivalent to this cards value, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;

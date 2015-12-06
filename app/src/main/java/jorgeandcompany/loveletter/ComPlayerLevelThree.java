@@ -32,11 +32,13 @@ public class ComPlayerLevelThree implements Player {
         ai = new AIBrain();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void drawFirstCard() {
         leftCard = GameData.deck.draw();
         hasLeft = true;
     }
+    /** {@inheritDoc} */
     @Override
     public void drawOutCard() {
         if (!hasLeft) {
@@ -48,6 +50,7 @@ public class ComPlayerLevelThree implements Player {
             rightCard = GameData.drawOutCard();
         }
     }
+    /** {@inheritDoc} */
     @Override
     public void drawCard() {
         if (!hasLeft) {
@@ -59,6 +62,7 @@ public class ComPlayerLevelThree implements Player {
             rightCard = GameData.deck.draw();
         }
     }
+    /** {@inheritDoc} */
     @Override
     public void playCard(int hand) {
         ai.updateRememberFlags();
@@ -105,6 +109,7 @@ public class ComPlayerLevelThree implements Player {
         play.start();
 
     }
+    /** {@inheritDoc} */
     @Override
     public void discardCard() {
         if (getCard().getValue() == 8) {
@@ -123,18 +128,17 @@ public class ComPlayerLevelThree implements Player {
             rightCard = null;
         }
     }
-
-
-
-    //do not change these, remain constant throughout both computer and human player
+    /** {@inheritDoc} */
     @Override
     public int getPlayerNumber() {
         return playerNumber;
     }
+    /** {@inheritDoc} */
     @Override
     public boolean isOut() {
         return isOut;
     }
+    /** {@inheritDoc} */
     @Override
     public void out() {
         GameData.discardPile.addToDiscard(getCard());
@@ -146,43 +150,50 @@ public class ComPlayerLevelThree implements Player {
         rightCard = null;
         ai = new AIBrain();
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean hasLeftCard() {
         return hasLeft;
     }
+    /** {@inheritDoc} */
     @Override
     public boolean hasRightCard() {
         return hasRight;
     }
-
+    /** {@inheritDoc} */
     @Override
     public void setCard(Card c) {
         if (hasLeft) leftCard = c;
         else rightCard = c;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getCard(int hand) {
         if (hand == 0) return getLeft();
         else return getRight();
     }
+    /** {@inheritDoc} */
     @Override
     public int getTotal() {
         return total;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getLeft() {
         return leftCard;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getRight() {
         return rightCard;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getCard() {
         if (hasLeft) return leftCard;
         else return rightCard;
     }
+    /** {@inheritDoc} */
     @Override
     public void clearHand() {
         isOut = false;
@@ -193,33 +204,35 @@ public class ComPlayerLevelThree implements Player {
         rightCard = null;
         ai = new AIBrain();
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean isProtected() {
         return isProtected;
     }
+    /** {@inheritDoc} */
     @Override
     public void setProtected(boolean set) {
         isProtected = set;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean hasSeven() {
         return false;
     }
-
+    /** {@inheritDoc} */
     @Override
     public void setSeven(boolean seven) {
 
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean isHuman() {
         return false;
     }
-
-
-    //computer related classes
+    /**
+     * Shuffles an array using Fisher–Yates algorithm.
+     * @param ar array to be shuffled.
+     */
     private void shuffleArray(int[] ar) {
         long tsLong = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
         tsLong = tsLong/2;
@@ -232,10 +245,17 @@ public class ComPlayerLevelThree implements Player {
             ar[i] = a;
         }
     }
-
+    /**
+     * Calls the AIBrain to select a card to play.
+     * @return 0 for left hand, 1 for right.
+     */
     private int selectCardToPlay() {
         return ai.selectCardToPlay();
     }
+    /**
+     * Plays the affect of the card chosen.
+     * @param hand hand value, 0 will play left card affect, otherwise the right card affect.
+     */
     private void cardEffect(int hand) {
         int key;
         if (hand == 0) {
@@ -283,6 +303,10 @@ public class ComPlayerLevelThree implements Player {
                 break;
         }
     }
+    /**
+     * Affect of Card 1. Computer will guess the card of a selected player which was derived from AIBrain.
+     * If guessed correctly chosen player will be out. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectOne() {
         String message = "";
         int chosen = ai.selectPlayer(1);
@@ -315,6 +339,10 @@ public class ComPlayerLevelThree implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 2. Selects a player and stores their current card in the AIBrain. Creates a dialog for the results.
+     * This method also ends the current turn.
+     */
     private void effectTwo() {
         String message = "";
         int chosen = ai.selectPlayer(2);
@@ -338,6 +366,10 @@ public class ComPlayerLevelThree implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 3. Selects a player based off its knowledge in the AIBRain and compares cards with it.
+     * Player with the lowest Card value is out. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectThree() {
         String message = "";
         final int chosen = ai.selectPlayer(3);
@@ -380,6 +412,9 @@ public class ComPlayerLevelThree implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 4. Sets isProtected flag to true. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectFour() {
         isProtected = true;
         ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
@@ -394,6 +429,10 @@ public class ComPlayerLevelThree implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 5. Selects a player based off its knowledge in the AIBRain and the chosen player
+     * discards their card. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectFive() {
         final int chosen = ai.selectPlayer(5);
         ai.forgetCard(chosen);
@@ -501,6 +540,11 @@ public class ComPlayerLevelThree implements Player {
         }
 
     }
+    /**
+     * Affect of Card 6. Selects a player and the chosen player trades cards with the current player.
+     * Stores the information of the card that it traded and the player it chose into its AIBrain.
+     * Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectSix() {
         String message = "";
         final int chosen = ai.selectPlayer(6);
@@ -553,6 +597,9 @@ public class ComPlayerLevelThree implements Player {
             alert.show();
         }
     }
+    /**
+     * Affect of Card 7. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectSeven() {
         ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -566,6 +613,9 @@ public class ComPlayerLevelThree implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 8. Sets player as out. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectEight() {
         ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -580,7 +630,11 @@ public class ComPlayerLevelThree implements Player {
         });
         alert.show();
     }
-
+    /**
+     * retrieves the button of the player's card that was selected.
+     * @param playerNumber ID of the player selected.
+     * @return pair of buttons of the player in an array size 2.
+     */
     private ImageButton [] chooseCardButton (int playerNumber) {
         ImageButton [] leftandright = new ImageButton [2];
         if (playerNumber == 1) {
@@ -627,11 +681,19 @@ public class ComPlayerLevelThree implements Player {
         return leftandright;
     }
 
+    /**
+     * Class used to store information for ComPlayerLevelThree. Also handles the methods of how to
+     * select cards and players.
+     */
     class AIBrain {
         private int[] rememberedCards = {-1, -1, -1, -1, -1};
         private boolean remembersCard = false;
         private boolean remembersEight = false;
 
+        /**
+         * Uses card priority based on what it has on its left hand.
+         * @return 0 if left card was selected, 1 otherwise.
+         */
         private int selectCardToPlay() {
             int leftValue = leftCard.getValue();
             switch (leftValue) {
@@ -656,6 +718,10 @@ public class ComPlayerLevelThree implements Player {
             }
         }
 
+        /**
+         * Card priority for when left card is Card 1.
+         * @return 0 if left card is best, 1 otherwise.
+         */
         private int cardOnePriority() {
             if (remembersCard || remembersEight) return 0;
             int rightValue = rightCard.getValue();
@@ -664,6 +730,10 @@ public class ComPlayerLevelThree implements Player {
             return 0;
         }
 
+        /**
+         * Card priority for when left card is Card 2.
+         * @return 0 if left card is best, 1 otherwise.
+         */
         private int cardTwoPriority() {
             int rightValue = rightCard.getValue();
             if (rightValue == 1 && remembersCard) return 1;
@@ -673,12 +743,20 @@ public class ComPlayerLevelThree implements Player {
             return 0;
         }
 
+        /**
+         * Card priority for when left card is Card 3.
+         * @return 0 if left card is best, 1 otherwise.
+         */
         private int cardThreePriority() {
             int rightValue = rightCard.getValue();
             if (rightValue == 1 || rightValue == 2 || rightValue ==3 || rightValue == 4 || rightValue == 5) return 1;
             return 0;
         }
 
+        /**
+         * Card priority for when left card is Card 4.
+         * @return 0 if left card is best, 1 otherwise.
+         */
         private int cardFourPriority() {
             int rightValue = rightCard.getValue();
             if (rightValue == 1 && remembersCard) return 1;
@@ -686,6 +764,10 @@ public class ComPlayerLevelThree implements Player {
             return 0;
         }
 
+        /**
+         * Card priority for when left card is Card 5.
+         * @return 0 if left card is best, 1 otherwise.
+         */
         private int cardFivePriority() {
             if (remembersEight) return 0;
             int rightValue = rightCard.getValue();
@@ -694,12 +776,20 @@ public class ComPlayerLevelThree implements Player {
             return 0;
         }
 
+        /**
+         * Card priority for when left card is Card 6.
+         * @return 0 if left card is best, 1 otherwise.
+         */
         private int cardSixPriority() {
             int rightValue = rightCard.getValue();
             if (rightValue == 1 || rightValue == 3 || rightValue == 4 || rightValue == 7) return 1;
             return 0;
         }
 
+        /**
+         * Card priority for when left card is Card 7.
+         * @return 0 if left card is best, 1 otherwise.
+         */
         private int cardSevenPriority() {
             int rightValue = rightCard.getValue();
             if (rightValue == 1 && remembersCard) return 1;
@@ -707,15 +797,29 @@ public class ComPlayerLevelThree implements Player {
             return 0;
         }
 
+        /**
+         * Card priority for when left card is Card 8.
+         * @return always return 1.
+         */
         private int cardEightPriority() {
             return 1;
         }
 
+        /**
+         * Generates a random boolean from the Random class in order to play card 7 when forced affect is not in play.
+         * @return random boolean.
+         */
         private boolean toFluff() {
             Random rnd = new Random();
             return rnd.nextBoolean();
         }
 
+        /**
+         * Selects a player influenced off its stored knowledge. Player is selected based off what card
+         * the computer will play. If there is no previous knowledge, the computer will select at random.
+         * @param cardNumber Card number computer will play
+         * @return the player ID
+         */
         private int selectPlayer(int cardNumber) {
             if (cardNumber == 1) {
                 if (remembersCard || remembersEight) {
@@ -793,6 +897,11 @@ public class ComPlayerLevelThree implements Player {
             }
         }
 
+        /**
+         * Guesses a card influenced off its stored knowledge, the player selected, and the discarded cards.
+         * @param player Player to have it's card guessed.
+         * @return the guessed number
+         */
         private int guessCard(int player) {
             int guess;
             if (remembersCard && rememberedCards[player] != 1 && rememberedCards[player] != -1)
@@ -808,15 +917,19 @@ public class ComPlayerLevelThree implements Player {
                 cardsNotToPlay[card]++;
             }
             cardsNotToPlay[getCard().getValue()]++;
+            for (int i = 0; i < rememberedCards.length; i++) {
+                int check = rememberedCards[i];
+                if (check > 1) cardsNotToPlay[check]++;
+            }
 
             ArrayList<Integer> cardsToGuess = new ArrayList<>();
             if (cardsNotToPlay[2] != 2) cardsToGuess.add(2);
-            if (cardsNotToPlay[2] != 2) cardsToGuess.add(3);
-            if (cardsNotToPlay[2] != 2) cardsToGuess.add(4);
-            if (cardsNotToPlay[2] != 2) cardsToGuess.add(5);
-            if (cardsNotToPlay[2] != 1) cardsToGuess.add(6);
-            if (cardsNotToPlay[2] != 1) cardsToGuess.add(7);
-            if (cardsNotToPlay[2] != 1) cardsToGuess.add(8);
+            if (cardsNotToPlay[3] != 2) cardsToGuess.add(3);
+            if (cardsNotToPlay[4] != 2) cardsToGuess.add(4);
+            if (cardsNotToPlay[5] != 2) cardsToGuess.add(5);
+            if (cardsNotToPlay[6] != 1) cardsToGuess.add(6);
+            if (cardsNotToPlay[7] != 1) cardsToGuess.add(7);
+            if (cardsNotToPlay[8] != 1) cardsToGuess.add(8);
 
             if (cardsToGuess.isEmpty()) return 2;
             long seed = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
@@ -826,6 +939,9 @@ public class ComPlayerLevelThree implements Player {
             return cardsToGuess.get(0);
         }
 
+        /**
+         * updates the flags for AIBrain related to whether it remembers the other players cards.
+         */
         private void updateRememberFlags() {
             if (GameData.PlayerList[1].isOut()) rememberedCards[1] = -1;
             if (GameData.PlayerList[2].isOut()) rememberedCards[1] = -1;
@@ -841,12 +957,22 @@ public class ComPlayerLevelThree implements Player {
             }
         }
 
+        /**
+         * Adds the player and their card to the computers knowledge and updates the flags for whether
+         * it remembers if players are holding cards.
+         * @param player the player to be remembered.
+         * @param card the player's card to be remembered.
+         */
         private void setCardToRemember(int player, int card) {
             if (card == 8) remembersEight = true;
             remembersCard = true;
             rememberedCards[player] = card;
         }
 
+        /**
+         * Forgets the card that the player is holding
+         * @param player player for the AIBrain to forget their card.
+         */
         private void forgetCard(int player) {
             rememberedCards[player] = -1;
             updateRememberFlags();

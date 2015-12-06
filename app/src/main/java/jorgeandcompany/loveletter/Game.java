@@ -117,6 +117,9 @@ public class Game extends ActionBarActivity {
         }
     }
 
+    /**
+     * Sets the back card skins for all the buttons
+     */
     public void setBackSkins () {
         deckDummy.setBackgroundResource(SkinRes.skinRes(9,"up"));
         deck.setBackgroundResource(SkinRes.skinRes(9,"up"));
@@ -130,6 +133,25 @@ public class Game extends ActionBarActivity {
         fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9,"right"));
         outCard.setBackgroundResource(SkinRes.skinRes(9,"up"));
     }
+
+    /**
+     * Returns the ImageButton corresponding to the string key that was passed in the parameter.
+     * @param imageType the String key used for getting the requested ImageButton. Keys:
+     *                  firstplayerleft, firstplayerright, secondplayerleft, secondplayerright,
+     *                  thirdplayerleft, thirdplayerright, fourthplayerleft, fourthplayerright, deck
+     *                  discard.
+     * @return returns the specified ImageButton. firstplayerleft returns first player left button,
+     *                  firstplayerright returns first player right button,
+     *                  secondplayerleft returns second player left button,
+     *                  secondplayerright returns second player right button,
+     *                  thirdplayerleft returns third player left button,
+     *                  thirdplayerright returns third player right button,
+     *                  fourthplayerleft returns fourth player left button,
+     *                  fourthplayerright returns fourth player right button,
+     *                  deck returns the deck button,
+     *                  discard returns the discard button,
+     *                  otherwise any other key returns the out card button.
+     */
     public ImageButton getButton (String imageType) {
         if (imageType.equalsIgnoreCase("firstplayerleft")) {
             return firstPlayerLeft;
@@ -167,6 +189,11 @@ public class Game extends ActionBarActivity {
 
     }
 
+    /**
+     * Begins the the turn of the current player. This method leads to other methods related to the
+     * multi-player portion of the game. This method is in charge of handling the change of data and animations when
+     * the player draws a card from the deck to begin their turn.
+     */
     public void multiPlayerGame() {
         int turn = GameData.TURN;;
         final Player on = GameData.PlayerList[turn];
@@ -200,6 +227,12 @@ public class Game extends ActionBarActivity {
         };
         toMove.start();
     }
+
+    /**
+     * Begins the the turn of the current player. This method leads to other methods related to the
+     * single-player portion of the game. This method is in charge of handling the change of data and animations when
+     * the player draws a card from the deck to begin their turn.
+     */
     public void singlePlayerGame() {
         int turn = GameData.TURN;;
         final Player on = GameData.PlayerList[turn];
@@ -235,10 +268,21 @@ public class Game extends ActionBarActivity {
 
 
     }
+
+    /**
+     * Allows the game to move on to the next turn. Runs the game on single-player if the
+     * isSingleGame flag is true, otherwise runs the multi-player game.
+     */
     public void nextTurn() {
         if (isSingleGame) singlePlayerGame();
         else multiPlayerGame();
     }
+
+    /**
+     * Handles the animations, data, and states for when a human player is doing their move.
+     * Allows for the human player to interact with the screen. Calls the card affect when the human
+     * @param on the Player whose current turn is
+     */
     private void playerMove(final Player on) {
         final ImageButton left = firstPlayerLeft;
         final int drawable1 = on.getCard(0).getSkinRes("up");
@@ -250,14 +294,14 @@ public class Game extends ActionBarActivity {
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageZoomToOpen(on, 0, left);
+                imageZoomToOpen(on, 0);
             }
         });
         right.setClickable(true);
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageZoomToOpen(on, 1, right);
+                imageZoomToOpen(on, 1);
             }
         });
         new CountDownTimer(400,100) {
@@ -272,11 +316,20 @@ public class Game extends ActionBarActivity {
             }
         }.start();
     }
+
+    /**
+     * Plays the computers move
+     * @param on the Player whose current turn is
+     */
     private void computerMove(final Player on) {
         on.playCard(0);
     }
 
-    //decides the end of games too
+    /**
+     * Handles the end of turn state. Continues the game when into the next turn when no player has achieved
+     *  a total win of 7 rounds. Ends the round when the deck is out of cards or one wins. In this case, it awards any player(s) who
+     *  won a point. Lastly it handles the end of game when one player reaches 7 points.
+     */
     public void endOfTurn() {
         CountDownTimer toEnd = new CountDownTimer(2000, 1000) {
             @Override
@@ -443,6 +496,11 @@ public class Game extends ActionBarActivity {
         };
         toEnd.start();
      }
+
+    /**
+     * Creates a dialog when the end of the game is reached. Handles starting a new game.
+     * @param winner the ID of the player who won.
+     */
     private void endOfGame(int winner) {
         ThemedDialog.Builder win = new ThemedDialog.Builder(this);
         win.setCancelable(false);
@@ -467,8 +525,13 @@ public class Game extends ActionBarActivity {
         win.show();
     }
 
-    //has method to play card. Ends a turn.
-    private void imageZoomToOpen(final Player on, final int hand, final View toFlip) {
+    /**
+     * Handles the layout for when a player selects a card to view. Also calls the affect for the card
+     * selected and calls the animation for playin the card.
+     * @param on the Player whose current turn is
+     * @param hand the int value for the card that was selected. 0 for left card, otherwise right card.
+     */
+    private void imageZoomToOpen(final Player on, final int hand) {
         Animation zoomOutImage = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         Animation zoomOutImage1 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
         Animation zoomOutImage2 = AnimationUtils.loadAnimation(this, R.anim.anim_scale_up);
@@ -502,6 +565,10 @@ public class Game extends ActionBarActivity {
         cardDescriptionText.setVisibility(View.VISIBLE);
 
     }
+
+    /**
+     * Handles the layout for when a player exits the card view.
+     */
     private void imageZoomToClose() {
         bPlay.setClickable(false);
         bCancel.setClickable(false);
@@ -519,6 +586,11 @@ public class Game extends ActionBarActivity {
         bCancel.setVisibility(View.INVISIBLE);
         cardDescriptionText.setVisibility(View.INVISIBLE);
     }
+
+    /**
+     * Handles calling the opening animations for the game when dealing out cards.
+     * @param firstPlayer the player ID for who plays first.
+     */
     private void handOutCards(final int firstPlayer) {
         new CountDownTimer(7000, 1000) {
             int a = -1;
@@ -570,7 +642,10 @@ public class Game extends ActionBarActivity {
         }.start();
     }
 
-    //other methods
+    /**
+     * Redraws the GUI to match the current status of the game. This method is only
+     * meant to be used in single-player as it doesn't change the view of the players each turn.
+     */
     private void repaint() {
         firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
         firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
@@ -662,6 +737,11 @@ public class Game extends ActionBarActivity {
             textFour.setVisibility(View.INVISIBLE);
         }
     }
+
+    /**
+     * Redraws the GUI to match the current status of the game. This method is only
+     * meant to be used in multi-player as it changes the view of the players each turn.
+     */
     private void repaintSingle() {
         firstPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "up"));
         firstPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "up"));
@@ -739,6 +819,12 @@ public class Game extends ActionBarActivity {
             textFour.setVisibility(View.INVISIBLE);
         }
     }
+
+    /**
+     * Redraws the GUI to match the current status of the game. This method is only
+     * meant to be used at the beginning of each round clear all the remaining cards in play and redraw
+     * the deck if its invisible. Redraws screen to only have the Deck visible again.
+     */
     public void clearTable() {
         textOne.setText("Player 1");
         textTwo.setText("Player 2");
@@ -781,6 +867,13 @@ public class Game extends ActionBarActivity {
         fourthPlayerLeft.setBackgroundResource(SkinRes.skinRes(9, "right"));
         fourthPlayerRight.setBackgroundResource(SkinRes.skinRes(9, "right"));
     }
+
+    /**
+     * Creates a dialog when a card is selected to be played. Handles the actual card affect and animation
+     * to begin the state when the card is in affect.
+     * @param on the Player whose current turn is
+     * @param hand the int value for the card that was selected. 0 for left card, otherwise right card.
+     */
     private void playCard(final Player on, final int hand) {
         ThemedDialog.Builder play = new ThemedDialog.Builder(this);
         play.setCancelable(false);
@@ -827,6 +920,11 @@ public class Game extends ActionBarActivity {
         });
         play.show();
     }
+
+    /**
+     * Creates a dialog to force the player not to play the card selected and reminds the player of
+     * Card 7's affect and to play that card.
+     */
     private void cardSevenError() {
         ThemedDialog.Builder no = new ThemedDialog.Builder(this);
         no.setCancelable(false);
@@ -835,6 +933,13 @@ public class Game extends ActionBarActivity {
         no.setPositiveButton("OK", null);
         no.show();
     }
+
+    /**
+     * updates the beta view with the specific information about the current game. The information includes
+     * the amount of human players playing, the level of ai belonging to the computers, each of the players
+     * cards they are holding (empty hand is displayed as a 0. If a player is out, both hands are displayed as 0). First boolean represents
+     * if the player is human, the second boolean represents if the player is protected.
+     */
     private void setBetaStuff() {
         Card c1 = GameData.PlayerList[1].getCard(0);
         Card c2 = GameData.PlayerList[1].getCard(1);
@@ -905,6 +1010,13 @@ public class Game extends ActionBarActivity {
                 "\nDiscard Pile: " + GameData.discardPile;
         betaView.setText(whole);
     }
+
+    /**
+     * Creates a new music reference and starts the music playing in the background.
+     * @throws NoSuchMethodException invoked by reflection
+     * @throws InvocationTargetException invoked by reflection
+     * @throws IllegalAccessException invoked by reflection
+     */
     public void startMusic () throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method m = Music.class.getDeclaredMethod("setPlayer", MediaPlayer.class);
         m.invoke(gameMusic, new MediaPlayer().create(getApplication(), R.raw.game_piece));
@@ -918,6 +1030,9 @@ public class Game extends ActionBarActivity {
         gameMusic = piece;
     }
 
+    /**
+     * Creates a dialog warning the player they a are quiting the game.
+     */
     @Override
     public void onBackPressed() {
         if (!theAnimation.isAnimating()) {
@@ -938,6 +1053,10 @@ public class Game extends ActionBarActivity {
         }
     }
 
+    /**
+     * Returns the GameAnimation class that the game uses.
+     * @return the GameAnimation class that the game uses.
+     */
     public GameAnimation provideAnimations () {
         return theAnimation;
     }

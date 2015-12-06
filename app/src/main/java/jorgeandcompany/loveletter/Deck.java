@@ -11,15 +11,22 @@ public class Deck {
 
 	public Deck() {
 		deckCount = 16;
-		shuffle();
+		createDeck();
 	}
 
+	/**
+	 * Gets the top card of the deck
+	 * @return a card drawn from the top of the deck.
+	 */
 	public Card draw() {
 		deckCount--;
 		return (Card) deck.pop();
 	}
 
-	private void shuffle() {
+	/**
+	 * Creates a new deck and shuffles it using Fisher–Yates algorithm.
+	 */
+	private void createDeck() {
 		deck = new Stack();
 		int[] preDeck = {1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8};
 		//int[] preDeck = {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6};
@@ -34,8 +41,11 @@ public class Deck {
 
 	}
 
-	private void shuffleArray(int[] ar)
-	{
+	/**
+	 * Shuffles an array using Fisher–Yates algorithm.
+	 * @param ar array to be shuffled.
+	 */
+	private void shuffleArray(int[] ar) {
 		long tsLong = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
 		tsLong = tsLong/2;
 		Random rnd = new Random(tsLong);
@@ -48,6 +58,10 @@ public class Deck {
 		}
 	}
 
+	/**
+	 * Returns the amount of cards still left in the Deck
+	 * @return the amount of cards left in the Deck
+	 */
 	public int getDeckCount() {
 		return deckCount;
 	}

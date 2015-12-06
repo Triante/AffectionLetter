@@ -19,6 +19,10 @@ public class dataObserver implements Observer {
         theData = data;
         userFile = file;
     }
+
+    /**
+     * Updates the serializable file for a user when there is a change in the data
+     */
     public void updateSave() {
         try {
             if (!theData.getActiveSkin().equalsIgnoreCase(SkinRes.activeSkin)) {
