@@ -13,28 +13,31 @@ public abstract class DrawDiscardDecorator implements Card {
         card = c;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void cardEffect(Player player) {
-
         card.cardEffect(player);
-
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getValue() {
         return card.getValue();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getDescription(Context c) {
         return card.getDescription(c);
     }
 
+    /** {@inheritDoc} */
     @Override
     public int getSkinRes(String orientation) {
         return card.getSkinRes(orientation);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object o) {
         return card.equals(o);

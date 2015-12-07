@@ -13,6 +13,9 @@ import android.widget.ImageButton;
 public class CardThree implements Card {
     private final int value = 3;
 
+    /**
+     * @param player the player whose card was selected
+     */
     @Override
     public void cardEffect(final Player player) {
         ThemedDialog.Builder effect = new ThemedDialog.Builder(GameData.game);
@@ -28,24 +31,35 @@ public class CardThree implements Card {
         effect.setMessage("Select a player to compare cards with.");
         effect.show();
     }
-
+    /**
+     * @return value of Card
+     */
     @Override
     public int getValue() {
         return value;
     }
-
+    /**
+     * @param c the Context of the current application
+     * @return Returns the description of the card as a string
+     */
     @Override
     public String getDescription(Context c) {
         Resources res = c.getResources();
         String string = res.getString(R.string.Card_Three_Description);
         return string;
     }
-
+    /**
+     * @param orientation a String passed for the orientation
+     * @return returns the R.drawable int of the card
+     */
     @Override
     public int getSkinRes(String orientation) {
         return SkinRes.skinRes(3, orientation);
     }
-
+    /**
+     * Sets the listeners for the buttons for the player to choose.
+     * @param thePlayer the player who is currently its turn.
+     */
     private void setButtonListeners(final Player thePlayer) {
         int id = thePlayer.getPlayerNumber();
         ImageButton one;
@@ -144,7 +158,11 @@ public class CardThree implements Card {
             select.show();
         }
     }
-
+    /**
+     * Creates the dialog for confirmation when the player chooses another player.
+     * @param id the player that was chosen
+     * @param thePlayer the current player
+     */
     private void toCompare(final int id, final Player thePlayer) {
         ThemedDialog.Builder select = new ThemedDialog.Builder(GameData.game);
         select.setTitle("Card 3 Effect\n");
@@ -159,6 +177,12 @@ public class CardThree implements Card {
         select.setCancelable(false);
         select.show();
     }
+    /**
+     * Compares the cards of the two players. The player with the lowest gets out. This method also
+     * ends the current turn.
+     * @param id the player who was chosen
+     * @param thePlayer the current player
+     */
     private void toCompareAction(final int id, final Player thePlayer) {
         int mainPlayerCard = thePlayer.getCard().getValue();
         int otherPlayerCard = GameData.PlayerList[id].getCard().getValue();
@@ -210,6 +234,10 @@ public class CardThree implements Card {
         select.setCancelable(false);
         select.show();
     }
+    /**
+     * Creates a dialog to tell the current player that the selected player is protected.
+     * @param p the id of the player that was chosen
+     */
     private void protectedMessage(int p) {
         ThemedDialog.Builder protect = new ThemedDialog.Builder(GameData.game);
         protect.setMessage("Player " + p + " is protected. Select another player");
@@ -217,7 +245,10 @@ public class CardThree implements Card {
         protect.setCancelable(false);
         protect.show();
     }
-
+    /**
+     * @param o The object to compare this Card against
+     * @return true if the given object represents a Card equivalent to this cards value, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;

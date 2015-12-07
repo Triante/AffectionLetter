@@ -42,6 +42,12 @@ public class GameData {
         skinID = 1;
     }
 
+    /**
+     * Sets the mode of the game based off the parameters passed.
+     * @param isSingle boolean flag for whether the game is single player or not.
+     * @param players the amount of players if running a multi-player game. If isSingle is trues sets at 1, otherwise default 4.
+     * @param level the level of the AI
+     */
     public static void setMode(Boolean isSingle, int players, int level) {
         ComputerLevelFactory theAIs = new ConcreteComputerLevelFactory();
         SINGLE_MODE = isSingle;
@@ -71,6 +77,10 @@ public class GameData {
             PlayerList[4] = new HumanPlayer(4);
         }
     }
+
+    /**
+     * Initiates or resets all the values in GameData in order to start a new game.
+     */
     public static void newGame() {
         Score[0] = 0;
         Score[1] = 0;
@@ -99,6 +109,10 @@ public class GameData {
         PlayerList[TURN].drawFirstCard();
         nextTurn();
     }
+
+    /**
+     * Resets most of the values in GameData in order to start a new round.
+     */
     public static void newRound() {
         game.getButton("discard").setVisibility(View.INVISIBLE );
         game.clearTable();
@@ -124,6 +138,10 @@ public class GameData {
         PlayerList[TURN].drawFirstCard();
         nextTurn();
     }
+
+    /**
+     * Selects a player to go first
+     */
     private static void selectFirstTurnPlayer() {
         int[] players = {1,2,3,4,4,3,2,1};
         shuffleArray(players);
@@ -132,6 +150,11 @@ public class GameData {
         TURN = players[0];
         firstOut = TURN;
     }
+
+    /**
+     * Shuffles an array using Fisher Yates algorithm.
+     * @param ar array to be shuffled.
+     */
     private static void shuffleArray(int[] ar) {
         long tsLong = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
         tsLong = tsLong/2;
@@ -144,18 +167,37 @@ public class GameData {
             ar[i] = a;
         }
     }
+
+    /**
+     * Increments the turn count. If the turn count reaches 5, resets back to 1.
+     */
     public static void nextTurn() {
         TURN++;
         if (TURN > 4) {
             TURN = 1;
         }
     }
+
+    /**
+     * Returns the amount of cards still left in the Deck
+     * @return the amount of cards left in the Deck
+     */
     public static int getDeckCount() {
         return deck.getDeckCount();
     }
+
+    /**
+     * Sets the Context of the Game class to GameData.
+     * @param aGame
+     */
     public static void setContextMenu(Game aGame) {
         game = aGame;
     }
+
+    /**
+     * Sets a player out and sets the flag for the player.
+     * @param p the player ID who is out.
+     */
     public static void out(int p) {
         PlayerList[p].out();
         if (!noOut) firstOut = p;
@@ -164,6 +206,11 @@ public class GameData {
             FINISH_GAME = true;
         }
     }
+
+    /**
+     * Returns the out Card
+     * @return the out Card
+     */
     public static Card drawOutCard() {
         return OutCard;
     }

@@ -31,11 +31,13 @@ public class ComPlayerLevelTwo implements Player {
         this.playerNumber = playerNumber;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void drawFirstCard() {
         leftCard = GameData.deck.draw();
         hasLeft = true;
     }
+    /** {@inheritDoc} */
     @Override
     public void drawOutCard() {
         if (!hasLeft) {
@@ -47,6 +49,7 @@ public class ComPlayerLevelTwo implements Player {
             rightCard = GameData.drawOutCard();
         }
     }
+    /** {@inheritDoc} */
     @Override
     public void drawCard() {
         if (!hasLeft) {
@@ -58,6 +61,7 @@ public class ComPlayerLevelTwo implements Player {
             rightCard = GameData.deck.draw();
         }
     }
+    /** {@inheritDoc} */
     @Override
     public void playCard(int hand) {
         final int toPlay = selectCardToPlay();
@@ -103,6 +107,7 @@ public class ComPlayerLevelTwo implements Player {
         play.start();
 
     }
+    /** {@inheritDoc} */
     @Override
     public void discardCard() {
         if (getCard().getValue() == 8) {
@@ -121,18 +126,17 @@ public class ComPlayerLevelTwo implements Player {
             rightCard = null;
         }
     }
-
-
-
-    //do not change these, remain constant throughout both computer and human player
+    /** {@inheritDoc} */
     @Override
     public int getPlayerNumber() {
         return playerNumber;
     }
+    /** {@inheritDoc} */
     @Override
     public boolean isOut() {
         return isOut;
     }
+    /** {@inheritDoc} */
     @Override
     public void out() {
         GameData.discardPile.addToDiscard(getCard());
@@ -146,43 +150,50 @@ public class ComPlayerLevelTwo implements Player {
         rememberCardNum = 0;
         rememberPlayerNum = 0;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean hasLeftCard() {
         return hasLeft;
     }
+    /** {@inheritDoc} */
     @Override
     public boolean hasRightCard() {
         return hasRight;
     }
-
+    /** {@inheritDoc} */
     @Override
     public void setCard(Card c) {
         if (hasLeft) leftCard = c;
         else rightCard = c;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getCard(int hand) {
         if (hand == 0) return getLeft();
         else return getRight();
     }
+    /** {@inheritDoc} */
     @Override
     public int getTotal() {
         return total;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getLeft() {
         return leftCard;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getRight() {
         return rightCard;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getCard() {
         if (hasLeft) return leftCard;
         else return rightCard;
     }
+    /** {@inheritDoc} */
     @Override
     public void clearHand() {
         isOut = false;
@@ -195,33 +206,33 @@ public class ComPlayerLevelTwo implements Player {
         rememberCardNum = 0;
         rememberPlayerNum = 0;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean isProtected() {
         return isProtected;
     }
+    /** {@inheritDoc} */
     @Override
     public void setProtected(boolean set) {
         isProtected = set;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean hasSeven() {
         return false;
     }
-
+    /** {@inheritDoc} */
     @Override
-    public void setSeven(boolean seven) {
-
-    }
-
+    public void setSeven(boolean seven) {    }
+    /** {@inheritDoc} */
     @Override
     public boolean isHuman() {
         return false;
     }
-
-
-    //computer related classes
+    /**
+     * Shuffles an array using Fisher Yates algorithm.
+     * @param ar array to be shuffled.
+     */
     private void shuffleArray(int[] ar) {
         long tsLong = (System.currentTimeMillis()/1000) + (System.currentTimeMillis()/777);
         tsLong = tsLong/2;
@@ -234,6 +245,11 @@ public class ComPlayerLevelTwo implements Player {
             ar[i] = a;
         }
     }
+    /**
+     * Selects a player, other that itself, at random. Although if it has the flag "remembers" true,
+     * the selects that player only if the card to play is Card 1.
+     * @return returns another player's ID, returns 0 for itself if no other player is selectable.
+     */
     private int selectPlayer() {
         if (toPlayOne && !GameData.PlayerList[rememberPlayerNum].isProtected() && !GameData.PlayerList[rememberPlayerNum].isOut()) {
             return rememberPlayerNum;
@@ -277,6 +293,12 @@ public class ComPlayerLevelTwo implements Player {
             return 0;
         }
     }
+    /**
+     * Selects a card to play based of a priority list.
+     * Will always play Card 4, never play card 8, and will play Card 1 if remembers flag is true and
+     * player remembered is not protected or not holding card 1.
+     * @return 0 for left hand, 1 for right.
+     */
     private int selectCardToPlay() {
         int[] hand = {leftCard.getValue(), rightCard.getValue()};
         if (hand[0] == 4 || hand[1] == 4) {
@@ -325,6 +347,10 @@ public class ComPlayerLevelTwo implements Player {
 
         //createAccount
     }
+    /**
+     * Plays the affect of the card chosen.
+     * @param hand hand value, 0 will play left card affect, otherwise the right card affect.
+     */
     private void cardEffect(int hand) {
         int key;
         if (hand == 0) {
@@ -372,6 +398,10 @@ public class ComPlayerLevelTwo implements Player {
                 break;
         }
     }
+    /**
+     * Affect of Card 1. Computer will guess card at random of a selected player, unless flag toPlayOne is true. If guessed correctly
+     * chosen player will be out. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectOne() {
         String message = "";
         int chosen = selectPlayer();
@@ -419,6 +449,11 @@ public class ComPlayerLevelTwo implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 2. Selects a player and remembers thier card. If it remembers another player and thier card,
+     * it overrides to remember the new player and card. Creates a dialog for the results.
+     * This method also ends the current turn.
+     */
     private void effectTwo() {
         String message = "";
         int chosen = selectPlayer();
@@ -443,6 +478,10 @@ public class ComPlayerLevelTwo implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 3. Selects a player and compares cards with it. Player with the lowest Card
+     * value is out. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectThree() {
         String message = "";
         final int chosen = selectPlayer();
@@ -485,6 +524,9 @@ public class ComPlayerLevelTwo implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 4. Sets isProtected flag to true. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectFour() {
         isProtected = true;
         ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
@@ -499,6 +541,10 @@ public class ComPlayerLevelTwo implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 5. Selects a player and the chosen player discards their card.
+     * Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectFive() {
         final int chosen = selectPlayer();
         if (chosen != 0) {
@@ -604,6 +650,10 @@ public class ComPlayerLevelTwo implements Player {
         }
 
     }
+    /**
+     * Affect of Card 6. Selects a player and the chosen player trades cards with the current player.
+     * Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectSix() {
         String message = "";
         final int chosen = selectPlayer();
@@ -655,6 +705,9 @@ public class ComPlayerLevelTwo implements Player {
             alert.show();
         }
     }
+    /**
+     * Affect of Card 7. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectSeven() {
         ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -668,6 +721,9 @@ public class ComPlayerLevelTwo implements Player {
         });
         alert.show();
     }
+    /**
+     * Affect of Card 8. Sets player as out. Creates a dialog for the results. This method also ends the current turn.
+     */
     private void effectEight() {
         ThemedDialog.Builder alert = new ThemedDialog.Builder(GameData.game);
         alert.setCancelable(false);
@@ -682,7 +738,11 @@ public class ComPlayerLevelTwo implements Player {
         });
         alert.show();
     }
-
+    /**
+     * retrieves the button of the player's card that was selected.
+     * @param playerNumber ID of the player selected.
+     * @return pair of buttons of the player in an array size 2.
+     */
     private ImageButton [] chooseCardButton (int playerNumber) {
         ImageButton [] leftandright = new ImageButton [2];
         if (playerNumber == 1) {

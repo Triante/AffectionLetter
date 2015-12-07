@@ -21,6 +21,7 @@ public class HumanPlayer implements Player {
         this.playerNumber = playerNumber;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void drawFirstCard() {
         leftCard = GameData.deck.draw();
@@ -28,6 +29,7 @@ public class HumanPlayer implements Player {
         leftDrawDiscard.drawAffect(this);
         hasLeft = true;
     }
+    /** {@inheritDoc} */
     @Override
     public void drawOutCard() {
         if (!hasLeft) {
@@ -39,6 +41,7 @@ public class HumanPlayer implements Player {
             rightCard = GameData.drawOutCard();
         }
     }
+    /** {@inheritDoc} */
     @Override
     public void drawCard() {
         if (!hasLeft) {
@@ -53,7 +56,9 @@ public class HumanPlayer implements Player {
             rightDrawDiscard = new DrawDiscard(rightCard);
             rightDrawDiscard.drawAffect(this);
         }
+        updateHasSeven();
     }
+    /** {@inheritDoc} */
     @Override
     public void playCard(int hand) {
         //right
@@ -73,6 +78,7 @@ public class HumanPlayer implements Player {
             leftCard = null;
         }
     }
+    /** {@inheritDoc} */
     @Override
     public void discardCard() {
         if (hasLeft) {
@@ -92,15 +98,17 @@ public class HumanPlayer implements Player {
             rightCard = null;
         }
     }
-
+    /** {@inheritDoc} */
     @Override
     public int getPlayerNumber() {
         return playerNumber;
     }
+    /** {@inheritDoc} */
     @Override
     public boolean isOut() {
         return isOut;
     }
+    /** {@inheritDoc} */
     @Override
     public void out() {
         if (hasLeftCard() || hasRightCard()) {
@@ -114,43 +122,50 @@ public class HumanPlayer implements Player {
         leftCard = null;
         rightCard = null;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean hasLeftCard() {
         return hasLeft;
     }
+    /** {@inheritDoc} */
     @Override
     public boolean hasRightCard() {
         return hasRight;
     }
-
+    /** {@inheritDoc} */
     @Override
     public void setCard(Card c) {
         if (hasLeft) leftCard = c;
         else rightCard = c;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getCard(int hand) {
         if (hand == 0) return getLeft();
         else return getRight();
     }
+    /** {@inheritDoc} */
     @Override
     public int getTotal() {
         return total;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getLeft() {
         return leftCard;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getRight() {
         return rightCard;
     }
+    /** {@inheritDoc} */
     @Override
     public Card getCard() {
         if (hasLeft) return leftCard;
         else return rightCard;
     }
+    /** {@inheritDoc} */
     @Override
     public void clearHand() {
         isOut = false;
@@ -161,29 +176,39 @@ public class HumanPlayer implements Player {
         leftCard = null;
         rightCard = null;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean isProtected() {
         return isProtected;
     }
+    /** {@inheritDoc} */
     @Override
     public void setProtected(boolean set) {
         isProtected = set;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean hasSeven() {
         return hasSeven;
     }
-
+    /** {@inheritDoc} */
     @Override
     public void setSeven(boolean seven) {
         hasSeven = seven;
     }
-
+    /** {@inheritDoc} */
     @Override
     public boolean isHuman() {
         return true;
+    }
+
+    /**
+     * updates the hasSeven flag. Used in case correction for updating flag is skipped in other classes.
+     * If player is holding  card 7, sets hasSeven as true, otherwise sets it as false.
+     */
+    private void updateHasSeven() {
+        if (leftCard.getValue() == 7 || rightCard.getValue() == 7) hasSeven = true;
+        else hasSeven = false;
     }
 
 }
