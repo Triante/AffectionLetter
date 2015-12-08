@@ -1026,6 +1026,11 @@ public class Game extends ActionBarActivity {
         Thread newThread = new Thread(gameMusic);
         newThread.start();
     }
+
+    /**
+     * sets the music pierce to be played
+     * @param piece the music piece to be played
+     */
     public void setMusic (Music piece) {
         gameMusic = piece;
     }

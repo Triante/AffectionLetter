@@ -5,6 +5,7 @@ package jorgeandcompany.loveletter;
  */
 public class ConcreteCardFactory extends CardFactory{
 
+    /** {@inheritDoc} */
     public Card createCard(int CardNumber) {
         switch (CardNumber) {
             case 1:

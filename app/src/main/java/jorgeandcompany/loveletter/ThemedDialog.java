@@ -49,26 +49,53 @@ public class ThemedDialog extends Dialog {
             dialog.addContentView(mainLayout, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
             imageListView = (LinearLayout) mainLayout.findViewById(R.id.theme_icon_list);
         }
+
+        /**
+         * Sets the message for the Builder from a String
+         * @param message the message for the builder
+         * @return current builder
+         */
         public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
+
+        /**
+         * Sets the message for the Builder from the @Stings/ id.
+         * @param message the message for the builder
+         * @return current builder
+         */
         public Builder setMessage(int message) {
             this.message = (String) context.getText(message);
             return this;
         }
+
+        /**
+         * Sets the title for the Builder from the @Stings/ id.
+         * @param title the title for the builder
+         * @return current builder
+         */
         public Builder setTitle(int title) {
             this.title = (String) context.getText(title);
             return this;
         }
+
+        /**
+         * Sets the title for the Builder from a String
+         * @param title the title for the builder
+         * @return current builder
+         */
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
-        public Builder setContentView(View v) {
-            this.contentView = v;
-            return this;
-        }
+
+        /**
+         * Sets message for the positive button and assigns it an onClickListener.
+         * @param positiveButtonText the message (from the @Stings/ id) for the positive button
+         * @param listener the onClickListener for the positive button, if null button closes the dialog.
+         * @return current builder
+         */
         public Builder setPositiveButton(int positiveButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.positiveButtonText = (String) context
@@ -76,12 +103,26 @@ public class ThemedDialog extends Dialog {
             this.positiveButtonClickListener = listener;
             return this;
         }
+
+        /**
+         * Sets message for the positive button and assigns it an onClickListener.
+         * @param positiveButtonText the message (from a String) for the positive button
+         * @param listener the onClickListener for the positive button, if null button closes the dialog.
+         * @return current builder
+         */
         public Builder setPositiveButton(String positiveButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.positiveButtonText = positiveButtonText;
             this.positiveButtonClickListener = listener;
             return this;
         }
+
+        /**
+         * Sets message for the negative button and assigns it an onClickListener.
+         * @param negativeButtonText the message (from the @Stings/ id) for the negative button
+         * @param listener the onClickListener for the negative button, if null button closes the dialog.
+         * @return current builder
+         */
         public Builder setNegativeButton(int negativeButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.negativeButtonText = (String) context
@@ -89,6 +130,13 @@ public class ThemedDialog extends Dialog {
             this.negativeButtonClickListener = listener;
             return this;
         }
+
+        /**
+         * Sets message for the negative button and assigns it an onClickListener.
+         * @param negativeButtonText the message (from a String) for the negative button
+         * @param listener the onClickListener for the negative button, if null button closes the dialog.
+         * @return current builder
+         */
         public Builder setNegativeButton(String negativeButtonText, DialogInterface.OnClickListener listener) {
             if (listener == null) listener = setNullListener();
             this.negativeButtonText = negativeButtonText;
@@ -97,7 +145,7 @@ public class ThemedDialog extends Dialog {
         }
 
         /**
-         * Create the custom dialog
+         * Creates a ThemedDialog based off the information in the builder.
          */
         public ThemedDialog create() {
             positiveButton = (Button) mainLayout.findViewById(R.id.theme_positiveButton);
@@ -154,20 +202,34 @@ public class ThemedDialog extends Dialog {
             return dialog;
         }
 
-
+        /**
+         * Sets the flag for whether the dialog is cancelable. Flag is set on false on default.
+         * @param flag the boolean to set the flag.
+         */
         public void setCancelable(boolean flag) {
             dialog.setCancelable(flag);
         }
 
+        /**
+         * Creates and shows the ThemedDialog based off the information in the builder.
+         */
         public void show() {
             create();
             dialog.show();
         }
 
+        /**
+         * Dismisses and closes the ThemedDialog.
+         */
         public void dismiss() {
             dialog.dismiss();
         }
 
+        /**
+         * Helper method for creating a onClickListener when a Listener is passed as null in the create button methods
+         * are called.
+         * @return a OnClickListen which closes the ThemedDialog.
+         */
         private OnClickListener setNullListener() {
             OnClickListener listener = new OnClickListener() {
                 @Override
@@ -178,6 +240,10 @@ public class ThemedDialog extends Dialog {
             return listener;
         }
 
+        /**
+         * Sets the a view to the ThemedDialog.
+         * @param view
+         */
         public void setView(View view) {
             imageListView.addView(view);
         }

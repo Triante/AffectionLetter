@@ -87,6 +87,7 @@ public class Option extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 MainMenu.otherState++;
+                // Skin(3x), Music(4x), Skin(1x), PhoneBackButton(1x), AppBackButton(1x)
                 if (a == 4 && b == 4 && c ==1)
                 {
                     if (GameData.debug) {
@@ -119,10 +120,18 @@ public class Option extends ActionBarActivity {
         if (c == 1) a++;
     }
 
+    /**
+     * Sets the music to be played in the options menu.
+     * @param piece the music piece to be set.
+     */
     public void setMusic (Music piece) {
         theMusic = piece;
     }
 
+    /**
+     * Sets the Observer which options uses to save user data to a file
+     * @param anObserver
+     */
     public void setSaveObserver (Observer anObserver) {
         saveObserver = anObserver;
     }

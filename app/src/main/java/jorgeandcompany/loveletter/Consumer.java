@@ -17,6 +17,9 @@ public class Consumer implements Runnable{
         cardMaker = new ConcreteCardFactory();
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         for (int i = 0; counter != 2; i++) {

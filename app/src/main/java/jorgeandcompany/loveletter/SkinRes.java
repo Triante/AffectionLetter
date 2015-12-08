@@ -13,6 +13,12 @@ public class SkinRes {
         skinNames = new ArrayList<>();
     }
 
+    /**
+     * Gets a card graphic as an drawable id based on the current skin theme that is set and the keys that are passed.
+     * @param card the card number
+     * @param orientation the orientation of the card
+     * @return the drawable id based on the current skin theme and the keys passed.
+     */
     public static int skinRes (int card, String orientation) {
         if (activeSkin.equalsIgnoreCase("Magi Skin")) {
             return skinResMagi(card,orientation);
@@ -25,6 +31,12 @@ public class SkinRes {
         }
     }
 
+    /**
+     * Helper method for returning the corresponding drawable id based off the current skin theme that is set.
+     * @param card the card number
+     * @param orientation the orientation of the card
+     * @return the drawable id based on the current skin theme and the keys passed.
+     */
     private static int skinResMagi(int card, String orientation) {
         if (orientation.equalsIgnoreCase("up")) {
             switch (card) {
@@ -113,6 +125,12 @@ public class SkinRes {
         }
     }
 
+    /**
+     * Helper method for returning the corresponding drawable id based off the current skin theme that is set.
+     * @param card the card number
+     * @param orientation the orientation of the card
+     * @return the drawable id based on the current skin theme and the keys passed.
+     */
     private static int skinResAvengers (int card, String orientation) {
         if (orientation.equalsIgnoreCase("up")) {
             switch (card) {
@@ -201,6 +219,12 @@ public class SkinRes {
         }
     }
 
+    /**
+     * Helper method for returning the corresponding drawable id based off the current skin theme that is set.
+     * @param card the card number
+     * @param orientation the orientation of the card
+     * @return the drawable id based on the current skin theme and the keys passed.
+     */
     private static int skinResEmblem (int card, String orientation) {
         if (orientation.equalsIgnoreCase("up")) {
             switch (card) {
@@ -289,6 +313,10 @@ public class SkinRes {
         }
     }
 
+    /**
+     * Gets the button graphic as an drawable id based on the current skin theme that is set.
+     * @return the drawable id based on the current skin theme.
+     */
     public static int getButtonTheme() {
         if (activeSkin.equalsIgnoreCase("Magi Skin")) {
             return R.drawable.button_back_magi;
@@ -301,6 +329,10 @@ public class SkinRes {
         }
     }
 
+    /**
+     * Gets the playing table graphic as an drawable id based on the current skin theme that is set.
+     * @return the drawable id based on the current skin theme.
+     */
     public static int getTableTheme() {
         if (activeSkin.equalsIgnoreCase("Magi Skin")) {
             return R.drawable.table_top_magi;

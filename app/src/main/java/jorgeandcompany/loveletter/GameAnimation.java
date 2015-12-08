@@ -20,6 +20,7 @@ public class GameAnimation {
     private ImageButton discard, deck, firstPlayerRight, firstPlayerLeft, secondPlayerRight,
             secondPlayerLeft, thirdPlayerRight, thirdPlayerLeft, fourthPlayerRight, fourthPlayerLeft, outCard;
     private boolean isAnimating;
+    private int playerID;
 
     public GameAnimation () {
         isAnimating = true;
@@ -36,9 +37,17 @@ public class GameAnimation {
         outCard = GameData.game.getButton("outcard");
     }
 
+    /**
+     * Checks if there is any animation in progress
+     * @return true if there is any current animation in progress, false otherwise.
+     */
     public boolean isAnimating () {
         return isAnimating;
     }
+
+    /**
+     * Flips the flag of isAnimating to either true or false.
+     */
     public void changeAnimatingState () {
         if (isAnimating) {
             isAnimating = false;
@@ -47,6 +56,10 @@ public class GameAnimation {
             isAnimating = true;
         }
     }
+
+    /**
+     * Animation method for a card going from the deck to the out card
+     */
     public void deckToOutCard() {
         int[] cardcoordinates = new int[2];
         int[] deckcoordinates = new int[2];
@@ -67,7 +80,13 @@ public class GameAnimation {
             }
         }.start();
     }
+
+    /**
+     * A helper method for calling the deck to right card animation for a specific player.
+     * @param playerID the player for the card to animate to
+     */
     public void deckToRight(int playerID) {
+        this.playerID = playerID;
         switch (playerID){
             case 1:
                 deckToFirstRight();
@@ -83,6 +102,11 @@ public class GameAnimation {
                 break;
         }
     }
+
+    /**
+     * A helper method for calling the deck to left card animation for a specific player.
+     * @param playerID the player for the card to animate to
+     */
     public void deckToLeft(int playerID) {
         switch (playerID){
             case 1:
@@ -99,6 +123,12 @@ public class GameAnimation {
                 break;
         }
     }
+
+    /**
+     * Animation method for animating the transition of a card from the deck to a specific card area.
+     * @param rotation the degrees the card will rotate.
+     * @param player the imageButton where the card will transition to.
+     */
     private void dealCard(int rotation, ImageButton player) {
         int[] cardcoordinates = new int [2];
         int[] deckcoordinates = new int [2];
@@ -121,6 +151,10 @@ public class GameAnimation {
             deck.setVisibility(View.INVISIBLE);
         }
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the first players right hand.
+     */
     public void deckToFirstRight() {
         dealCard(0, firstPlayerRight);
         new CountDownTimer(1000, 1000) {
@@ -132,6 +166,10 @@ public class GameAnimation {
         }.start();
 
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the second players right hand.
+     */
     public void deckToSecondRight() {
         dealCard(90, secondPlayerRight);
         new CountDownTimer(1000, 1000) {
@@ -144,6 +182,10 @@ public class GameAnimation {
 
 
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the third players right hand.
+     */
     public void deckToThirdRight() {
         dealCard(180, thirdPlayerRight);
         new CountDownTimer(1000, 1000) {
@@ -156,6 +198,10 @@ public class GameAnimation {
 
 
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the fourth players right hand.
+     */
     public void deckToFourthRight() {
         dealCard(-90, fourthPlayerRight);
         new CountDownTimer(1000, 1000) {
@@ -167,6 +213,10 @@ public class GameAnimation {
         }.start();
 
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the first players left hand.
+     */
     public void deckToFirstLeft() {
         dealCard(0, firstPlayerLeft);
         new CountDownTimer(1000, 1000) {
@@ -178,6 +228,10 @@ public class GameAnimation {
         }.start();
 
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the second players left hand.
+     */
     public void deckToSecondLeft() {
         dealCard(90, secondPlayerLeft);
         new CountDownTimer(1000, 1000) {
@@ -190,6 +244,10 @@ public class GameAnimation {
 
 
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the third players left hand.
+     */
     public void deckToThirdLeft() {
         dealCard(180, thirdPlayerLeft);
         new CountDownTimer(1000, 1000) {
@@ -202,6 +260,10 @@ public class GameAnimation {
 
 
     }
+
+    /**
+     * Helper method for calling the animation of a card from the deck to transition to the fourth players left hand.
+     */
     public void deckToFourthLeft() {
         dealCard(-90, fourthPlayerLeft);
         new CountDownTimer(1000, 1000) {
@@ -213,6 +275,12 @@ public class GameAnimation {
         }.start();
 
     }
+
+    /**
+     * Animation method for sending a card from the players hand to the discard pile.
+     * @param buttonToDiscard the ImageButton representing the card to be transitioned.
+     * @param playerNumber the player id used to correct the degrees of rotation.
+     */
     private void cardToDiscard(ImageButton buttonToDiscard, int playerNumber) {
         int[] cardcoordinates = new int[2];
         int[] discardcoordinates = new int[2];
@@ -237,6 +305,12 @@ public class GameAnimation {
         buttonToDiscard.startAnimation(rotateandmove);
         buttonToDiscard.setVisibility(View.INVISIBLE);
     };
+
+    /**
+     * Animation method for flipping a card over face up
+     * @param toFlip the view representing a card to be flipped
+     * @param id the drawable id that the card is going to flip to.
+     */
     public void flipCard(final View toFlip, final int id) {
         final int rightout, leftin;
         if (toFlip == firstPlayerLeft || toFlip == firstPlayerRight || toFlip == thirdPlayerLeft || toFlip == thirdPlayerRight) {
@@ -272,6 +346,11 @@ public class GameAnimation {
             public void onFinish() {}
         }.start();
     }
+
+    /**
+     * Animation method for flipping a card over faced down.
+     * @param toFlip the view representing a card to be flipped
+     */
     public void flipCardToBack(final View toFlip) {
         new CountDownTimer(400, 100) {
             int a = 0;
@@ -301,6 +380,12 @@ public class GameAnimation {
             }
         }.start();
     }
+
+    /**
+     * Helper method for the animation for discarding a players card.
+     * @param on the player who is discarding a card.
+     * @param hand the hand which holds the card that the player is discarding
+     */
     public void cardToDiscardSinglePlayer(final Player on, final int hand) {
         int position;
         if (GameData.SINGLE_MODE || !GameData.PlayerList[GameData.TURN].isHuman()) position = on.getPlayerNumber();
@@ -391,6 +476,12 @@ public class GameAnimation {
                 }
             }.start();
     }
+
+    /**
+     * Helper method for the animation for discarding a players card. This method should only be card when
+     * its the player who in view is the discarding their card.
+     * @param hand
+     */
     public void cardToDiscardMultiPlayer(final int hand) {
         if (hand == 0) cardToDiscard(firstPlayerLeft, 1);
         else cardToDiscard(firstPlayerRight, 1);
@@ -411,6 +502,17 @@ public class GameAnimation {
             }
         }.start();
     }
+
+    /**
+     * Animation for the card 6 Affect in multi-player mode. This method does the animation of two cards from two different players swapping.
+     * This method also ends the turn.
+     * @param a the ImageButton representing the current player's card to be swapped
+     * @param b the ImageButton representing the other player's card to be swapped
+     * @param thePlayer The player who is currently their turn.
+     * @param id the player id of the chosen player to be swapped.
+     * @param swap1 the degrees the first card has to rotate to match the other cards orientation during the switch.
+     * @param swap2 the degrees the second card has to rotate to match the other cards orientation during the switch.
+     */
     public void swapCard6(final ImageButton a, final ImageButton b, final Player thePlayer,
                           final int id, final int swap1, final int swap2) {
         new CountDownTimer(2000, 1000) {
@@ -464,6 +566,13 @@ public class GameAnimation {
             }
         }.start();
     }
+
+    /**
+     * Animation for the card 6 Affect in single-player mode. This method does the animation of two cards from two different players swapping.
+     * This method also ends the turn.
+     * @param playerNumber The player who is currently their turn.
+     * @param chosen the player id of the chosen player to be swapped.
+     */
     public void swapSingle6 (int playerNumber, int chosen) {
         ImageButton temp1 = null;
         ImageButton temp2 = null;
@@ -592,6 +701,14 @@ public class GameAnimation {
             }
         }.start();
     }
+
+    /**
+     * Animation for the card 5 Affect. This method does the animation of discarding the selected player's card
+     * and drawing a new one. If the discarded card has a value of 8, then only does the discard animation.
+     * @param button the ImageButton representing the card to be discarded
+     * @param leftDefault the players left ImageButton representing where the new card will draw to.
+     * @param playerSelected the player who was selected and does the animation to.
+     */
     public void discardAnimation (final ImageButton button, final ImageButton leftDefault, final int playerSelected) {
 
         new CountDownTimer(2000, 1000) {

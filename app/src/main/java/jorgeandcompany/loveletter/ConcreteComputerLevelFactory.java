@@ -5,6 +5,7 @@ package jorgeandcompany.loveletter;
  */
 public class ConcreteComputerLevelFactory extends ComputerLevelFactory{
 
+    /** {@inheritDoc} */
     public Player createComputerPlayer(int level, int playerNumber) {
         switch (level) {
             case 1:

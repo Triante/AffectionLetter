@@ -8,6 +8,11 @@ public class Buffer {
         private int contents;
         private boolean empty = true;
 
+    /**
+     * Puts the value of a card into the buffer
+     * @param i the value to be added
+     * @throws InterruptedException
+     */
         public synchronized void put(int i) throws InterruptedException {
             while (empty == false) { 	//wait till the buffer becomes empty
                 try { wait(); }
@@ -19,6 +24,12 @@ public class Buffer {
             notify();
         }
 
+
+    /**
+     * Gets the value from the buffer.
+     * @return the value from the buffer
+     * @throws InterruptedException
+     */
         public synchronized int get () throws InterruptedException {
             while (empty == true)  {	//wait till something appears in the buffer
                 try { 	wait(); }

@@ -53,6 +53,9 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
         bMainMenu4.setOnClickListener(this);
     }
 
+    /**
+     * Reads a serialized file to load the previous setting of the app set by the user.
+     */
     public void readFile() {
         try {
             userFile = new File(Environment.getExternalStorageDirectory(), "User.ser");
@@ -94,6 +97,11 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * Creates a new music reference and starts the music playing in the background.
+     * @param vol1 right speaker volume setting used depending whether player had muted music or not.
+     * @param vol2 left speaker volume setting used depending whether player had muted music or not.
+     */
     public void startMusic (int vol1, int vol2) {
         if (vol1 == 0) {
             if (!theMusic.isMute()) {
@@ -111,6 +119,7 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
         newThread = new Thread(musicRunnable);
         newThread.start();
     }
+
 
     @Override
     public void onClick(View v) {
@@ -220,6 +229,9 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
 
     }
 
+    /**
+     * Creates a dialog to provide the player with the details of the game that will start and warns the player if they wish to continue and start a new game.
+     */
     private void readyMessage() {
         ThemedDialog.Builder ready = new ThemedDialog.Builder(this);
         ready.setTitle("READY?");
@@ -241,6 +253,9 @@ public class MainMenu extends ActionBarActivity implements View.OnClickListener 
         ready.show();
     }
 
+    /**
+     * Switches to the Game Activity to start a new game
+     */
     private void startGame() {
         Game aGame = new Game();
         aGame.setMusic(theMusic);
