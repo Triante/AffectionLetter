@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -32,7 +33,6 @@ public class ThemedDialog extends Dialog {
         private String message = "";
         private String positiveButtonText;
         private String negativeButtonText;
-        private View contentView;
         private Button positiveButton, negativeButton;
         private TextView messageTextView, titleTextView;
         private DialogInterface.OnClickListener
@@ -46,7 +46,7 @@ public class ThemedDialog extends Dialog {
             dialog = new ThemedDialog(context,R.style.Dialog);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mainLayout = inflater.inflate(R.layout.theme_dialog_layout, null);
-            dialog.addContentView(mainLayout, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+            dialog.addContentView(mainLayout, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             imageListView = (LinearLayout) mainLayout.findViewById(R.id.theme_icon_list);
         }
 
@@ -187,16 +187,6 @@ public class ThemedDialog extends Dialog {
             // set the content message
             if (message != null) {
                 messageTextView.setText(message);
-            } else if (contentView != null) {
-                // if no message set
-                // add the contentView to the dialog body
-                ((LinearLayout) mainLayout.findViewById(R.id.theme_content))
-                        .removeAllViews();
-                ((LinearLayout) mainLayout.findViewById(R.id.theme_content))
-                        .addView(contentView,
-                                new LayoutParams(
-                                        LayoutParams.WRAP_CONTENT,
-                                        LayoutParams.WRAP_CONTENT));
             }
             dialog.setContentView(mainLayout);
             return dialog;

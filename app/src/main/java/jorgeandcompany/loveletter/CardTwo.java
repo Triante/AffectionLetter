@@ -200,16 +200,19 @@ public class CardTwo implements Card {
      * @param thePlayer the player who is currently its turn.
      */
     private void lookAtCardAction(final int id, final Player thePlayer) {
-        ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
+        final ThemedDialog.Builder look = new ThemedDialog.Builder(GameData.game);
         look.setCancelable(false);
         look.setTitle("Player " + id + "'s card.");
         ImageView image = new ImageView(GameData.game);
         image.setImageResource(GameData.PlayerList[id].getCard().getSkinRes("up"));
+        image.setAdjustViewBounds(true);
         look.setView(image);
-        look.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        image.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 GameData.game.endOfTurn();
+                look.dismiss();
+
             }
         });
         look.show();

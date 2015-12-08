@@ -7,21 +7,14 @@
     android:id="@+id/theme_layout"
     android:padding="10dp">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        style="@style/DialogTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-        <TextView
-            style="@style/DialogTitle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/theme_title"
-            android:paddingTop="15dp"
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
-            android:gravity="center"/>
-    </LinearLayout>
+        android:id="@+id/theme_title"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:gravity="center"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -30,28 +23,22 @@
         android:id="@+id/theme_icon_list">
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+
+    <TextView
+        style="@style/DialogText"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/theme_content"
-        android:layout_weight="1">
-        <TextView
-            style="@style/DialogText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
-            android:id="@+id/theme_message"
-            android:gravity="center"
-            />
-    </LinearLayout>
+        android:layout_height="fill_parent"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:id="@+id/theme_message"
+        android:gravity="center"
+        />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:paddingBottom="5dp">
 
         <Button
             style="@style/DialogButton"

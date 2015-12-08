@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -110,7 +111,10 @@ public class Option extends ActionBarActivity {
         instruction.setOnClickListener(new View.OnClickListener() {
                         @Override
             public void onClick(View v) {
-
+                    ThemedDialog.Builder howTo = new ThemedDialog.Builder(Option.this);
+                    View view = View.inflate(Option.this, R.layout.how_to_play_layout, null);
+                            howTo.setView(view);
+                    howTo.show();
             }
         });
     }

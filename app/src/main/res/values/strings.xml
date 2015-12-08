@@ -14,5 +14,24 @@
     <string name="title_activity_name">name</string>
     <string name="name_of_string">this is a string</string>
 
+    <string name="how_to_play">The goal of this game is to win a total of seven rounds before the other player.
+        Rounds are won by getting rid of the other players by using the affects of the cards to get them out or by
+        surviving until the end of the round, when the deck runs out of cards, and being the player with the card of the largest value.
+
+        \n\nEach round begins with shuffling the deck and the first card is put out of play. The first card is known as the Out Card and is always
+        out of play and upside-down so no player can know its contents. This card stays out unless drawn by an affect of another card.
+
+        \n\nThe game contains 16 cards with 8 different types of cards:
+        \nCard 1: Name a card (other than a card that has a value of 1) and choose another player. If that player has that card, he or she is out of the round.
+        \nCard 2: Look at another players hand.
+        \nCard 3: You and another player secretly compare hands. The player with the lowest value is out of the round.
+        \nCard 4: Until your next turn, ignore all effects from other players cards.
+        \nCard 5: Choose any player (including yourself) to discard his or her hand and draw a new card from the deck. If there is no cards left in the deck, the Out Card is drawn instead.
+        \nCard 6: Trade hands with another player of your choice.
+        \nCard 7: If you have this card and either the cards with values of 6 or 5, you must discard this card. Once can still discard this card even if they don\'t have cards 6 or 5.
+        \nCard 8: If you discard this card, you are out of the round.
+
+    </string>
+
     <string name="title_activity_option">Option</string>
 </resources>
